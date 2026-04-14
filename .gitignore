@@ -1,0 +1,14 @@
+# OS
+.DS_Store
+
+# Claude conversation logs
+enterprise/06.logs/
+
+# Node / Next.js (site directory)
+enterprise/site/node_modules/
+enterprise/site/.next/
+enterprise/site/next-env.d.ts
+enterprise/site/*.tsbuildinfo
+
+# Environment
+.env*.local

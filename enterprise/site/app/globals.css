@@ -1,0 +1,178 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-poppins);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+
+  /* Enterprise brand colors */
+  --color-t1: #F3F5F7;
+  --color-t2: rgba(243, 245, 247, 0.55);
+  --color-t3: rgba(243, 245, 247, 0.28);
+  --color-brand: #00D4FF;
+  --color-brand-purple: #7A3AFF;
+  --color-brand-mid: rgba(0, 212, 255, 0.18);
+  --color-brand-low: rgba(0, 212, 255, 0.08);
+  --color-brand-halo: rgba(0, 212, 255, 0.22);
+  --color-brand-glow: rgba(0, 212, 255, 0.80);
+  --color-brand-blob: rgba(0, 212, 255, 0.14);
+  --color-purple-blob: rgba(122, 58, 255, 0.14);
+  --color-purple-glow: rgba(122, 58, 255, 0.10);
+  --color-surface: #141719;
+  --color-lifted: #1A1D22;
+  --color-border-md: rgba(255, 255, 255, 0.10);
+}
+
+:root {
+  --background: #0B0D0F;
+  --foreground: #F3F5F7;
+  --card: #141719;
+  --card-foreground: #F3F5F7;
+  --popover: #141719;
+  --popover-foreground: #F3F5F7;
+  --primary: #F3F5F7;
+  --primary-foreground: #0B0D0F;
+  --secondary: #1A1D22;
+  --secondary-foreground: #F3F5F7;
+  --muted: #141719;
+  --muted-foreground: rgba(243, 245, 247, 0.55);
+  --accent: #00D4FF;
+  --accent-foreground: #ffffff;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: rgba(255, 255, 255, 0.07);
+  --input: rgba(255, 255, 255, 0.07);
+  --ring: rgba(255, 255, 255, 0.13);
+  --radius: 0.625rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* ═══════════════════════════════════════
+   GRAIN OVERLAY
+═══════════════════════════════════════ */
+.grain {
+  position: fixed;
+  inset: -300px;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.028;
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  animation: grain-drift 8s linear infinite;
+  will-change: transform;
+}
+@keyframes grain-drift {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-12px, 8px); }
+  50%  { transform: translate(8px, -12px); }
+  75%  { transform: translate(-6px, -8px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ═══════════════════════════════════════
+   GRADIENT TEXT UTILITY
+═══════════════════════════════════════ */
+.gradient-text {
+  background: linear-gradient(135deg, #00D4FF, #7A3AFF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════
+   PLATFORM CARD TOP ACCENT LINE
+═══════════════════════════════════════ */
+.platform-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, var(--card-accent, #00D4FF) 0%, transparent 70%);
+  opacity: 0.4;
+  transition: opacity 0.25s;
+}
+.platform-card:hover::before { opacity: 0.85; }
+
+/* ═══════════════════════════════════════
+   SERVICE / NUMBERED ITEM LEFT ACCENT
+═══════════════════════════════════════ */
+.svc-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--svc-accent, #00D4FF);
+  opacity: 0;
+  transition: opacity 0.25s;
+  border-radius: 0 2px 2px 0;
+}
+.svc-item:hover::before { opacity: 1; }
+
+/* ═══════════════════════════════════════
+   USE CASE CARD ACCENT
+═══════════════════════════════════════ */
+.usecase-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--card-accent, #00D4FF) 40%, transparent 100%);
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+.usecase-card:hover::before { opacity: 1; }
+
+/* ═══════════════════════════════════════
+   ANIMATION BASE STATES
+═══════════════════════════════════════ */
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+}
+.fade-in {
+  opacity: 0;
+}
+.clip-reveal {
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(16px);
+}
+
+/* ═══════════════════════════════════════
+   REDUCED MOTION
+═══════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .grain { animation: none; }
+  .fade-up { opacity: 1; transform: none; }
+  .fade-in { opacity: 1; }
+  .clip-reveal { clip-path: none; transform: none; }
+}
