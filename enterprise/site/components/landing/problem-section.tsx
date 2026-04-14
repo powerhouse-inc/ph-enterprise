@@ -70,7 +70,7 @@ export function ProblemSection() {
               ready, but because the deployment model is wrong. Commercial AI services
               require sending your data to external infrastructure for processing,
               fine-tuning, or retrieval. For organizations handling privileged legal
-              communications, employee PII, financial forecasts, or procurement
+              communications, employee personal data, financial forecasts, or procurement
               negotiations, that&apos;s not a risk assessment &mdash; it&apos;s a non-starter.
             </p>
             <p className="text-[15px] leading-[1.72] text-t2">

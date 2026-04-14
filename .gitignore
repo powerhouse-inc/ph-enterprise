@@ -12,3 +12,4 @@ enterprise/site/*.tsbuildinfo
 
 # Environment
 .env*.local
+.next/
