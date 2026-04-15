@@ -54,9 +54,9 @@ export function WhySection() {
               </p>
               <p>
                 We&apos;ve been building open-source tools for AI-native operations since 2021.
-                Enterprise support through <strong className="text-t1">BAI</strong> with
-                contractual SLAs &mdash; a working relationship with the engineering team,
-                not a ticket queue.
+                Enterprise support through <strong className="text-t1">BAI</strong>
+                {" "}with contractual SLAs &mdash; a working relationship with the engineering
+                team, not a ticket queue.
               </p>
             </div>
             <a

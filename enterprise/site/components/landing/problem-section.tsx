@@ -71,10 +71,10 @@ export function ProblemSection() {
               require sending your data to external infrastructure for processing,
               fine-tuning, or retrieval. For organizations handling privileged legal
               communications, employee personal data, financial forecasts, or procurement
-              negotiations, that&apos;s not a risk assessment &mdash; it&apos;s a non-starter.
+              negotiations, this approach leaves you exposed to legal and operational risk.
             </p>
             <p className="text-[15px] leading-[1.72] text-t2">
-              There&apos;s a third path: infrastructure that makes your business data
+              But there is another way: using infrastructure that makes your business data
               AI-native <em>without it ever leaving your environment</em>. Not by
               replacing your existing systems &mdash; but by adding a structured layer
               that makes them AI-accessible, on your infrastructure, under your control.

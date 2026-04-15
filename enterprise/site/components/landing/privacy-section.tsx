@@ -22,9 +22,6 @@ export function PrivacySection() {
             <br />
             <span className="text-t2">Not bolted on.</span>
           </h2>
-          <p className="text-[15px] leading-[1.72] text-t3 mt-3 max-w-[480px]">
-            The section your CTO sends to the DPO, legal counsel, and compliance team.
-          </p>
         </div>
 
         <div className="grid grid-cols-2 gap-5 max-md:grid-cols-1">
