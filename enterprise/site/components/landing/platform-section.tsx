@@ -34,7 +34,7 @@ export function PlatformSection() {
             <Link
               key={comp.name}
               href={comp.href}
-              className="fade-up platform-card relative rounded-2xl bg-surface border border-border p-7 transition-all hover:border-border-md hover:-translate-y-px group text-center"
+              className="fade-up platform-card relative rounded-2xl bg-surface border border-border p-7 transition-all hover:border-border-md hover:-translate-y-px group text-center overflow-hidden"
               style={{ "--card-accent": comp.accent } as CSSWithVars}
             >
               <div className="flex items-center justify-center gap-3 mb-3">
@@ -65,7 +65,7 @@ export function PlatformSection() {
             <Link
               key={comp.name}
               href={comp.href}
-              className="fade-up platform-card relative rounded-2xl bg-surface border border-border p-7 transition-all hover:border-border-md hover:-translate-y-px group text-center"
+              className="fade-up platform-card relative rounded-2xl bg-surface border border-border p-7 transition-all hover:border-border-md hover:-translate-y-px group text-center overflow-hidden"
               style={{ "--card-accent": comp.accent } as CSSWithVars}
             >
               <div className="flex items-center justify-center gap-3 mb-3">
