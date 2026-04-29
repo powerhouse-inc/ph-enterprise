@@ -23,19 +23,19 @@ export const TIER_ITEMS: TierItem[] = [
   {
     tier: "Local models",
     description:
-      "For the most sensitive data — privileged legal communications, raw personnel files, board-level financials, trade secrets. Open-source models on your hardware. Nothing leaves your network.",
+      "For your most sensitive data: legal communications, personnel files, board financials, and trade secrets. Open-source models run on your hardware, inside your network.",
     accent: "#00D4FF",
   },
   {
     tier: "Frontier commercial models",
     description:
-      "For less sensitive but still confidential work — operating on censored summaries, redacted extracts, or pre-approved data shapes. The integration layer controls what reaches the external model.",
+      "For confidential work that can use redacted, summarized, or pre-approved data. The integration layer controls exactly what reaches the external model.",
     accent: "#7A3AFF",
   },
   {
     tier: "General-purpose models",
     description:
-      "For non-confidential tasks — drafting, formatting, research, translation.",
+      "For non-confidential tasks like drafting, formatting, research, and translation.",
     accent: "#F3F5F7",
   },
 ];

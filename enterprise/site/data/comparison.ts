@@ -3,38 +3,38 @@ import type { ComparisonRow } from "./types";
 export const COMPARISON_ROWS: ComparisonRow[] = [
   {
     dimension: "Data privacy",
-    legacy: "Business data sent to external AI services",
-    powerhouse: "Data stays on your infrastructure; local models for sensitive workflows",
+    legacy: "Your data leaves your network for processing",
+    powerhouse: "Data stays on your infrastructure — always",
   },
   {
-    dimension: "AI readiness",
-    legacy: "Separate integration per system; months of work",
-    powerhouse: "Structured data layer with AI endpoints from your business schemas",
+    dimension: "AI architecture",
+    legacy: "Months of custom integration per system",
+    powerhouse: "Structured data layer with built-in AI endpoints",
   },
   {
     dimension: "Agent control",
-    legacy: "Prompt-based; unpredictable scope",
-    powerhouse: "Specification-driven; sandboxed permissions; full operation history",
+    legacy: "Prompt-based with unpredictable scope",
+    powerhouse: "Specification-driven with sandboxed permissions",
   },
   {
     dimension: "Integration",
     legacy: "Point-to-point adapters, no data scoping",
-    powerhouse: "Standards-based with built-in data isolation per agent and workflow",
+    powerhouse: "Standards-based with per-agent data isolation",
   },
   {
     dimension: "Time to value",
     legacy: "6–18 month integration projects",
-    powerhouse: "Connect existing systems, structure data, agents work immediately",
+    powerhouse: "Connect existing systems — agents work immediately",
   },
   {
     dimension: "Compliance",
     legacy: "Audit trails reconstructed after the fact",
-    powerhouse: "Cryptographically signed, immutable — the history is the data",
+    powerhouse: "Cryptographically signed, immutable history",
   },
   {
     dimension: "Regulatory readiness",
     legacy: "Retrofit required when AI regulations arrive",
-    powerhouse: "Architecture already meets EU AI Act transparency requirements",
+    powerhouse: "Built for EU AI Act transparency requirements",
   },
   {
     dimension: "Vendor lock-in",

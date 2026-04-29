@@ -30,14 +30,45 @@ export function PlatformSection() {
         </div>
 
         <div className="grid grid-cols-3 gap-5 max-lg:grid-cols-2 max-md:grid-cols-1">
-          {PLATFORM_COMPONENTS.map((comp) => (
+          {PLATFORM_COMPONENTS.slice(0, 3).map((comp) => (
             <Link
               key={comp.name}
               href={comp.href}
-              className="fade-up platform-card relative rounded-2xl bg-surface border border-border p-7 transition-all hover:border-border-md hover:-translate-y-px group"
+              className="fade-up platform-card relative rounded-2xl bg-surface border border-border p-7 transition-all hover:border-border-md hover:-translate-y-px group text-center"
               style={{ "--card-accent": comp.accent } as CSSWithVars}
             >
-              <div className="flex items-center gap-3 mb-3">
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <span
+                  className="w-2 h-2 rounded-full"
+                  style={{ background: comp.accent }}
+                  aria-hidden="true"
+                />
+                <h3 className="text-base font-semibold tracking-tight text-t1 font-heading">
+                  {comp.name}
+                </h3>
+              </div>
+              <p className="text-[11px] font-semibold tracking-[0.06em] uppercase text-t3 mb-3">
+                {comp.tagline}
+              </p>
+              <p className="text-sm leading-[1.72] text-t2">
+                {comp.description}
+              </p>
+              <span className="inline-block mt-4 text-[13px] font-medium text-t3 group-hover:text-t1 transition-colors">
+                Learn more &rarr;
+              </span>
+            </Link>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-2 gap-5 mt-5 max-md:grid-cols-1">
+          {PLATFORM_COMPONENTS.slice(3).map((comp) => (
+            <Link
+              key={comp.name}
+              href={comp.href}
+              className="fade-up platform-card relative rounded-2xl bg-surface border border-border p-7 transition-all hover:border-border-md hover:-translate-y-px group text-center"
+              style={{ "--card-accent": comp.accent } as CSSWithVars}
+            >
+              <div className="flex items-center justify-center gap-3 mb-3">
                 <span
                   className="w-2 h-2 rounded-full"
                   style={{ background: comp.accent }}

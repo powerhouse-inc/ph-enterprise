@@ -14,9 +14,6 @@ export type UseCase = {
   icon: string;
   color: string;
   summary: string;
-  capabilities: string[];
-  baiLink: string;
-  componentLink: { label: string; href: string };
 };
 
 export type PlatformComponent = {

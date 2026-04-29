@@ -25,14 +25,14 @@ export function IntegrationSection() {
             </h2>
             <div className="space-y-4 text-[15px] leading-[1.72] text-t2">
               <p>
-                Powerhouse doesn&apos;t replace your existing systems &mdash; it runs alongside
-                them. Switchboard connects your ERP, HRIS, document management, email, and
-                financial systems to a structured data layer where AI can operate.
+                Powerhouse runs alongside your existing systems. Switchboard connects your
+                ERP, HRIS, documents, email, and finance tools to a structured data layer
+                where AI can operate securely.
               </p>
               <p>
-                Each connection defines a scope: what data enters, what format it takes, and
-                who &mdash; human or agent &mdash; can access it. Isolation is defined at the
-                integration level, not layered on as policy.
+                Every integration defines its own scope: what data enters, how it is
+                structured, and who can access it &mdash; human or agent. Privacy is built
+                into the connection itself, not added later as policy.
               </p>
             </div>
           </div>

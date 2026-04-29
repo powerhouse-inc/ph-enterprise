@@ -66,18 +66,14 @@ export function ProblemSection() {
             className="opacity-0 translate-y-4 space-y-5 pt-2"
           >
             <p className="text-[15px] leading-[1.72] text-t2">
-              Enterprise AI adoption is stalling &mdash; not because the technology isn&apos;t
-              ready, but because the deployment model is wrong. Commercial AI services
-              require sending your data to external infrastructure for processing,
-              fine-tuning, or retrieval. For organizations handling privileged legal
-              communications, employee personal data, financial forecasts, or procurement
-              negotiations, this approach leaves you exposed to legal and operational risk.
+              Enterprise AI adoption is stalling because the deployment model is wrong.
+              Commercial AI often requires sending sensitive data to external
+              infrastructure, creating legal and operational risk.
             </p>
             <p className="text-[15px] leading-[1.72] text-t2">
-              But there is another way: using infrastructure that makes your business data
-              AI-native <em>without it ever leaving your environment</em>. Not by
-              replacing your existing systems &mdash; but by adding a structured layer
-              that makes them AI-accessible, on your infrastructure, under your control.
+              There is another way: make your business data AI-native without moving it.
+              Add a structured layer over your existing systems so AI can access data
+              securely &mdash; on your infrastructure, under your control.
             </p>
             <a
               href="https://bai.powerhouse.io"

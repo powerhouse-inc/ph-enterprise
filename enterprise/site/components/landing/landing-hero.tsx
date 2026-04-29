@@ -90,10 +90,9 @@ export function LandingHero() {
             ref={subRef}
             className="text-[17px] font-normal leading-[1.68] text-t2 max-w-[480px] mb-10 opacity-0 translate-y-4"
           >
-            Your competitors are adopting AI. The question isn&apos;t if you should &mdash; it&apos;s
-            how you do it without compromising what makes your business yours.
-            Powerhouse is infrastructure for AI-native operations that keeps your
-            confidential data on your terms: your models, your servers, never exposed.
+            Adopt AI without exposing what makes your business yours. Powerhouse
+            gives you AI-native infrastructure that keeps confidential data under
+            your control &mdash; your models, your servers, your rules.
           </p>
 
           <div

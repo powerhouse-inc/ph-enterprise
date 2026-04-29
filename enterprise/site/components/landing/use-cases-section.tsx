@@ -1,12 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useRef } from "react";
 import { Scale, Users, FileText, BarChart3 } from "lucide-react";
 import { USE_CASES } from "@/data/use-cases";
 import { useFadeUpInScope } from "@/hooks/use-fade-up-scope";
 import type { CSSWithVars } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import { SectionContainer } from "./section-container";
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -56,32 +54,6 @@ export function UseCasesSection() {
                 {uc.summary}
               </p>
 
-              <div className="flex flex-wrap gap-1.5 mb-5">
-                {uc.capabilities.map((cap) => (
-                  <Badge
-                    key={cap}
-                    variant="outline"
-                    className="text-[10px] font-semibold tracking-[0.06em] uppercase text-t3 border-border rounded-full px-2.5 py-0.5 h-auto"
-                  >
-                    {cap}
-                  </Badge>
-                ))}
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <a
-                  href={uc.baiLink}
-                  className="text-[13px] font-medium text-brand hover:text-brand/80 transition-colors"
-                >
-                  Assess your AI readiness for {uc.industry.toLowerCase()} operations &rarr;
-                </a>
-                <Link
-                  href={uc.componentLink.href}
-                  className="text-[13px] text-t3 hover:text-t2 transition-colors"
-                >
-                  {uc.componentLink.label} &rarr;
-                </Link>
-              </div>
             </div>
           ))}
         </div>
