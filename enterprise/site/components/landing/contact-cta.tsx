@@ -85,9 +85,9 @@ export function ContactCta() {
           ref={headingRef}
           className="text-[clamp(42px,6vw,80px)] font-[680] leading-[1.01] tracking-[-0.04em] text-t1 mb-6 max-w-[720px] clip-reveal font-heading"
         >
-          Three ways
+          Choose your
           <br />
-          <span className="text-t2">to move.</span>
+          <span className="text-t2">next step.</span>
         </h2>
 
         <div
@@ -95,39 +95,39 @@ export function ContactCta() {
           className="opacity-0 translate-y-4 space-y-8"
         >
           <div className="grid grid-cols-3 gap-5 max-md:grid-cols-1">
-            <div className="rounded-xl bg-surface border border-border p-6 transition-all hover:border-border-md">
+            <div className="rounded-xl bg-surface border border-border p-6 transition-all hover:border-border-md flex flex-col">
               <h3 className="text-base font-semibold text-t1 mb-2 font-heading">See it live</h3>
-              <p className="text-[13px] leading-[1.68] text-t2 mb-4">
+              <p className="text-[13px] leading-[1.68] text-t2 mb-5">
                 We&apos;ll show you the platform running in production, walk through the AI
                 agent infrastructure, and map the architecture to your operations.
               </p>
-              <Button variant="cta" className="h-9 px-5 rounded-md text-[13px]" asChild>
+              <Button variant="cta" className="mt-auto h-9 px-5 rounded-md text-[13px]" asChild>
                 <Link href="mailto:hello@powerhouse.inc?subject=Enterprise%20Demo%20Request" prefetch={false}>
                   Request a Demo
                 </Link>
               </Button>
             </div>
 
-            <div className="rounded-xl bg-surface border border-border p-6 transition-all hover:border-border-md">
+            <div className="rounded-xl bg-surface border border-border p-6 transition-all hover:border-border-md flex flex-col">
               <h3 className="text-base font-semibold text-t1 mb-2 font-heading">Assess your readiness</h3>
-              <p className="text-[13px] leading-[1.68] text-t2 mb-4">
+              <p className="text-[13px] leading-[1.68] text-t2 mb-5">
                 A 2&ndash;3 week data flow audit that maps your systems, classifies data
                 sensitivity, and produces a prioritized implementation roadmap.
               </p>
-              <Button variant="outline" className="h-9 px-5 rounded-md text-[13px]" asChild>
+              <Button variant="outline" className="mt-auto h-9 px-5 rounded-md text-[13px]" asChild>
                 <a href="https://bai.powerhouse.io">
                   Start with BAI
                 </a>
               </Button>
             </div>
 
-            <div className="rounded-xl bg-surface border border-border p-6 transition-all hover:border-border-md">
+            <div className="rounded-xl bg-surface border border-border p-6 transition-all hover:border-border-md flex flex-col">
               <h3 className="text-base font-semibold text-t1 mb-2 font-heading">Explore the platform</h3>
-              <p className="text-[13px] leading-[1.68] text-t2 mb-4">
+              <p className="text-[13px] leading-[1.68] text-t2 mb-5">
                 Developer environment, package registry, documentation, and managed
                 hosting.
               </p>
-              <Button variant="outline" className="h-9 px-5 rounded-md text-[13px]" asChild>
+              <Button variant="outline" className="mt-auto h-9 px-5 rounded-md text-[13px]" asChild>
                 <a href="https://vetra.io">
                   Visit Vetra
                 </a>
