@@ -21,6 +21,7 @@ export const USE_CASES: UseCase[] = [
     color: "#F2CB29",  // gold
     summary:
       "Vendor evaluation, contract negotiation support, spend analysis, supplier risk assessment. Negotiation positions and pricing data are your most sensitive competitive assets — they stay on local models.",
+    href: "/procurement",
   },
   {
     industry: "Finance",

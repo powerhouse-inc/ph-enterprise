@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef } from "react";
 import { Scale, Users, FileText, BarChart3 } from "lucide-react";
 import { USE_CASES } from "@/data/use-cases";
@@ -34,28 +35,50 @@ export function UseCasesSection() {
         </div>
 
         <div className="grid grid-cols-2 gap-5 max-md:grid-cols-1">
-          {USE_CASES.map((uc) => (
-            <div
-              key={uc.industry}
-              className="fade-up usecase-card relative rounded-2xl bg-surface border border-border p-7 transition-all hover:border-border-md group"
-              style={{ "--card-accent": uc.color } as CSSWithVars}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                {(() => {
-                  const Icon = ICON_MAP[uc.icon];
-                  return Icon ? <Icon className="w-5 h-5" style={{ color: uc.color }} aria-hidden="true" /> : null;
-                })()}
-                <h3 className="text-lg font-semibold tracking-tight text-t1 font-heading">
-                  {uc.industry}
-                </h3>
+          {USE_CASES.map((uc) => {
+            const Icon = ICON_MAP[uc.icon];
+
+            return (
+              <div
+                key={uc.industry}
+                className="fade-up usecase-card group relative h-full rounded-2xl border border-border bg-surface p-7 transition-all hover:border-border-md"
+                style={{ "--card-accent": uc.color } as CSSWithVars}
+              >
+                {uc.href ? (
+                  <Link
+                    href={uc.href}
+                    aria-label={`Open ${uc.industry} workflow page`}
+                    className="absolute inset-0 z-10 block rounded-2xl cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
+                  />
+                ) : null}
+
+                <div className="relative">
+                  <div className="mb-4 flex items-center gap-3">
+                    {Icon ? (
+                      <Icon
+                        className="h-5 w-5"
+                        style={{ color: uc.color }}
+                        aria-hidden="true"
+                      />
+                    ) : null}
+                    <h3 className="text-lg font-semibold tracking-tight text-t1 font-heading">
+                      {uc.industry}
+                    </h3>
+                  </div>
+
+                  <p className="mb-4 text-sm leading-[1.72] text-t2">
+                    {uc.summary}
+                  </p>
+
+                  {uc.href ? (
+                    <span className="inline-block text-[13px] font-medium text-t3 transition-colors group-hover:text-t1">
+                      Explore this workflow &rarr;
+                    </span>
+                  ) : null}
+                </div>
               </div>
-
-              <p className="text-sm leading-[1.72] text-t2 mb-4">
-                {uc.summary}
-              </p>
-
-            </div>
-          ))}
+            );
+          })}
         </div>
       </SectionContainer>
     </section>

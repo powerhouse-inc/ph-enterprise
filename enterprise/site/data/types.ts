@@ -14,6 +14,7 @@ export type UseCase = {
   icon: string;
   color: string;
   summary: string;
+  href?: string;
 };
 
 export type PlatformComponent = {
