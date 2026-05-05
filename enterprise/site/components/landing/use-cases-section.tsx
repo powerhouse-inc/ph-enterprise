@@ -52,7 +52,7 @@ export function UseCasesSection() {
                   />
                 ) : null}
 
-                <div className="relative">
+                <div className="relative flex h-full flex-col">
                   <div className="mb-4 flex items-center gap-3">
                     {Icon ? (
                       <Icon
@@ -66,13 +66,13 @@ export function UseCasesSection() {
                     </h3>
                   </div>
 
-                  <p className="mb-4 text-sm leading-[1.72] text-t2">
+                  <p className="text-sm leading-[1.72] text-t2">
                     {uc.summary}
                   </p>
 
                   {uc.href ? (
-                    <span className="inline-block text-[13px] font-medium text-t3 transition-colors group-hover:text-t1">
-                      Explore this workflow &rarr;
+                    <span className="mt-auto pt-4 inline-block text-[13px] font-medium text-t3 transition-colors group-hover:text-t1">
+                      Explore the opportunity in {uc.industry} &rarr;
                     </span>
                   ) : null}
                 </div>
