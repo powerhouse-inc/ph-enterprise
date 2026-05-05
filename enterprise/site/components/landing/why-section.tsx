@@ -53,17 +53,10 @@ export function WhySection() {
               </p>
               <p>
                 Since 2021, we&apos;ve developed open-source infrastructure for
-                AI-native workflows, with enterprise support
-                through <strong className="text-t1">BAI</strong>: direct access
-                to the team, hands-on implementation, and contractual SLAs.
+                AI-native workflows, with enterprise support through direct access
+                to the product team, hands-on implementation, and contractual SLAs.
               </p>
             </div>
-            <a
-              href="https://bai.powerhouse.io"
-              className="inline-block mt-6 text-[13px] font-medium text-brand hover:text-brand/80 transition-colors"
-            >
-              Start the conversation &rarr;
-            </a>
           </div>
 
           {/* Right — proof cards */}

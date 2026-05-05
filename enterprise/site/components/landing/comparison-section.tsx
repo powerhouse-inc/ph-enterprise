@@ -90,16 +90,6 @@ export function ComparisonSection() {
               </div>
             ))}
           </div>
-
-          {/* Closing CTA */}
-          <div className="mt-8 fade-up">
-            <a
-              href="https://bai.powerhouse.io"
-              className="text-[13px] font-medium text-brand hover:text-brand/80 transition-colors"
-            >
-              See where your data can safely support AI &rarr;
-            </a>
-          </div>
         </div>
       </SectionContainer>
     </section>

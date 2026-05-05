@@ -109,15 +109,15 @@ export function ContactCta() {
             </div>
 
             <div className="rounded-xl bg-surface border border-border p-6 transition-all hover:border-border-md flex flex-col">
-              <h3 className="text-base font-semibold text-t1 mb-2 font-heading">Assess your readiness</h3>
+              <h3 className="text-base font-semibold text-t1 mb-2 font-heading">Map your rollout</h3>
               <p className="text-[13px] leading-[1.68] text-t2 mb-5">
-                A 2&ndash;3 week data flow audit that maps your systems, classifies data
-                sensitivity, and produces a prioritized implementation roadmap.
+                Map your systems, data sensitivity, deployment boundaries, and first
+                Powerhouse workflow with the product team.
               </p>
               <Button variant="outline" className="mt-auto h-9 px-5 rounded-md text-[13px]" asChild>
-                <a href="https://bai.powerhouse.io">
-                  Start with BAI
-                </a>
+                <Link href="mailto:hello@powerhouse.inc?subject=Enterprise%20Rollout%20Planning" prefetch={false}>
+                  Start planning
+                </Link>
               </Button>
             </div>
 

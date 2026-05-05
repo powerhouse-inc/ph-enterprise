@@ -59,12 +59,6 @@ export function IntegrationSection() {
                 </p>
               </div>
             ))}
-            <a
-              href="https://bai.powerhouse.io"
-              className="inline-block mt-3 text-[13px] font-medium text-brand hover:text-brand/80 transition-colors"
-            >
-              Need help mapping your privacy tiers? Start with a BAI assessment &rarr;
-            </a>
           </div>
         </div>
       </SectionContainer>

@@ -39,15 +39,6 @@ export function PrivacySection() {
             </div>
           ))}
         </div>
-
-        <div className="mt-8 fade-up">
-          <a
-            href="https://bai.powerhouse.io"
-            className="text-[13px] font-medium text-brand hover:text-brand/80 transition-colors"
-          >
-            Get a privacy impact analysis for your AI initiative &rarr;
-          </a>
-        </div>
       </SectionContainer>
     </section>
   );

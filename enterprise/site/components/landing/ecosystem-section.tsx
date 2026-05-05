@@ -30,7 +30,7 @@ const VETRA_CAPABILITIES: CapabilityRow[] = [
 
 const ACHRA_CAPABILITIES: CapabilityRow[] = [
   {
-    title: "AI readiness assessments",
+    title: "Deployment planning",
     description: "Map your systems, data sensitivity, privacy tiers, and deployment path.",
   },
   {
@@ -43,7 +43,7 @@ const ACHRA_CAPABILITIES: CapabilityRow[] = [
   },
   {
     title: "Contractual support",
-    description: "Engage providers, including BAI, with defined scopes and SLAs.",
+    description: "Engage providers with defined scopes, operating responsibilities, and SLAs.",
   },
 ];
 

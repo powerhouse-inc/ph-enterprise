@@ -75,12 +75,6 @@ export function ProblemSection() {
               Add a structured layer over your existing systems so AI can access data
               securely &mdash; on your infrastructure, under your control.
             </p>
-            <a
-              href="https://bai.powerhouse.io"
-              className="inline-block text-[13px] font-medium text-brand hover:text-brand/80 transition-colors"
-            >
-              Find out where you stand &mdash; get an AI readiness assessment &rarr;
-            </a>
           </div>
         </div>
       </SectionContainer>

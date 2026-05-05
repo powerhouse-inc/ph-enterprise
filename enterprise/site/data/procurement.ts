@@ -74,9 +74,9 @@ export const PROCUREMENT_HERO = {
   subhead:
     "79% of supplier teams use AI to draft RFPs. Only 4% of procurement teams have meaningful AI on the evaluation side. The volume is up. The quality is harder to read. Your negotiation positions are too sensitive to send to ChatGPT. Powerhouse is the workflow layer that closes the asymmetry — locally, defensibly, on your data.",
   primaryCta: {
-    label: "Assess your procurement AI readiness",
-    href: "https://bai.powerhouse.io",
-    external: true,
+    label: "Request a procurement demo",
+    href: "mailto:hello@powerhouse.inc?subject=Procurement%20Workflow%20Demo",
+    external: false,
   },
   secondaryCta: {
     label: "See the platform",
@@ -307,12 +307,11 @@ export const PROCUREMENT_COMPETITORS: readonly ProcurementCompetitor[] = [
 
 export const PROCUREMENT_CTAS: readonly ProcurementCta[] = [
   {
-    title: "Assess your procurement AI readiness",
+    title: "Map your procurement rollout",
     body:
-      "The BAI team runs a structured assessment of your current procurement workflows, evaluates deployment readiness, and maps the gap to a Powerhouse implementation plan.",
-    href: "https://bai.powerhouse.io",
-    label: "Open the assessment",
-    external: true,
+      "Map your current procurement workflows, evaluate deployment boundaries, and identify the first buyer-side AI workflow to run on Powerhouse.",
+    href: "mailto:hello@powerhouse.inc?subject=Procurement%20Workflow%20Planning",
+    label: "Start planning",
   },
   {
     title: "Explore the platform",

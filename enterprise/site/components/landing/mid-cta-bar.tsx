@@ -23,12 +23,6 @@ export function MidCtaBar() {
                 Request a Demo
               </Link>
             </Button>
-            <a
-              href="https://bai.powerhouse.io"
-              className="text-[13px] font-medium text-t3 hover:text-t2 transition-colors"
-            >
-              or get an AI readiness assessment &rarr;
-            </a>
           </div>
         </div>
       </SectionContainer>

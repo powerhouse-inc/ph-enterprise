@@ -118,13 +118,6 @@ export function LandingHero() {
               </Link>
             </Button>
           </div>
-
-          <a
-            href="https://bai.powerhouse.io"
-            className="inline-block mt-5 text-[13px] text-t3 hover:text-t2 transition-colors"
-          >
-            Or start with an AI readiness assessment &rarr;
-          </a>
         </div>
 
         <div
