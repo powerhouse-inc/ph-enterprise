@@ -92,7 +92,8 @@ export function LandingHero() {
           >
             Adopt AI without exposing what makes your business yours. Powerhouse
             gives you AI-native infrastructure that keeps confidential data under
-            your control &mdash; your models, your servers, your rules.
+            your control &mdash; with local model deployment options, your
+            servers, and your governance rules.
           </p>
 
           <div

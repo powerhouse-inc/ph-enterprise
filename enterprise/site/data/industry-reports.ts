@@ -53,12 +53,12 @@ export const INDUSTRY_REPORTS = {
     ],
     drivers: [
       {
-        title: "Agentic ERP leaves pilot mode",
+        title: "Agentic ERP",
         body:
           "Cloud ERP finance is shifting from GenAI query interfaces to agents for reconciliation, collections, controls monitoring, forecasting, and autonomous transaction processing.",
       },
       {
-        title: "Tokenized money pressures deposits",
+        title: "Tokenized money",
         body:
           "Stablecoins and tokenized deposits are becoming a board-level infrastructure question as banks decide whether to issue, custody, process, or partner.",
       },
@@ -86,9 +86,9 @@ export const INDUSTRY_REPORTS = {
           "https://www.moodys.com/web/en/us/insights/credit-risk/outlooks/private-credit-2026.html",
       },
       {
-        value: "$250B -> $3.7T",
+        value: "$250B–$3.7T",
         label:
-          "forecast range for payment stablecoins by 2030, creating new treasury, liquidity, fraud, and settlement workflows that need agentic monitoring without leaking financial data",
+          "forecast range for payment stablecoins by 2030 (Deloitte 2026 Banking Outlook), creating new treasury, liquidity, fraud, and settlement workflows that need agentic monitoring without leaking financial data",
         source: "Deloitte, 2026",
         sourceHref:
           "https://www.deloitte.com/us/en/insights/industry/financial-services/financial-services-industry-outlooks/banking-industry-outlook.html",
@@ -132,7 +132,7 @@ export const INDUSTRY_REPORTS = {
     secondaryAccent: "#F2CB29",
     headline: "Legal AI is moving from draft assist to governed execution.",
     subhead:
-      "Law firms and legal departments are at an economic peak, but the operating model is being pulled apart by client pressure, agentic workflows, and high-risk AI rules for justice systems.",
+      "Law firms and legal departments are at an economic peak, but the operating model is being pulled apart by client pressure, agentic workflows, and AI governance rules for justice systems.",
     snapshot: [
       "Legal in 2026 is at an economic peak and an operating-model breakpoint: demand, rates, and profits are up while AI compresses junior work and reshapes client expectations.",
       "The shift is from GenAI assistants to agentic legal workflows that draft, compare, research, and route decisions under professional-responsibility controls.",
@@ -149,9 +149,9 @@ export const INDUSTRY_REPORTS = {
           "Agentic AI adoption is still early, but planning is broad; the next risk is not use, it is unsupervised autonomy inside privileged work.",
       },
       {
-        title: "Justice AI becomes high-risk",
+        title: "AI governance in legal work matures",
         body:
-          "EU AI Act Annex III treats judicial AI used to research and interpret facts and law as high-risk, pushing documentation, oversight, and logging into the core workflow.",
+          "Emerging AI governance expectations are pushing documentation, oversight, and logging into the core legal workflow — particularly where AI assists research, fact analysis, or client-facing decisions.",
       },
     ],
     metrics: [
@@ -203,8 +203,8 @@ export const INDUSTRY_REPORTS = {
           "https://ai-act-service-desk.ec.europa.eu/en/ai-act/timeline/timeline-implementation-eu-ai-act",
       },
       {
-        label: "EU AI Act Annex III",
-        href: "https://ai-act-service-desk.ec.europa.eu/en/ai-act/annex-3",
+        label: "EU AI Act Implementation Resources",
+        href: "https://ai-act-service-desk.ec.europa.eu/en/ai-act",
       },
     ],
   },
@@ -220,7 +220,7 @@ export const INDUSTRY_REPORTS = {
       "HR is moving from process automation to workforce architecture: skills intelligence, redeployment, culture, and AI governance are now the same leadership problem.",
     snapshot: [
       "HR in 2026 is moving from process automation to workforce architecture: skills, redeployment, culture, and AI governance have become the operating system for people decisions.",
-      "Because employment AI is regulated as high risk, the CHRO's mandate is to turn HRIS data, skills intelligence, and AI agents into auditable human decisions.",
+      "With AI governance moving up the C-suite agenda, the CHRO's mandate is to turn HRIS data, skills intelligence, and AI agents into auditable human decisions.",
     ],
     drivers: [
       {
@@ -234,9 +234,9 @@ export const INDUSTRY_REPORTS = {
           "Leaders see adaptability as critical, but few have redesigned human-AI interactions; unmanaged AI creates culture debt as quickly as it creates productivity claims.",
       },
       {
-        title: "Employment AI enters high-risk governance",
+        title: "Workforce AI governance matures",
         body:
-          "Recruiting, candidate filtering, task allocation, promotion, termination, and performance evaluation are high-risk AI categories under EU AI Act Annex III.",
+          "AI assisting decisions across hiring, talent allocation, and performance management raises new requirements for documentation, oversight, and transparency — from employees, leadership, and emerging regulation alike.",
       },
     ],
     metrics: [
@@ -293,8 +293,8 @@ export const INDUSTRY_REPORTS = {
           "https://www.shrm.org/topics-tools/research/state-of-ai-hr-2026/full-report",
       },
       {
-        label: "EU AI Act Annex III",
-        href: "https://ai-act-service-desk.ec.europa.eu/en/ai-act/annex-3",
+        label: "EU AI Act Implementation Resources",
+        href: "https://ai-act-service-desk.ec.europa.eu/en/ai-act",
       },
     ],
   },

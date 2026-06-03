@@ -7,11 +7,11 @@ export const PRIVACY_FEATURES: PrivacyFeature[] = [
   },
   {
     title: "Immutable audit trail",
-    body: "Every operation — human or AI — is cryptographically signed, timestamped, and appended to an immutable history. The audit trail is not a log; it is the data structure. SOX, GDPR, HIPAA: compliance is structural, not retrofitted.",
+    body: "Every operation — human or AI — is cryptographically signed, timestamped, and appended to an immutable history. The audit trail is not a log; it is the data structure. Supports SOX, GDPR, and HIPAA compliance workflows when paired with your policies and third-party audit.",
   },
   {
     title: "Ready for what's coming",
-    body: "The EU AI Act and emerging AI regulations will require transparency into AI decision-making, data provenance tracking, and algorithmic accountability. Powerhouse's architecture is structurally ready. Organizations adopting now won't need to retrofit when regulation arrives.",
+    body: "The EU AI Act enters full enforcement on 2 August 2026 and requires transparency in AI-user interactions (Article 50), human oversight of consequential AI decisions (Article 14), data provenance tracking, and algorithmic accountability. Powerhouse's architecture supports these requirements: built-in transparency UI, immutable audit trails, scoped agent permissions, and human-in-the-loop by default.",
   },
   {
     title: "Data portability",

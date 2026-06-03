@@ -72,7 +72,7 @@ export const PROCUREMENT_HERO = {
     "You evaluate them by hand.",
   ] as const,
   subhead:
-    "79% of supplier teams use AI to draft RFPs. Only 4% of procurement teams have meaningful AI on the evaluation side. The volume is up. The quality is harder to read. Your negotiation positions are too sensitive to send to ChatGPT. Powerhouse is the workflow layer that closes the asymmetry — locally, defensibly, on your data.",
+    "79% of supplier teams use AI to draft RFPs. Only 4% of procurement teams have meaningful AI on the evaluation side. The volume is up. The quality is harder to read. Your negotiation positions are too sensitive to send to commercial AI services. Powerhouse is the workflow layer that closes the asymmetry — locally, defensibly, on your data.",
   primaryCta: {
     label: "Request a procurement demo",
     href: "mailto:hello@powerhouse.inc?subject=Procurement%20Workflow%20Demo",
@@ -119,17 +119,17 @@ export const PROCUREMENT_PROBLEMS: readonly ProcurementProblem[] = [
   {
     title: "Pricing leaks become competitor signal",
     body:
-      "Your floor price, your walk-away point, your concessions across vendors — paste any of it into a commercial AI service and it becomes training data for someone else's model, indexed by someone else's prompt.",
+      "Your floor price, your walk-away point, your concessions across vendors — pasted into a commercial AI service, this data may be retained, used for training, or exposed depending on the vendor's terms of service. Some commercial AI providers do not train on customer data by default; others do. The risk depends on the specific terms of the AI service you use.",
   },
   {
     title: "Supplier data is privileged",
     body:
-      "Vendor pricing terms, capacity disclosures, and financial performance are often contractually confidential. Sending that material to an external API is a contract breach by architecture, not by accident.",
+      "Vendor pricing terms, capacity disclosures, and financial performance are often contractually confidential. Sending that material to a third-party API may breach confidentiality obligations depending on the specific contract and the AI service's data handling terms.",
   },
   {
     title: "Generic AI evaluations do not survive audit",
     body:
-      "\"ChatGPT scored these vendors 3, 4, and 7\" is not a defensible procurement decision. Regulators increasingly require human oversight, audit trails, and decision traceability for AI-assisted evaluations.",
+      "\"Commercial AI scored these vendors 3, 4, and 7\" is not a defensible procurement decision. Regulators increasingly require human oversight, audit trails, and decision traceability for AI-assisted evaluations.",
   },
 ] as const;
 
@@ -137,7 +137,7 @@ export const PROCUREMENT_CAPABILITIES: readonly ProcurementCapability[] = [
   {
     title: "Local triage of inbound proposals",
     body:
-      "AI agents run on your hardware or your private cloud to triage incoming RFP responses against your evaluation criteria. Compliance checks, completeness scoring, and anomaly flagging happen before a human reviewer touches the proposal. Your scoring rubrics, your weights, your model choice. Suppliers never see the agent, and your data never leaves the building.",
+      "AI agents run on your hardware or your private cloud to triage incoming RFP responses against your evaluation criteria. Compliance checks, completeness scoring, and anomaly flagging happen before a human reviewer touches the proposal. Your scoring rubrics, your weights, your model choice. Suppliers do not see the agent, and your data stays on your infrastructure when configured for local deployment.",
     icon: "bot",
   },
   {
@@ -263,9 +263,9 @@ export const PROCUREMENT_COMPARISON_ROWS: readonly ProcurementComparisonRow[] = 
   {
     dimension: "Regulatory readiness",
     currentState:
-      "EU AI Act and UK PPN 017 compliance gets retrofitted after the workflow ships.",
+      "EU AI Act and UK PPN 017 compliance work is added after the workflow ships.",
     powerhouseState:
-      "The architecture already bakes in transparency, traceability, and human oversight.",
+      "The architecture supports EU AI Act and UK PPN 017 transparency, traceability, and human oversight requirements; engagement-specific compliance assessment still required.",
   },
 ] as const;
 
@@ -273,7 +273,7 @@ export const PROCUREMENT_REGULATIONS: readonly ProcurementRegulation[] = [
   {
     title: "EU AI Act — Art. 14 Human Oversight",
     body:
-      "AI-assisted vendor evaluation in many sectors is high-risk by classification. Powerhouse approval gates enforce human-in-the-loop checkpoints by design — the agent proposes, the human approves, and both are recorded in operation history.",
+      "Powerhouse approval gates enforce human-in-the-loop checkpoints by design — the agent proposes, the human approves, and both are recorded in operation history.",
   },
   {
     title: "UK PPN 017 — AI Disclosure in Government Tenders",
@@ -301,7 +301,7 @@ export const PROCUREMENT_COMPETITORS: readonly ProcurementCompetitor[] = [
   {
     title: "Generic GenAI assistants",
     body:
-      "Copilot and ChatGPT Enterprise are convenient for one-off tasks, but they are not designed for confidential pricing data, auditable evaluation flows, or specification-driven scoring.",
+      "Copilot and ChatGPT Enterprise are designed primarily for general-purpose productivity work rather than specialized procurement workflows. For confidential pricing data, auditable evaluation flows, or specification-driven scoring, dedicated procurement infrastructure is typically needed.",
   },
 ] as const;
 

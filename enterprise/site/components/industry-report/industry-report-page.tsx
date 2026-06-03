@@ -74,6 +74,65 @@ function SourceLink({ href, children }: { href: string; children: string }) {
   );
 }
 
+const PLATFORM_LINKS = [
+  {
+    name: "Clint",
+    tagline: "AI Agent Infrastructure",
+    href: "/#platform",
+  },
+  {
+    name: "Connect",
+    tagline: "Operator Workspace",
+    href: "/#platform",
+  },
+  {
+    name: "Renown",
+    tagline: "Identity for agents & users",
+    href: "/#platform",
+  },
+] as const;
+
+function PlatformCrossLinks({ report }: { report: IndustryReport }) {
+  return (
+    <aside className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-7">
+      <div className="mb-5 flex items-center gap-3">
+        <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-t1">
+          <PowerhouseMark className="h-4 w-4" aria-hidden="true" />
+        </span>
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-t3">
+            How Powerhouse supports this
+          </p>
+          <p className="mt-1 text-[14px] text-t2">
+            Platform components used in {report.sector} engagements
+          </p>
+        </div>
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-3">
+        {PLATFORM_LINKS.map((component) => (
+          <Link
+            key={component.name}
+            href={component.href}
+            className="group flex flex-col rounded-2xl border border-white/8 bg-black/15 px-4 py-4 transition-colors hover:border-white/20 hover:bg-black/25"
+          >
+            <span className="text-[15px] font-semibold tracking-tight text-t1 font-heading">
+              {component.name}
+            </span>
+            <span className="mt-1 text-[12px] leading-[1.55] text-t3">
+              {component.tagline}
+            </span>
+            <span className="mt-3 inline-flex items-center gap-1 text-[12px] font-medium text-t2 transition-colors group-hover:text-t1">
+              See platform <ArrowRight className="h-3 w-3" aria-hidden="true" />
+            </span>
+          </Link>
+        ))}
+      </div>
+
+    </aside>
+  );
+}
+
 export function IndustryReportPage({ report }: { report: IndustryReport }) {
   const ReportIcon = reportIcons[report.slug];
 
@@ -106,7 +165,9 @@ export function IndustryReportPage({ report }: { report: IndustryReport }) {
                 <span className="font-semibold uppercase tracking-[0.12em] text-[var(--report-accent)]">
                   {report.sector}
                 </span>
-                <span className="h-3.5 w-px bg-white/10" aria-hidden="true" />
+                <span className="text-t3" aria-hidden="true">
+                  —
+                </span>
                 <span>{report.eyebrow}</span>
               </div>
 
@@ -248,6 +309,10 @@ export function IndustryReportPage({ report }: { report: IndustryReport }) {
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
               </aside>
+            </div>
+
+            <div className="relative z-10 xl:col-span-2">
+              <PlatformCrossLinks report={report} />
             </div>
 
             <div className="relative z-10 xl:col-span-2">

@@ -34,7 +34,7 @@ Legal in 2026 is at an economic peak and an operating-model breakpoint: demand, 
 
 - **The firm model splits:** The market is moving toward tech-centric firms with AI-enabled pricing on one side and elite, partner-heavy advisory boutiques on the other.
 - **Agentic legal workflows emerge:** Agentic AI adoption is still early, but planning is broad; the next risk is not use, it is unsupervised autonomy inside privileged work.
-- **Justice AI becomes high-risk:** EU AI Act Annex III treats judicial AI used to research and interpret facts and law as high-risk, pushing documentation, oversight, and logging into the core workflow.
+- **AI governance in legal work matures:** Emerging AI governance expectations are pushing documentation, oversight, and logging into the core legal workflow — particularly where AI assists research, fact analysis, or client-facing decisions.
 
 ## Critical Metrics
 
@@ -54,13 +54,13 @@ Legal in 2026 is at an economic peak and an operating-model breakpoint: demand, 
 
 ## Sector Snapshot
 
-HR in 2026 is moving from process automation to workforce architecture: skills, redeployment, culture, and AI governance have become the operating system for people decisions. Because employment AI is regulated as high risk, the CHRO's mandate is to turn HRIS data, skills intelligence, and AI agents into auditable human decisions.
+HR in 2026 is moving from process automation to workforce architecture: skills, redeployment, culture, and AI governance have become the operating system for people decisions. With AI governance moving up the C-suite agenda, the CHRO's mandate is to turn HRIS data, skills intelligence, and AI agents into auditable human decisions.
 
 ## Key 2026 Drivers
 
 - **Skills-based architecture becomes mandatory:** AI is changing role boundaries faster than job architectures can absorb, forcing HR to manage skills, projects, redeployment, and learning as live operational data.
 - **Work design determines AI ROI:** Leaders see adaptability as critical, but few have redesigned human-AI interactions; unmanaged AI creates culture debt as quickly as it creates productivity claims.
-- **Employment AI enters high-risk governance:** Recruiting, candidate filtering, task allocation, promotion, termination, and performance evaluation are high-risk AI categories under EU AI Act Annex III.
+- **Workforce AI governance matures:** AI assisting decisions across hiring, talent allocation, and performance management raises new requirements for documentation, oversight, and transparency — from employees, leadership, and emerging regulation alike.
 
 ## Critical Metrics
 

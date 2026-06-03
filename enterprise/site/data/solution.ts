@@ -4,12 +4,12 @@ export const SOLUTION_PILLARS: SolutionPillar[] = [
   {
     title: "Private by default",
     accent: "cyan",
-    body: "Your business data stays on your infrastructure. Local AI handles sensitive workflows, while external APIs are used only where appropriate. Confidential data never leaves your environment, is never used for training, and is never exposed to vendors.",
+    body: "Business data stays on infrastructure you control. Local AI handles sensitive workflows; external APIs are used only where you authorize them. Confidential data processed locally is not transmitted to external systems and is not used for vendor training.",
   },
   {
     title: "AI-native from the data layer up",
     accent: "purple",
-    body: "Your systems connect through a structured data layer with typed interfaces. AI agents operate within defined scopes, permissions, and workflows — coordinating across business functions without relying on open-ended prompts. Human approval can be required for every autonomous action.",
+    body: "Your systems connect through a structured data layer with typed interfaces. AI agents operate within defined scopes, permissions, and workflows — coordinating across business functions without relying on open-ended prompts. Human approval is required for any consequential action by default, with configurable thresholds per workflow.",
   },
   {
     title: "Real-time and scalable",

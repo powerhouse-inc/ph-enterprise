@@ -3,8 +3,8 @@ import type { ComparisonRow } from "./types";
 export const COMPARISON_ROWS: ComparisonRow[] = [
   {
     dimension: "Data privacy",
-    legacy: "Your data leaves your network for processing",
-    powerhouse: "Data stays on your infrastructure — always",
+    legacy: "Default deployment processes customer data on vendor infrastructure",
+    powerhouse: "Local deployment options keep data on customer infrastructure",
   },
   {
     dimension: "AI architecture",
@@ -18,13 +18,13 @@ export const COMPARISON_ROWS: ComparisonRow[] = [
   },
   {
     dimension: "Integration",
-    legacy: "Point-to-point adapters, no data scoping",
+    legacy: "Point-to-point adapters with limited data scoping",
     powerhouse: "Standards-based with per-agent data isolation",
   },
   {
     dimension: "Time to value",
-    legacy: "6–18 month integration projects",
-    powerhouse: "Connect existing systems — agents work immediately",
+    legacy: "Typical 6–18 month integration projects",
+    powerhouse: "Standards-based integration with rapid agent deployment",
   },
   {
     dimension: "Compliance",
@@ -33,8 +33,9 @@ export const COMPARISON_ROWS: ComparisonRow[] = [
   },
   {
     dimension: "Regulatory readiness",
-    legacy: "Retrofit required when AI regulations arrive",
-    powerhouse: "Built for EU AI Act transparency requirements",
+    legacy: "Compliance work needed when AI regulations arrive",
+    powerhouse:
+      "Architecture supports EU AI Act transparency requirements (Article 50).",
   },
   {
     dimension: "Vendor lock-in",

@@ -34,7 +34,7 @@ export function PlatformSection() {
             <Link
               key={comp.name}
               href={comp.href}
-              className="fade-up platform-card relative rounded-2xl bg-surface border border-border p-7 transition-all hover:border-border-md hover:-translate-y-px group text-center overflow-hidden"
+              className="fade-up platform-card relative flex flex-col items-center justify-center text-center rounded-2xl bg-surface border border-border px-7 py-12 min-h-[200px] transition-all hover:border-border-md hover:-translate-y-px group overflow-hidden"
               style={{ "--card-accent": comp.accent } as CSSWithVars}
             >
               <div className="flex items-center justify-center gap-3 mb-3">
@@ -43,17 +43,14 @@ export function PlatformSection() {
                   style={{ background: comp.accent }}
                   aria-hidden="true"
                 />
-                <h3 className="text-base font-semibold tracking-tight text-t1 font-heading">
+                <h3 className="text-xl font-semibold tracking-tight text-t1 font-heading">
                   {comp.name}
                 </h3>
               </div>
-              <p className="text-[11px] font-semibold tracking-[0.06em] uppercase text-t3 mb-3">
+              <p className="text-[11px] font-semibold tracking-[0.08em] uppercase text-t3">
                 {comp.tagline}
               </p>
-              <p className="text-sm leading-[1.72] text-t2">
-                {comp.description}
-              </p>
-              <span className="inline-block mt-4 text-[13px] font-medium text-t3 group-hover:text-t1 transition-colors">
+              <span className="inline-block mt-8 text-[13px] font-medium text-t3 group-hover:text-t1 transition-colors">
                 Learn more &rarr;
               </span>
             </Link>
@@ -65,7 +62,7 @@ export function PlatformSection() {
             <Link
               key={comp.name}
               href={comp.href}
-              className="fade-up platform-card relative rounded-2xl bg-surface border border-border p-7 transition-all hover:border-border-md hover:-translate-y-px group text-center overflow-hidden"
+              className="fade-up platform-card relative flex flex-col items-center justify-center text-center rounded-2xl bg-surface border border-border px-7 py-12 min-h-[200px] transition-all hover:border-border-md hover:-translate-y-px group overflow-hidden"
               style={{ "--card-accent": comp.accent } as CSSWithVars}
             >
               <div className="flex items-center justify-center gap-3 mb-3">
@@ -74,17 +71,14 @@ export function PlatformSection() {
                   style={{ background: comp.accent }}
                   aria-hidden="true"
                 />
-                <h3 className="text-base font-semibold tracking-tight text-t1 font-heading">
+                <h3 className="text-xl font-semibold tracking-tight text-t1 font-heading">
                   {comp.name}
                 </h3>
               </div>
-              <p className="text-[11px] font-semibold tracking-[0.06em] uppercase text-t3 mb-3">
+              <p className="text-[11px] font-semibold tracking-[0.08em] uppercase text-t3">
                 {comp.tagline}
               </p>
-              <p className="text-sm leading-[1.72] text-t2">
-                {comp.description}
-              </p>
-              <span className="inline-block mt-4 text-[13px] font-medium text-t3 group-hover:text-t1 transition-colors">
+              <span className="inline-block mt-8 text-[13px] font-medium text-t3 group-hover:text-t1 transition-colors">
                 Learn more &rarr;
               </span>
             </Link>

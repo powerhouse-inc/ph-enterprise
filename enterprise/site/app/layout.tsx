@@ -18,7 +18,7 @@ const poppins = Poppins({
 });
 
 const siteDescription =
-  "Powerhouse Enterprise: AI-native operations infrastructure for industries where data confidentiality is non-negotiable. Private by architecture — your models, your servers, never exposed.";
+  "Powerhouse Enterprise: AI-native operations infrastructure designed for organizations where data confidentiality is a core requirement. Private by architecture — local deployment options, AI Act-aware governance, human oversight by design.";
 
 function siteUrl() {
   const explicit = process.env.NEXT_PUBLIC_SITE_URL;

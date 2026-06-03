@@ -28,9 +28,10 @@ export function ComparisonSection() {
             <span className="text-t2">But on whose terms?</span>
           </h2>
           <p className="text-[15px] leading-[1.72] text-t2">
-            Microsoft, Salesforce, and SAP are adding AI to systems never designed
-            for autonomous work &mdash; and processing your data on their
-            infrastructure. Powerhouse takes a different approach.
+            Many incumbent vendors (e.g., Microsoft, Salesforce, SAP) are adding
+            AI to systems originally designed for non-autonomous workflows &mdash;
+            and process customer data on their own infrastructure. Powerhouse
+            takes a different approach.
           </p>
         </div>
 
