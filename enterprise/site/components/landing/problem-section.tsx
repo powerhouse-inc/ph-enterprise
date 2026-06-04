@@ -56,8 +56,6 @@ export function ProblemSection() {
               Every AI vendor
               <br />
               wants your data.
-              <br />
-              <span className="text-t2">Your regulators say no.</span>
             </h2>
           </div>
 
@@ -69,11 +67,6 @@ export function ProblemSection() {
               Enterprise AI adoption is stalling because the deployment model is wrong.
               Commercial AI often requires sending sensitive data to external
               infrastructure, creating legal and operational risk.
-            </p>
-            <p className="text-[15px] leading-[1.72] text-t2">
-              There is another way: make your business data AI-native without moving it.
-              Add a structured layer over your existing systems so AI can access data
-              securely &mdash; on your infrastructure, under your control.
             </p>
           </div>
         </div>

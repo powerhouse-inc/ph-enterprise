@@ -34,7 +34,7 @@ Legal in 2026 is at an economic peak and an operating-model breakpoint: demand, 
 
 - **The firm model splits:** The market is moving toward tech-centric firms with AI-enabled pricing on one side and elite, partner-heavy advisory boutiques on the other.
 - **Agentic legal workflows emerge:** Agentic AI adoption is still early, but planning is broad; the next risk is not use, it is unsupervised autonomy inside privileged work.
-- **AI governance in legal work matures:** Emerging AI governance expectations are pushing documentation, oversight, and logging into the core legal workflow — particularly where AI assists research, fact analysis, or client-facing decisions.
+R- **AI governance in legal work matures:** Emerging AI governance expectations are pushing documentation, oversight, and logging into the core legal workflow — particularly where AI assists research, fact analysis, or client-facing decisions.
 
 ## Critical Metrics
 

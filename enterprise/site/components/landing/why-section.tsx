@@ -49,7 +49,7 @@ export function WhySection() {
             <div className="space-y-4 text-[15px] leading-[1.72] text-t2">
               <p>
                 Powerhouse was built in production for multi-stakeholder
-                operations &mdash; not in a lab.
+                operations.
               </p>
               <p>
                 Since 2021, we&apos;ve developed open-source infrastructure for

@@ -15,8 +15,8 @@ const VETRA_CAPABILITIES: CapabilityRow[] = [
     description: "Run in Vetra Cloud or self-host with data sovereignty controls.",
   },
   {
-    title: "Reusable packages",
-    description: "Install business modules, workflows, data processors, and agent configurations.",
+    title: "Reusable Modules",
+    description: "Install workflows, data processors, and agent configurations.",
   },
   {
     title: "AI agents",
@@ -99,7 +99,7 @@ export function EcosystemSection() {
               <h3 className="text-lg font-semibold text-t1 font-heading">Vetra</h3>
             </div>
             <p className="text-[11px] font-semibold tracking-[0.06em] uppercase text-t3 mb-4">
-              Platform infrastructure
+              Infrastructure Platform
             </p>
             <p className="text-sm leading-[1.72] text-t2 mb-6">
               Deploy, host, and extend Powerhouse across cloud or self-hosted

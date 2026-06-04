@@ -19,8 +19,8 @@ export function SolutionSection() {
     <section ref={rootRef} id="solution" className="py-24 border-t border-border">
       <SectionContainer>
         <div className="mb-14 fade-up">
-          <div className="flex items-center gap-2 mb-5 text-[11px] font-semibold tracking-[0.1em] uppercase text-t3">
-            <span className="w-[5px] h-[5px] rounded-full bg-brand shadow-[0_0_6px_var(--color-brand-glow)]" aria-hidden="true" />
+          <div className="flex items-center gap-2.5 mb-5 text-[12px] font-semibold tracking-[0.14em] uppercase text-brand">
+            <span className="w-[6px] h-[6px] rounded-full bg-brand shadow-[0_0_10px_var(--color-brand-glow)]" aria-hidden="true" />
             The Solution
           </div>
           <h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading">

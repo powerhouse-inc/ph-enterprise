@@ -106,7 +106,7 @@ Reference the positioning brief (`../brief/`) for audience, emotional drivers, a
 |---|---------|----------|---------------|-------|
 | 8.1 | **Section headline** | `h2.section-title` (line 1483) | "The infrastructure and community behind the platform." | |
 | 8.2 | **Section subtitle** | `p.section-subtitle` (line 1484) | Clarifies: above = what you own locally; this = cloud services + ecosystem | |
-| 8.3 | **Vetra — description** | `p.eco-desc` (line 1492) | Platform infrastructure for dev, hosting, packages | |
+| 8.3 | **Vetra — description** | `p.eco-desc` (line 1492) | Infrastructure Platform for dev, hosting, packages | |
 | 8.4 | **Vetra — feature list** (4 items) | `ul.eco-features` (lines 1494–1497) | Managed cloud, registry, pre-configured agents, dev tooling | Each bullet is a separate copy item. |
 | 8.5 | **Achra — description** | `p.eco-desc` (line 1507) | Builder and operator marketplace | |
 | 8.6 | **Achra — feature list** (3 items) | `ul.eco-features` (lines 1509–1511) | Implementation partners, pre-built solutions, BAI team | Each bullet is a separate copy item. |

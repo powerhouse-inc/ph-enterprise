@@ -28,7 +28,7 @@ export function ComparisonSection() {
             <span className="text-t2">But on whose terms?</span>
           </h2>
           <p className="text-[15px] leading-[1.72] text-t2">
-            Many incumbent vendors (e.g., Microsoft, Salesforce, SAP) are adding
+            Many incumbent vendors are adding
             AI to systems originally designed for non-autonomous workflows &mdash;
             and process customer data on their own infrastructure. Powerhouse
             takes a different approach.
