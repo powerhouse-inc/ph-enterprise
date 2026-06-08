@@ -23,11 +23,7 @@ export function UseCasesSection() {
     <section ref={rootRef} id="use-cases" className="py-24 border-t border-border">
       <SectionContainer>
         <div className="mb-14 fade-up">
-          <div className="flex items-center gap-2 mb-5 text-[11px] font-semibold tracking-[0.1em] uppercase text-t3">
-            <span className="w-[5px] h-[5px] rounded-full bg-brand shadow-[0_0_6px_var(--color-brand-glow)]" aria-hidden="true" />
-            Industries
-          </div>
-          <h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading">
+<h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading">
             Built for industries where
             <br />
             <span className="text-t2">confidentiality isn&apos;t optional.</span>

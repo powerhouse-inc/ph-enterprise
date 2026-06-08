@@ -31,7 +31,6 @@ export type IndustryReport = {
   metrics: readonly [IndustryMetric, IndustryMetric, IndustryMetric];
   mandate: string;
   mandateLabel: string;
-  primaryCtaLabel: string;
   metaDescription: string;
   sources: readonly IndustrySource[];
 };
@@ -97,7 +96,6 @@ export const INDUSTRY_REPORTS = {
     mandate:
       "Build a governed finance operating layer across ERP, treasury, risk, and reporting. Sensitive close, forecast, credit, and audit workflows should run through scoped agents with approval gates, immutable logs, and explicit data-boundary policies before tokenized settlement and AI-enabled fraud change the control environment around them.",
     mandateLabel: "Bottom line for CFOs",
-    primaryCtaLabel: "Assess finance AI readiness",
     metaDescription:
       "A concise 2026 finance operations report covering agentic ERP, stablecoins, private credit retailisation, and governed AI controls.",
     sources: [
@@ -183,7 +181,6 @@ export const INDUSTRY_REPORTS = {
     mandate:
       "Define matter-level AI boundaries before agents become default infrastructure. Privileged data should stay local, agents should operate from approved legal playbooks, and every AI-drafted clause, research path, risk flag, and review decision should be attributable, reviewable, and blocked from legal effect until a responsible lawyer approves it.",
     mandateLabel: "Bottom line for GCs and managing partners",
-    primaryCtaLabel: "Assess legal AI readiness",
     metaDescription:
       "A concise 2026 legal operations report covering agentic legal workflows, AI governance, legal market economics, and EU AI Act exposure.",
     sources: [
@@ -268,7 +265,6 @@ export const INDUSTRY_REPORTS = {
     mandate:
       "Own the skills graph as governed infrastructure. Use AI for workforce intelligence and orchestration, but keep hiring, performance, promotion, redeployment, and termination behind explainable criteria, employee transparency, human sign-off, and immutable logs tied back to the HRIS.",
     mandateLabel: "Bottom line for CHROs",
-    primaryCtaLabel: "Assess HR AI readiness",
     metaDescription:
       "A concise 2026 HR operations report covering skills-based architecture, AI in HR, workforce redesign, and EU AI Act employment compliance.",
     sources: [

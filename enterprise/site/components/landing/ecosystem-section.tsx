@@ -75,11 +75,7 @@ export function EcosystemSection() {
     <section ref={rootRef} className="py-24 border-t border-border">
       <SectionContainer>
         <div className="mb-14 fade-up">
-          <div className="flex items-center gap-2 mb-5 text-[11px] font-semibold tracking-[0.1em] uppercase text-t3">
-            <span className="w-[5px] h-[5px] rounded-full bg-brand-purple shadow-[0_0_6px_rgba(122,58,255,0.8)]" aria-hidden="true" />
-            Cloud &amp; Ecosystem
-          </div>
-          <h2 className="text-[clamp(32px,3.4vw,46px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading mb-3">
+<h2 className="text-[clamp(32px,3.4vw,46px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading mb-3">
             Infrastructure, agents, and experts.
             <br />
             <span className="text-t2">Ready to deploy.</span>
@@ -94,8 +90,9 @@ export function EcosystemSection() {
         <div className="grid grid-cols-2 gap-6 max-md:grid-cols-1 items-stretch">
           {/* Vetra */}
           <div className="fade-up rounded-2xl bg-surface border border-border p-8 transition-all hover:border-border-md flex flex-col">
-            <div className="flex items-center gap-3 mb-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#04C161]" aria-hidden="true" />
+            <div className="flex items-center gap-2.5 mb-1">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logos/vetra-icon.svg" alt="" aria-hidden="true" className="w-5 h-5" />
               <h3 className="text-lg font-semibold text-t1 font-heading">Vetra</h3>
             </div>
             <p className="text-[11px] font-semibold tracking-[0.06em] uppercase text-t3 mb-4">
@@ -116,8 +113,9 @@ export function EcosystemSection() {
 
           {/* Achra */}
           <div className="fade-up rounded-2xl bg-surface border border-border p-8 transition-all hover:border-border-md flex flex-col">
-            <div className="flex items-center gap-3 mb-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-brand" aria-hidden="true" />
+            <div className="flex items-center gap-2.5 mb-1">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logos/achra-icon.svg" alt="" aria-hidden="true" className="w-5 h-5" />
               <h3 className="text-lg font-semibold text-t1 font-heading">Achra</h3>
             </div>
             <p className="text-[11px] font-semibold tracking-[0.06em] uppercase text-t3 mb-4">

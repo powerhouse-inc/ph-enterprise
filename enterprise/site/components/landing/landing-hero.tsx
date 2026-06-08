@@ -11,13 +11,11 @@ import { SectionContainer } from "./section-container";
 
 export function LandingHero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const labelRef = useRef<HTMLDivElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const actionsRef = useRef<HTMLDivElement>(null);
   const markRef = useRef<HTMLDivElement>(null);
 
   useHeroAnimation(sectionRef, {
-    label: labelRef,
     sub: subRef,
     actions: actionsRef,
     mark: markRef,
@@ -56,44 +54,33 @@ export function LandingHero() {
         )}
       >
         <div>
-          <div
-            ref={labelRef}
-            className="flex items-center gap-2 mb-8 text-[11px] font-semibold tracking-[0.1em] uppercase text-t3 opacity-0 translate-y-3"
-          >
-            <span
-              className="w-[5px] h-[5px] rounded-full bg-brand shadow-[0_0_6px_var(--color-brand-glow)]"
-              aria-hidden="true"
-            />
-            Powerhouse Enterprise
-          </div>
-
-          <h1 className="hero-headline text-[clamp(48px,6.5vw,88px)] font-[680] leading-none tracking-[-0.04em] text-t1 mb-7 max-md:tracking-[-0.03em] font-heading">
-            <span className="word inline-block opacity-0 translate-y-[42px]">
-              AI-Native
+<h1 className="hero-headline text-[clamp(44px,6vw,80px)] font-[680] leading-[1.04] tracking-[-0.04em] text-t1 mb-7 max-md:tracking-[-0.03em] font-heading">
+            <span className="word inline-block opacity-0 translate-y-[42px] text-t2">
+              The
             </span>{" "}
             <span className="word inline-block opacity-0 translate-y-[42px]">
-              Operations.
+              open-source
+            </span>{" "}
+            <span className="word inline-block opacity-0 translate-y-[42px]">
+              backend
             </span>
             <br />
             <span className="word inline-block opacity-0 translate-y-[42px] text-t2">
-              Private
-            </span>{" "}
-            <span className="word inline-block opacity-0 translate-y-[42px] text-t2">
-              by
+              for
             </span>{" "}
             <span className="word inline-block opacity-0 translate-y-[42px] gradient-text">
-              Architecture.
+              AI-native
+            </span>{" "}
+            <span className="word inline-block opacity-0 translate-y-[42px] gradient-text">
+              operations.
             </span>
           </h1>
 
           <p
             ref={subRef}
-            className="text-[17px] font-normal leading-[1.68] text-t2 max-w-[480px] mb-10 opacity-0 translate-y-4"
+            className="text-[17px] font-normal leading-[1.68] text-t2 max-w-[520px] mb-10 opacity-0 translate-y-4"
           >
-            Adopt AI without exposing what makes your business yours. Powerhouse
-            gives you AI-native infrastructure that keeps confidential data under
-            your control &mdash; with local model deployment options, your
-            servers, and your governance rules.
+            Built so your business data never leaves your infrastructure.
           </p>
 
           <div

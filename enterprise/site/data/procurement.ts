@@ -59,7 +59,7 @@ export const PROCUREMENT_BREADCRUMBS = [
 ] as const;
 
 export const PROCUREMENT_SECTION_LINKS = [
-  { label: "What changed", href: "#what-changed" },
+  { label: "Why local", href: "#why-local" },
   { label: "Workflow", href: "#workflow" },
   { label: "Compliance", href: "#compliance" },
   { label: "Get started", href: "#get-started" },

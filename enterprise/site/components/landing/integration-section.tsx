@@ -14,11 +14,7 @@ export function IntegrationSection() {
       <SectionContainer>
         <div className="grid grid-cols-2 gap-16 max-md:grid-cols-1 max-md:gap-10">
           <div className="fade-up">
-            <div className="flex items-center gap-2 mb-5 text-[11px] font-semibold tracking-[0.1em] uppercase text-t3">
-              <span className="w-[5px] h-[5px] rounded-full bg-brand-purple shadow-[0_0_6px_rgba(122,58,255,0.8)]" aria-hidden="true" />
-              Integration
-            </div>
-            <h2 className="text-[clamp(32px,3.4vw,46px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading mb-5">
+<h2 className="text-[clamp(32px,3.4vw,46px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading mb-5">
               Connect everything.
               <br />
               <span className="text-t2">Expose nothing.</span>
@@ -30,35 +26,28 @@ export function IntegrationSection() {
                 where AI can operate securely.
               </p>
               <p>
-                Every integration defines its own scope: what data enters, how it is
-                structured, and who can access it &mdash; human or agent. Privacy is built
-                into the connection itself, not added later as policy.
+                Every integration defines its own scope: what data enters, how it&rsquo;s
+                structured, and who can access it, whether human or agent.
               </p>
             </div>
           </div>
 
-          <div className="fade-up space-y-4">
-            <h3 className="text-[13px] font-semibold tracking-[0.06em] uppercase text-t3 mb-4">
+          <div className="fade-up">
+            <h3 className="text-[13px] font-semibold tracking-[0.06em] uppercase text-t3 mb-6">
               Tiered AI Model Access
             </h3>
-            {TIER_ITEMS.map((tier) => (
-              <div
-                key={tier.tier}
-                className="relative rounded-xl bg-surface border border-border p-5 pl-7 transition-all hover:border-border-md"
-              >
-                <div
-                  className="absolute left-0 top-4 bottom-4 w-[2px] rounded-full"
-                  style={{ background: tier.accent }}
-                  aria-hidden="true"
-                />
-                <h4 className="text-sm font-semibold text-t1 mb-1.5">
-                  {tier.tier}
-                </h4>
-                <p className="text-[13px] leading-[1.68] text-t2">
-                  {tier.description}
-                </p>
-              </div>
-            ))}
+            <div className="divide-y divide-border border-t border-b border-border">
+              {TIER_ITEMS.map((tier) => (
+                <div key={tier.tier} className="py-5">
+                  <h4 className="text-[15px] font-semibold text-t1 mb-1.5 font-heading">
+                    {tier.tier}
+                  </h4>
+                  <p className="text-[14px] leading-[1.68] text-t2">
+                    {tier.description}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </SectionContainer>

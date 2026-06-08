@@ -77,11 +77,7 @@ export function ContactCta() {
       />
 
       <SectionContainer className="relative z-10">
-        <div className="flex items-center gap-2 mb-7 text-[11px] font-semibold tracking-[0.1em] uppercase text-t3">
-          <span className="w-[5px] h-[5px] rounded-full bg-brand shadow-[0_0_6px_var(--color-brand-glow)]" aria-hidden="true" />
-          Get Started
-        </div>
-        <h2
+<h2
           ref={headingRef}
           className="text-[clamp(42px,6vw,80px)] font-[680] leading-[1.01] tracking-[-0.04em] text-t1 mb-6 max-w-[720px] clip-reveal font-heading"
         >

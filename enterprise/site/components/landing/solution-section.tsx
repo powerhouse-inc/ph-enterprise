@@ -5,12 +5,6 @@ import { SOLUTION_PILLARS } from "@/data/solution";
 import { useFadeUpInScope } from "@/hooks/use-fade-up-scope";
 import { SectionContainer } from "./section-container";
 
-const accentColors: Record<string, string> = {
-  cyan: "#00D4FF",
-  purple: "#7A3AFF",
-  gradient: "linear-gradient(135deg, #00D4FF, #7A3AFF)",
-};
-
 export function SolutionSection() {
   const rootRef = useRef<HTMLElement>(null);
   useFadeUpInScope(rootRef);
@@ -19,10 +13,7 @@ export function SolutionSection() {
     <section ref={rootRef} id="solution" className="py-24 border-t border-border">
       <SectionContainer>
         <div className="mb-14 fade-up">
-          <div className="flex items-center gap-2.5 mb-5 text-[12px] font-semibold tracking-[0.14em] uppercase text-brand">
-            <span className="w-[6px] h-[6px] rounded-full bg-brand shadow-[0_0_10px_var(--color-brand-glow)]" aria-hidden="true" />
-            The Solution
-          </div>
+          <p className="mb-4 text-[15px] font-medium text-t3">The solution.</p>
           <h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading">
             Private data. AI-native.
             <br />
@@ -30,25 +21,13 @@ export function SolutionSection() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-3 gap-6 max-lg:grid-cols-1">
+        <div className="grid grid-cols-3 gap-x-10 gap-y-12 border-t border-border pt-10 max-lg:grid-cols-1 max-lg:gap-y-10">
           {SOLUTION_PILLARS.map((pillar) => (
-            <div
-              key={pillar.title}
-              className="fade-up relative rounded-2xl bg-surface border border-border p-8 transition-all hover:border-border-md group"
-            >
-              <div
-                className="absolute top-0 left-6 right-6 h-px opacity-60 group-hover:opacity-100 transition-opacity"
-                style={{
-                  background: pillar.accent === "gradient"
-                    ? accentColors.gradient
-                    : accentColors[pillar.accent],
-                }}
-                aria-hidden="true"
-              />
-              <h3 className="text-lg font-semibold tracking-tight text-t1 mb-3 font-heading">
+            <div key={pillar.title} className="fade-up">
+              <h3 className="text-[17px] font-semibold tracking-tight text-t1 mb-3 font-heading">
                 {pillar.title}
               </h3>
-              <p className="text-sm leading-[1.72] text-t2">
+              <p className="text-[14px] leading-[1.72] text-t2">
                 {pillar.body}
               </p>
             </div>

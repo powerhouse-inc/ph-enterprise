@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { X, Check } from "lucide-react";
 import { COMPARISON_ROWS } from "@/data/comparison";
+import { PowerhouseMark } from "@/components/powerhouse-mark";
 import { useFadeUpInScope } from "@/hooks/use-fade-up-scope";
 import { SectionContainer } from "./section-container";
 
@@ -15,14 +16,7 @@ export function ComparisonSection() {
       <SectionContainer>
         {/* Header */}
         <div className="mb-8 fade-up max-w-[620px]">
-          <div className="flex items-center gap-2 mb-5 text-[11px] font-semibold tracking-[0.1em] uppercase text-t3">
-            <span
-              className="w-[5px] h-[5px] rounded-full bg-brand shadow-[0_0_6px_var(--color-brand-glow)]"
-              aria-hidden="true"
-            />
-            Comparison
-          </div>
-          <h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading mb-4">
+<h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading mb-4">
             Your vendors are adding AI.
             <br />
             <span className="text-t2">But on whose terms?</span>
@@ -38,12 +32,15 @@ export function ComparisonSection() {
         {/* Comparison table */}
         <div className="fade-up">
           {/* Column headers — desktop only */}
-          <div className="grid grid-cols-[1fr_1fr] gap-3 mb-2 max-md:hidden" style={{ paddingLeft: "clamp(120px, 14vw, 168px)" }}>
-            <div className="text-[11px] font-semibold tracking-[0.06em] uppercase text-t3 px-5">
+          <div className="grid grid-cols-[1fr_1fr] gap-3 mb-3 items-end max-md:hidden" style={{ paddingLeft: "clamp(120px, 14vw, 168px)" }}>
+            <div className="text-[11px] font-semibold tracking-[0.06em] uppercase text-t3 px-5 pb-1.5">
               Cloud AI + Legacy
             </div>
-            <div className="text-[11px] font-semibold tracking-[0.06em] uppercase px-5 gradient-text">
-              Powerhouse
+            <div className="flex items-center gap-2 px-5">
+              <PowerhouseMark className="w-[22px] h-[22px] text-brand shrink-0" />
+              <span className="text-[22px] font-semibold tracking-tight gradient-text font-heading leading-none">
+                Powerhouse
+              </span>
             </div>
           </div>
 

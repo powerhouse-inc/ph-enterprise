@@ -47,8 +47,9 @@ export function ProblemSection() {
   return (
     <section ref={sectionRef} id="problem" className="py-24 border-t border-border">
       <SectionContainer>
-        <div className="grid grid-cols-[1fr_1fr] gap-16 items-start max-md:grid-cols-1 max-md:gap-8">
+        <div className="grid grid-cols-[1fr_1fr] gap-16 items-center max-md:grid-cols-1 max-md:gap-8 max-md:items-start">
           <div>
+            <p className="mb-4 text-[15px] font-medium text-t3">The problem.</p>
             <h2
               ref={headingRef}
               className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 clip-reveal font-heading"
@@ -61,7 +62,7 @@ export function ProblemSection() {
 
           <div
             ref={bodyRef}
-            className="opacity-0 translate-y-4 space-y-5 pt-2"
+            className="opacity-0 translate-y-4 space-y-5"
           >
             <p className="text-[15px] leading-[1.72] text-t2">
               Enterprise AI adoption is stalling because the deployment model is wrong.

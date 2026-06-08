@@ -1,15 +1,4 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  BarChart3,
-  Bot,
-  CheckCircle2,
-  FileText,
-  Gauge,
-  Scale,
-  ShieldCheck,
-  Users,
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PowerhouseMark } from "@/components/powerhouse-mark";
 import { SectionContainer } from "@/components/landing/section-container";
@@ -17,20 +6,11 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingLenis } from "@/components/landing/landing-lenis";
 import { GrainOverlay } from "@/components/landing/grain-overlay";
 import type { IndustryReport } from "@/data/industry-reports";
-import type { CSSWithVars } from "@/lib/utils";
-
-const reportIcons = {
-  finance: BarChart3,
-  legal: Scale,
-  hr: Users,
-} as const;
-
-const driverIcons = [Bot, ShieldCheck, Gauge] as const;
 
 function ReportNav({ report }: { report: IndustryReport }) {
   return (
     <header className="sticky top-0 z-200 h-[64px] border-b border-white/8 bg-[rgba(11,13,15,0.84)] backdrop-blur-[24px]">
-      <SectionContainer className="flex h-full max-w-[1260px] items-center justify-between gap-6">
+      <SectionContainer className="flex h-full max-w-[1180px] items-center justify-between gap-6">
         <Link
           href="/"
           className="flex min-w-0 shrink-0 items-center gap-2.5"
@@ -74,257 +54,100 @@ function SourceLink({ href, children }: { href: string; children: string }) {
   );
 }
 
-const PLATFORM_LINKS = [
-  {
-    name: "Clint",
-    tagline: "AI Agent Infrastructure",
-    href: "/#platform",
-  },
-  {
-    name: "Connect",
-    tagline: "Operator Workspace",
-    href: "/#platform",
-  },
-  {
-    name: "Renown",
-    tagline: "Identity for agents & users",
-    href: "/#platform",
-  },
-] as const;
-
-function PlatformCrossLinks({ report }: { report: IndustryReport }) {
-  return (
-    <aside className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-7">
-      <div className="mb-5 flex items-center gap-3">
-        <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-t1">
-          <PowerhouseMark className="h-4 w-4" aria-hidden="true" />
-        </span>
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-t3">
-            How Powerhouse supports this
-          </p>
-          <p className="mt-1 text-[14px] text-t2">
-            Platform components used in {report.sector} engagements
-          </p>
-        </div>
-      </div>
-
-      <div className="grid gap-3 md:grid-cols-3">
-        {PLATFORM_LINKS.map((component) => (
-          <Link
-            key={component.name}
-            href={component.href}
-            className="group flex flex-col rounded-2xl border border-white/8 bg-black/15 px-4 py-4 transition-colors hover:border-white/20 hover:bg-black/25"
-          >
-            <span className="text-[15px] font-semibold tracking-tight text-t1 font-heading">
-              {component.name}
-            </span>
-            <span className="mt-1 text-[12px] leading-[1.55] text-t3">
-              {component.tagline}
-            </span>
-            <span className="mt-3 inline-flex items-center gap-1 text-[12px] font-medium text-t2 transition-colors group-hover:text-t1">
-              See platform <ArrowRight className="h-3 w-3" aria-hidden="true" />
-            </span>
-          </Link>
-        ))}
-      </div>
-
-    </aside>
-  );
-}
-
 export function IndustryReportPage({ report }: { report: IndustryReport }) {
-  const ReportIcon = reportIcons[report.slug];
-
   return (
     <>
       <LandingLenis />
       <GrainOverlay />
       <ReportNav report={report} />
 
-      <main
-        className="relative overflow-hidden"
-        style={
-          {
-            "--report-accent": report.accent,
-            "--report-accent-soft": report.accentSoft,
-            "--report-secondary": report.secondaryAccent,
-          } as CSSWithVars
-        }
-      >
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[640px]" aria-hidden="true">
-          <div className="absolute left-[6%] top-12 h-72 w-72 rounded-full bg-[radial-gradient(circle,var(--report-accent-soft)_0%,transparent_72%)] blur-3xl" />
-          <div className="absolute right-[10%] top-24 h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle,rgba(0,212,255,0.09)_0%,transparent_72%)] blur-3xl" />
-        </div>
+      <main className="relative">
+        {/* 1. Hero */}
+        <section className="border-b border-border py-24 md:py-28">
+          <SectionContainer className="max-w-[1180px]">
+            <h1 className="max-w-[18ch] text-pretty text-[clamp(36px,4.6vw,60px)] font-[680] leading-[1.02] tracking-[-0.04em] text-t1 font-heading">
+              {report.headline}
+            </h1>
+            <p className="mt-7 max-w-[58ch] text-[16px] leading-[1.78] text-t2 md:text-[17px]">
+              {report.subhead}
+            </p>
+          </SectionContainer>
+        </section>
 
-        <section className="relative border-b border-border py-14 md:py-16 xl:min-h-[calc(100svh-64px)] xl:py-12">
-          <SectionContainer className="grid max-w-[1260px] gap-7 xl:grid-cols-[minmax(0,0.92fr)_minmax(440px,1.08fr)]">
-            <div className="relative z-10 flex flex-col justify-center">
-              <div className="mb-6 inline-flex w-fit items-center gap-3 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-[12px] text-t3">
-                <ReportIcon className="h-4 w-4 text-[var(--report-accent)]" aria-hidden="true" />
-                <span className="font-semibold uppercase tracking-[0.12em] text-[var(--report-accent)]">
-                  {report.sector}
-                </span>
-                <span className="text-t3" aria-hidden="true">
-                  —
-                </span>
-                <span>{report.eyebrow}</span>
-              </div>
-
-              <h1 className="max-w-[13ch] text-pretty text-[clamp(38px,5.1vw,68px)] font-[680] leading-[0.96] tracking-[-0.05em] text-t1 font-heading">
-                {report.headline}
-              </h1>
-
-              <p className="mt-7 max-w-[38rem] text-[16px] leading-[1.82] text-t2 md:text-[17px]">
-                {report.subhead}
-              </p>
-
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Button variant="cta" className="h-10 rounded-md px-5 text-[13px] font-medium" asChild>
-                  <Link href="mailto:hello@powerhouse.inc?subject=Enterprise%20Demo%20Request">
-                    Request a demo
-                  </Link>
-                </Button>
-                <Button variant="outline" className="h-10 rounded-md px-5 text-[13px] font-medium" asChild>
-                  <Link href="/#platform">See the platform</Link>
-                </Button>
-              </div>
-            </div>
-
-            <div className="relative z-10 rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.025))] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.24)] md:p-7">
-              <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-                <div className="border-b border-white/8 pb-5 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-6">
-                  <div className="mb-4 flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[color:var(--report-accent-soft)] bg-[var(--report-accent-soft)] text-[var(--report-accent)]">
-                      <FileText className="h-4 w-4" aria-hidden="true" />
-                    </span>
-                    <div>
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.13em] text-t3">
-                        Sector snapshot
-                      </p>
-                      <p className="mt-1 text-[14px] text-t2">
-                        2026 executive brief
-                      </p>
-                    </div>
+        {/* 2. By the numbers */}
+        <section className="border-b border-border py-20 md:py-24">
+          <SectionContainer className="max-w-[1180px]">
+            <h2 className="mb-12 text-[13px] font-semibold uppercase tracking-[0.12em] text-t3">
+              By the numbers
+            </h2>
+            <div className="grid grid-cols-3 gap-x-10 gap-y-12 max-lg:grid-cols-1">
+              {report.metrics.map((metric) => (
+                <div key={metric.value}>
+                  <div className="font-heading text-[clamp(40px,4.4vw,56px)] font-[680] leading-none tracking-[-0.05em] text-t1">
+                    {metric.value}
                   </div>
-
-                  <div className="space-y-4 text-[15px] leading-[1.82] text-t2">
-                    {report.snapshot.map((sentence) => (
-                      <p key={sentence}>{sentence}</p>
-                    ))}
-                  </div>
+                  <p className="mt-5 text-[14px] leading-[1.68] text-t2">
+                    {metric.label}
+                  </p>
+                  <p className="mt-3 text-[12px] text-t3">
+                    <SourceLink href={metric.sourceHref}>{metric.source}</SourceLink>
+                  </p>
                 </div>
-
-                <div>
-                  <div className="mb-4 flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-t1">
-                      <BarChart3 className="h-4 w-4" aria-hidden="true" />
-                    </span>
-                    <div>
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.13em] text-t3">
-                        Critical metrics
-                      </p>
-                      <p className="mt-1 text-[14px] text-t2">
-                        Ratios, growth, and market pressure
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="divide-y divide-white/8">
-                    {report.metrics.map((metric) => (
-                      <div key={metric.value} className="grid gap-4 py-4 first:pt-0 md:grid-cols-[128px_1fr]">
-                        <div className="font-heading text-[34px] font-[680] leading-none tracking-[-0.05em] text-t1">
-                          {metric.value}
-                        </div>
-                        <div>
-                          <p className="text-[14px] leading-[1.64] text-t2">
-                            {metric.label}
-                          </p>
-                          <p className="mt-2 text-[12px] text-t3">
-                            Source:{" "}
-                            <SourceLink href={metric.sourceHref}>
-                              {metric.source}
-                            </SourceLink>
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
+          </SectionContainer>
+        </section>
 
-            <div className="relative z-10 grid gap-5 xl:col-span-2 xl:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)]">
+        {/* 3. 2026 drivers */}
+        <section className="border-b border-border py-20 md:py-24">
+          <SectionContainer className="max-w-[1180px]">
+            <h2 className="mb-12 text-[13px] font-semibold uppercase tracking-[0.12em] text-t3">
+              Key 2026 drivers
+            </h2>
+            <div className="grid grid-cols-3 gap-x-10 gap-y-10 max-lg:grid-cols-1">
+              {report.drivers.map((driver) => (
+                <div key={driver.title}>
+                  <h3 className="text-[17px] font-semibold tracking-tight text-t1 mb-3 font-heading">
+                    {driver.title}
+                  </h3>
+                  <p className="text-[14px] leading-[1.72] text-t2">
+                    {driver.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </SectionContainer>
+        </section>
+
+        {/* 4. What this means + sources */}
+        <section className="py-20 md:py-24">
+          <SectionContainer className="max-w-[1180px]">
+            <div className="grid gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
               <div>
-                <div className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-t3">
-                  <span className="h-[5px] w-[5px] rounded-full bg-[var(--report-accent)] shadow-[0_0_8px_var(--report-accent)]" aria-hidden="true" />
-                  Key 2026 drivers
-                </div>
-
-                <div className="grid gap-4 lg:grid-cols-3">
-                  {report.drivers.map((driver, index) => {
-                    const Icon = driverIcons[index];
-                    return (
-                      <article
-                        key={driver.title}
-                        className="rounded-3xl border border-white/10 bg-surface p-5 shadow-[0_18px_42px_rgba(0,0,0,0.16)]"
-                      >
-                        <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-2xl border border-[color:var(--report-accent-soft)] bg-[var(--report-accent-soft)] text-[var(--report-accent)]">
-                          <Icon className="h-4 w-4" aria-hidden="true" />
-                        </div>
-                        <h2 className="text-[19px] font-semibold tracking-[-0.02em] text-t1 font-heading">
-                          {driver.title}
-                        </h2>
-                        <p className="mt-3 text-[14px] leading-[1.7] text-t2">
-                          {driver.body}
-                        </p>
-                      </article>
-                    );
-                  })}
-                </div>
+                <h2 className="text-[13px] font-semibold uppercase tracking-[0.12em] text-t3">
+                  {report.mandateLabel}
+                </h2>
               </div>
-
-              <aside className="rounded-[28px] border border-[color:var(--report-accent-soft)] bg-[linear-gradient(135deg,var(--report-accent-soft),rgba(255,255,255,0.03))] p-6">
-                <div className="mb-5 flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-black/15 text-t1">
-                    <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
-                  </span>
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.13em] text-[var(--report-accent)]">
-                      Operational mandate
-                    </p>
-                    <p className="mt-1 text-[14px] text-t2">
-                      {report.mandateLabel}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-[15px] leading-[1.78] text-t1">
+              <div>
+                <p className="text-[17px] leading-[1.72] text-t1 font-heading font-[520]">
                   {report.mandate}
                 </p>
-                <Link
-                  href="mailto:hello@powerhouse.inc?subject=Enterprise%20Workflow%20Planning"
-                  className="mt-6 inline-flex items-center gap-2 text-[14px] font-medium text-t1 transition-colors hover:text-[var(--report-accent)]"
-                >
-                  Start a workflow discussion
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
-              </aside>
-            </div>
-
-            <div className="relative z-10 xl:col-span-2">
-              <PlatformCrossLinks report={report} />
-            </div>
-
-            <div className="relative z-10 xl:col-span-2">
-              <div className="border-t border-white/8 pt-4 text-[12px] leading-[1.8] text-t3">
-                Sources:{" "}
-                {report.sources.map((source, index) => (
-                  <span key={source.href}>
-                    <SourceLink href={source.href}>{source.label}</SourceLink>
-                    {index < report.sources.length - 1 ? " / " : ""}
-                  </span>
-                ))}
+                <div className="mt-8">
+                  <Link href="/#platform" className="text-[13px] font-medium text-t2 hover:text-t1 transition-colors">
+                    See the platform &rarr;
+                  </Link>
+                </div>
               </div>
+            </div>
+
+            <div className="mt-16 border-t border-border pt-5 text-[12px] leading-[1.8] text-t3">
+              Sources:{" "}
+              {report.sources.map((source, index) => (
+                <span key={source.href}>
+                  <SourceLink href={source.href}>{source.label}</SourceLink>
+                  {index < report.sources.length - 1 ? " · " : ""}
+                </span>
+              ))}
             </div>
           </SectionContainer>
         </section>

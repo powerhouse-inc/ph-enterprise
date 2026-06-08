@@ -23,6 +23,7 @@ export type PlatformComponent = {
   description: string;
   accent: string;
   href: string;
+  icon: string;
 };
 
 export type ComparisonRow = {
@@ -39,5 +40,4 @@ export type PrivacyFeature = {
 export type TierItem = {
   tier: string;
   description: string;
-  accent: string;
 };
