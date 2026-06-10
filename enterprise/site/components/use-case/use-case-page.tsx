@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, CheckCircle2, ExternalLink } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PowerhouseMark } from "@/components/powerhouse-mark";
 import { SectionContainer } from "@/components/landing/section-container";
@@ -43,11 +43,8 @@ function UseCaseNav({ useCase }: { useCase: UseCaseDetail }) {
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-t3">
-      <span
-        className="h-[5px] w-[5px] rounded-full bg-[var(--uc-accent)] shadow-[0_0_8px_var(--uc-accent)]"
-        aria-hidden="true"
-      />
+    <div className="mb-4 flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-t3">
+      <span className="h-px w-6 bg-[var(--uc-accent)]/70" aria-hidden="true" />
       {children}
     </div>
   );
@@ -233,10 +230,14 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
     eyebrow: "The outcome",
     shot: nextShot(),
     content: (
-      <ul className="space-y-3" role="list">
+      <ul className="space-y-3.5" role="list">
         {useCase.outcomes.map((outcome) => (
-          <li key={outcome} className="flex gap-3">
-            <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-[var(--uc-accent)]" aria-hidden="true" />
+          <li key={outcome} className="flex gap-3.5">
+            <Check
+              className="mt-[5px] h-3.5 w-3.5 shrink-0 text-[var(--uc-accent)]"
+              strokeWidth={2.5}
+              aria-hidden="true"
+            />
             <span className="text-[15px] leading-[1.66] text-t2 md:text-[16px]">{outcome}</span>
           </li>
         ))}
@@ -290,15 +291,11 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
               Use cases
             </Link>
 
-            <div className="inline-flex w-fit items-center gap-3 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-[12px] text-t3">
-              <span className="font-semibold uppercase tracking-[0.12em] text-[var(--uc-accent)]">
-                Use case
-              </span>
-              <span aria-hidden="true">—</span>
-              <span>{useCase.domain}</span>
-            </div>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[var(--uc-accent)]">
+              {useCase.domain}
+            </p>
 
-            <h1 className="mt-6 max-w-[16ch] text-pretty text-[clamp(38px,5vw,64px)] font-[680] leading-[0.98] tracking-[-0.05em] text-t1 font-heading">
+            <h1 className="mt-4 max-w-[16ch] text-pretty text-[clamp(38px,5vw,64px)] font-[680] leading-[0.98] tracking-[-0.05em] text-t1 font-heading">
               {useCase.title}
             </h1>
 
