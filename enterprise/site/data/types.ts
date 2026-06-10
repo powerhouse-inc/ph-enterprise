@@ -1,6 +1,8 @@
 export type NavLink = {
   href: string;
   label: string;
+  /** True when href is a route (use Next Link) rather than an in-page anchor. */
+  route?: boolean;
 };
 
 export type SolutionPillar = {

@@ -42,9 +42,15 @@ export function LandingNav() {
           <ul className="flex gap-6 list-none max-md:hidden" role="list">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className="text-[13px] font-[450] text-t2 hover:text-t1 transition-colors">
-                  {link.label}
-                </a>
+                {link.route ? (
+                  <Link href={link.href} className="text-[13px] font-[450] text-t2 hover:text-t1 transition-colors">
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a href={link.href} className="text-[13px] font-[450] text-t2 hover:text-t1 transition-colors">
+                    {link.label}
+                  </a>
+                )}
               </li>
             ))}
           </ul>
