@@ -24,9 +24,9 @@ export function UseCasesSection() {
       <SectionContainer>
         <div className="mb-14 fade-up">
 <h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading">
-            Built for industries where
+            Built for businesses taking back
             <br />
-            <span className="text-t2">confidentiality isn&apos;t optional.</span>
+            <span className="text-t2">control of their operations.</span>
           </h2>
         </div>
 

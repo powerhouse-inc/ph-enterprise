@@ -6,7 +6,7 @@ export const USE_CASES: UseCase[] = [
     icon: "balance",
     color: "#00D4FF", // cyan
     summary:
-      "Contract review, due diligence, compliance monitoring, matter management. AI agents that read and reason over privileged legal documents — on local models, on your servers.",
+      "Contract review, due diligence, compliance monitoring, and matter management. AI agents reason over privileged documents on models you run, so private material can stay within your control.",
     href: "/legal",
   },
   {
@@ -14,7 +14,7 @@ export const USE_CASES: UseCase[] = [
     icon: "users",
     color: "#7A3AFF", // purple
     summary:
-      "Personnel data management, policy compliance, HR records workflows. Personnel data stays on infrastructure you control — never processed by external AI services where local deployment is configured.",
+      "Personnel data management, policy compliance, and HR records workflows. With local deployment, sensitive employee data can sit on infrastructure you own rather than a vendor's.",
     href: "/hr",
   },
   {
@@ -22,7 +22,7 @@ export const USE_CASES: UseCase[] = [
     icon: "file-text",
     color: "#F2CB29", // gold
     summary:
-      "Vendor evaluation workflows, contract negotiation support, spend analysis, supplier risk assessment. Negotiation positions and pricing data are sensitive competitive assets — local model processing keeps them on infrastructure you control where configured.",
+      "Vendor evaluation, negotiation support, spend analysis, and supplier risk assessment. With local deployment, your pricing and negotiation positions stay yours, not training data for someone else's model.",
     href: "/procurement",
   },
   {
@@ -30,7 +30,7 @@ export const USE_CASES: UseCase[] = [
     icon: "bar-chart",
     color: "#21FFB4", // green
     summary:
-      "Financial reporting workflows, forecasting, expense management, audit preparation. Board-level financials processed by local AI models on your hardware where configured. AI-assisted financial operations are designed to support audit through cryptographically signed activity logs.",
+      "Financial reporting, forecasting, expense management, and audit preparation. AI-assisted steps are logged and cryptographically signed to support audit-ready reporting.",
     href: "/finance",
   },
 ];
