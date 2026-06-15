@@ -21,6 +21,7 @@ export type UseCaseScreenshot = {
 export type UseCaseDetailSlug =
   | "service-offering"
   | "onboarding-operational-hub"
+  | "open-construction-data-layer"
   | "rfp-hub";
 
 export type UseCaseDetail = {
@@ -125,6 +126,47 @@ export const USE_CASE_DETAILS: Record<UseCaseDetailSlug, UseCaseDetail> = {
       "Onboarding Operational Hub: a legal-and-operations business delivers entity formation, payments, compliance, and reporting as a live, owned Powerhouse workspace — not a folder of PDFs.",
   },
 
+  "open-construction-data-layer": {
+    slug: "open-construction-data-layer",
+    title: "Open Construction Data Layer",
+    domain: "Construction consulting & BIM project data",
+    oneLiner:
+      "Lift an entire construction project’s data out of a proprietary platform into an open architecture the team owns — files, coordination issues, submittals, and minutes, fully structured, versioned, and queryable.",
+    summary:
+      "An open data-ownership layer for construction consultants: it pulls a project’s data out of a proprietary BIM/CDE platform and rebuilds it as typed, versioned document models behind one open GraphQL API the client keeps.",
+    accent: "#21FFB4",
+    accentSoft: "rgba(33, 255, 180, 0.16)",
+    problem: [
+      "A construction project lives exclusively inside one proprietary platform — models, coordination issues, submittals, meeting minutes, all on a vendor’s servers. Leave the platform and access ends. Exports come out unstructured: no revision history, no stable references, fresh IDs on every download. API access is expensive and rate-limited, there’s no cross-project analysis and no real backup. The record that has to outlive the project is the one most at risk of vanishing.",
+    ],
+    solution: [
+      "A construction consultancy rebuilds the project’s data as an open, owned architecture with a real typed data model underneath — and hands the client a copy they keep.",
+    ],
+    solutionSteps: [
+      { label: "Liberate", body: "Pull the full dataset out through import pipelines — a live issue connector, the platform’s file API, and parsers for everyday exports and third-party model issues. The proprietary platform becomes one source among many." },
+      { label: "Structure", body: "Everything lands in typed, versioned document models — file, issue, submittal, minute. A project with tens of thousands of files and 10,000+ coordination issues becomes a clean, addressable model instead of a folder dump." },
+      { label: "Explore", body: "A fast viewer filters thousands of issues in milliseconds, opens a model issue with its original 3D viewpoint, and previews PDFs and spreadsheets inline — all from a local cache." },
+      { label: "Extend", body: "One open GraphQL supergraph feeds the data onward — BI tools, internal apps, review workflows, even AI agents that read the project and contribute back." },
+    ],
+    howItWorks: [
+      "Each record type is a typed document model with a versioned operation log, so history is preserved, not flattened. The whole dataset is served through one open GraphQL supergraph — no proprietary endpoints. Each project is its own drive: replicable, scoped to partners, and runnable without a central server. Platform-agnostic by construction, it keeps working after any contract ends — which is exactly what lets a consultant hand the client a deliverable they truly own.",
+    ],
+    outcomes: [
+      "The data outlives the license — the full record stays with the client.",
+      "A vendor silo becomes a structured, queryable asset.",
+      "Inspect anything instantly — issues, 3D viewpoints, and document previews in one viewer.",
+      "Open by design — one GraphQL API feeds BI, internal tools, and AI agents.",
+    ],
+    screenshots: [
+      { src: "/usecases/open-construction-data-layer/01-data-silo.png", width: 4000, height: 2088, layout: "wide", caption: "The core problem — project data trapped in a proprietary platform, with the risks that come with lock-in." },
+      { src: "/usecases/open-construction-data-layer/02-architecture.png", width: 4800, height: 1560, layout: "full", caption: "The architecture — import pipelines feed typed document models in the reactor; an open GraphQL supergraph serves every frontend." },
+      { src: "/usecases/open-construction-data-layer/03-data-sources.png", width: 4000, height: 1488, layout: "full", caption: "Many sources, one data model — a live issue connector, the platform file API, and parsers for manual exports." },
+      { src: "/usecases/open-construction-data-layer/04-coordination-list.png", width: 4000, height: 3172, layout: "full", caption: "Over 10,000 coordination issues, instantly filterable and searchable — typed, cross-filtered, and rendered from a local cache." },
+    ],
+    metaDescription:
+      "Open Construction Data Layer: a construction consultancy lifts a project’s files, coordination issues, submittals, and minutes out of a proprietary BIM platform into typed, versioned Powerhouse document models behind one open GraphQL API the client owns.",
+  },
+
   "rfp-hub": {
     slug: "rfp-hub",
     title: "RFP Hub",
@@ -172,4 +214,5 @@ export const USE_CASE_ORDER: readonly UseCaseDetailSlug[] = [
   "service-offering",
   "onboarding-operational-hub",
   "rfp-hub",
+  "open-construction-data-layer",
 ];
