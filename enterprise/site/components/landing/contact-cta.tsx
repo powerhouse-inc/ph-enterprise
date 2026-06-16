@@ -1,9 +1,9 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import Link from "next/link";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { DemoButton } from "@/components/demo/demo-button";
 import { PowerhouseMark } from "@/components/powerhouse-mark";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { TIMING, SCROLL_START, COLORS } from "@/lib/constants";
@@ -97,11 +97,9 @@ export function ContactCta() {
                 We&apos;ll show you the platform running in production, walk through the AI
                 agent infrastructure, and map the architecture to your operations.
               </p>
-              <Button variant="cta" className="mt-auto h-9 px-5 rounded-md text-[13px]" asChild>
-                <Link href="mailto:hello@powerhouse.inc?subject=Enterprise%20Demo%20Request" prefetch={false}>
-                  Request a Demo
-                </Link>
-              </Button>
+              <DemoButton variant="cta" className="mt-auto h-9 px-5 rounded-md text-[13px]">
+                Request a Demo
+              </DemoButton>
             </div>
 
             <div className="rounded-xl bg-surface border border-border p-6 transition-all hover:border-border-md flex flex-col">
@@ -110,11 +108,9 @@ export function ContactCta() {
                 Map your systems, data sensitivity, deployment boundaries, and first
                 Powerhouse workflow with the product team.
               </p>
-              <Button variant="outline" className="mt-auto h-9 px-5 rounded-md text-[13px]" asChild>
-                <Link href="mailto:hello@powerhouse.inc?subject=Enterprise%20Rollout%20Planning" prefetch={false}>
-                  Start planning
-                </Link>
-              </Button>
+              <DemoButton variant="outline" topic="Rollout planning" className="mt-auto h-9 px-5 rounded-md text-[13px]">
+                Start planning
+              </DemoButton>
             </div>
 
             <div className="rounded-xl bg-surface border border-border p-6 transition-all hover:border-border-md flex flex-col">

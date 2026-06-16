@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { DemoButton } from "@/components/demo/demo-button";
 import { PowerhouseMark } from "@/components/powerhouse-mark";
 import { cn } from "@/lib/utils";
 import { useHeroAnimation } from "@/hooks/use-hero-animation";
@@ -87,15 +88,12 @@ export function LandingHero() {
             ref={actionsRef}
             className="flex items-center gap-3 opacity-0 translate-y-4 max-md:flex-col max-md:items-start"
           >
-            <Button
+            <DemoButton
               variant="cta"
               className="h-10 px-5 rounded-md text-[13px] font-medium"
-              asChild
             >
-              <Link href="#get-started" prefetch={false}>
-                Request a Demo
-              </Link>
-            </Button>
+              Request a Demo
+            </DemoButton>
             <Button
               variant="outline"
               className="h-10 px-5 rounded-md text-[13px] font-medium"

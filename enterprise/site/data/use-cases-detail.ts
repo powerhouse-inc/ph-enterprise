@@ -19,6 +19,7 @@ export type UseCaseScreenshot = {
 };
 
 export type UseCaseDetailSlug =
+  | "invoicing-payouts"
   | "service-offering"
   | "onboarding-operational-hub"
   | "rfp-hub";
@@ -50,6 +51,45 @@ export type UseCaseDetail = {
 };
 
 export const USE_CASE_DETAILS: Record<UseCaseDetailSlug, UseCaseDetail> = {
+  "invoicing-payouts": {
+    slug: "invoicing-payouts",
+    title: "Invoicing & Payouts",
+    domain: "Accounts payable, global payouts & audit-ready reconciliation",
+    oneLiner:
+      "Take an invoice from draft to paid, by bank wire or onchain, with an audit trail that is the document itself, not a report stitched together later.",
+    summary:
+      "An end-to-end accounts-payable workflow: capture invoices by hand or from a PDF, route approvals, pay by fiat or stablecoin, reconcile against the chain, and export to your accounting system, all as signed operations on one document.",
+    accent: "#21FFB4",
+    accentSoft: "rgba(33, 255, 180, 0.16)",
+    problem: [
+      "Paying people is where finance operations quietly break. Invoices arrive as PDFs and email attachments, then get re-keyed into a spreadsheet, again into the accounting system, and a third time into the bank portal or a wallet. Fiat and crypto live in separate tools that never reconcile.",
+      "By the time an auditor asks who approved a payment and when, the answer is scattered across inboxes, bank statements, and chain explorers. What you billed, what you paid, and what you booked slowly drift apart.",
+    ],
+    solution: [
+      "Invoicing & Payouts runs the entire payable lifecycle on a single invoice document. Capture an invoice by hand or drop in a PDF and let extraction fill the fields for your review. Nothing is invented: IBANs, wallet addresses, and tax IDs are transcribed verbatim and shown to you before anything is committed. Move it through issue, accept, schedule, and pay, settle by bank wire or by stablecoin, and the export to your ledger follows automatically.",
+    ],
+    solutionSteps: [
+      { label: "Capture", body: "Create an invoice from scratch or upload a PDF. Extraction fills the issuer, payer, line items, and payment routing for your review before anything is committed to the record." },
+      { label: "Approve", body: "Issue, accept, or reject with a reason. Every transition is a signed step in the invoice's own history, not a status flag someone can quietly flip." },
+      { label: "Pay", body: "Settle by bank wire through Request Finance, or by stablecoin (USDC, EURe, and others) from a Gnosis Safe multisig on Base, Ethereum, or Arbitrum. One document, two rails." },
+      { label: "Reconcile and export", body: "Confirm the payment, match the onchain transaction back to the invoice, and export to Xero with ledger codes and accounting periods already attached." },
+    ],
+    howItWorks: [
+      "The invoice is one document model whose status lifecycle, from draft to issued, accepted, scheduled, sent, received, and closed, is its actual state rather than a workflow bolted on top. Every edit, approval, and payment is a signed, append-only operation, so the audit trail is the document itself, not a log assembled afterward.",
+      "Because the same record carries both bank routing and wallet routing, fiat and onchain payments reconcile against one source of truth. And because accounting tags travel on the line items, the ledger export is a projection of the invoice, so what you billed, paid, and booked cannot drift apart.",
+    ],
+    outcomes: [
+      "One workflow from draft invoice to booked payment, with no re-keying between tools.",
+      "Pay anyone, anywhere: bank wire or stablecoin, from the same invoice.",
+      "Audit-ready by construction. Every approval and payment is a signed operation on the record.",
+      "Deterministic accounting export. Ledger codes and periods ride on the invoice into Xero.",
+      "Drop in a PDF and get back a structured, reviewable invoice, with sensitive details transcribed, never guessed.",
+    ],
+    screenshots: [],
+    metaDescription:
+      "Invoicing & Payouts: an end-to-end accounts-payable workflow on Powerhouse. Capture invoices manually or from a PDF, approve, pay by bank wire or onchain stablecoin, reconcile, and export to Xero, all as signed operations on a single self-auditing document.",
+  },
+
   "service-offering": {
     slug: "service-offering",
     title: "Service Offering",
@@ -169,6 +209,7 @@ export const USE_CASE_DETAILS: Record<UseCaseDetailSlug, UseCaseDetail> = {
 };
 
 export const USE_CASE_ORDER: readonly UseCaseDetailSlug[] = [
+  "invoicing-payouts",
   "service-offering",
   "onboarding-operational-hub",
   "rfp-hub",

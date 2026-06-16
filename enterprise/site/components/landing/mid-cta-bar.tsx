@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useRef } from "react";
-import { Button } from "@/components/ui/button";
+import { DemoButton } from "@/components/demo/demo-button";
 import { useFadeUpInScope } from "@/hooks/use-fade-up-scope";
 import { SectionContainer } from "./section-container";
 
@@ -18,11 +17,9 @@ export function MidCtaBar() {
             Ready to see AI-native operations on your own infrastructure?
           </p>
           <div className="flex items-center gap-4 flex-wrap">
-            <Button variant="cta" className="h-8 px-4 rounded-md text-[13px]" asChild>
-              <Link href="#get-started" prefetch={false}>
-                Request a Demo
-              </Link>
-            </Button>
+            <DemoButton variant="cta" className="h-8 px-4 rounded-md text-[13px]">
+              Request a Demo
+            </DemoButton>
           </div>
         </div>
       </SectionContainer>

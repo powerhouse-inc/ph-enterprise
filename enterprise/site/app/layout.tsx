@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { Poppins, Inter } from "next/font/google";
+import { DemoModalProvider } from "@/components/demo/demo-modal";
 import "./globals.css";
 
 const inter = Inter({
@@ -100,7 +101,7 @@ export default function RootLayout({
             }),
           }}
         />
-        {children}
+        <DemoModalProvider>{children}</DemoModalProvider>
         <Analytics />
       </body>
     </html>

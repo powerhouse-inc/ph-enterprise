@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRef } from "react";
-import { Button } from "@/components/ui/button";
+import { DemoButton } from "@/components/demo/demo-button";
 import { PowerhouseMark } from "@/components/powerhouse-mark";
 import { NAV_LINKS } from "@/data/nav";
 import { ScrollTrigger, useGSAP } from "@/lib/gsap";
@@ -54,11 +54,9 @@ export function LandingNav() {
               </li>
             ))}
           </ul>
-          <Button variant="cta" className="h-8 px-4 rounded-md text-[13px]" asChild>
-            <Link href="#get-started" prefetch={false}>
-              Request a Demo
-            </Link>
-          </Button>
+          <DemoButton variant="cta" className="h-8 px-4 rounded-md text-[13px]">
+            Request a Demo
+          </DemoButton>
         </div>
       </SectionContainer>
     </header>
