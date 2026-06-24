@@ -45,7 +45,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-t3">
       <span
-        className="h-[5px] w-[5px] rounded-full bg-[var(--uc-accent)] shadow-[0_0_8px_var(--uc-accent)]"
+        className="h-[5px] w-[5px] rounded-full bg-[var(--uc-accent)]"
         aria-hidden="true"
       />
       {children}
@@ -274,9 +274,8 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
           } as CSSWithVars
         }
       >
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[560px]" aria-hidden="true">
-          <div className="absolute left-[8%] top-12 h-72 w-72 rounded-full bg-[radial-gradient(circle,var(--uc-accent-soft)_0%,transparent_72%)] blur-3xl" />
-          <div className="absolute right-[10%] top-24 h-[20rem] w-[20rem] rounded-full bg-[radial-gradient(circle,rgba(0,212,255,0.08)_0%,transparent_72%)] blur-3xl" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] opacity-50" aria-hidden="true">
+          <div className="absolute left-[8%] top-16 h-64 w-64 rounded-full bg-[radial-gradient(circle,var(--uc-accent-soft)_0%,transparent_75%)] blur-3xl" />
         </div>
 
         {/* Hero */}
@@ -290,11 +289,10 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
               Use cases
             </Link>
 
-            <div className="inline-flex w-fit items-center gap-3 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-[12px] text-t3">
-              <span className="font-semibold uppercase tracking-[0.12em] text-[var(--uc-accent)]">
-                Use case
-              </span>
-              <span aria-hidden="true">—</span>
+            <div className="inline-flex w-fit items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-[12px] text-t3">
+              <span className="h-[5px] w-[5px] shrink-0 rounded-full bg-[var(--uc-accent)]" aria-hidden="true" />
+              <span className="font-semibold uppercase tracking-[0.12em] text-t2">Use case</span>
+              <span className="h-3 w-px bg-border-md" aria-hidden="true" />
               <span>{useCase.domain}</span>
             </div>
 
@@ -323,7 +321,7 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
             </div>
 
             <div className="mt-10 rounded-3xl border border-[color:var(--uc-accent-soft)] bg-[linear-gradient(135deg,var(--uc-accent-soft),rgba(255,255,255,0.03))] p-6 md:p-7">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.13em] text-[var(--uc-accent)]">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.13em] text-t3">
                 In short
               </p>
               <p className="mt-3 max-w-[60rem] text-[15px] leading-[1.78] text-t1 md:text-[16px]">

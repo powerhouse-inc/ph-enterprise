@@ -37,7 +37,7 @@ export function UseCasesIndexPage() {
       <IndexNav />
 
       <main className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px]" aria-hidden="true">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] opacity-50" aria-hidden="true">
           <div className="absolute left-[10%] top-12 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(0,212,255,0.10)_0%,transparent_72%)] blur-3xl" />
           <div className="absolute right-[12%] top-20 h-[20rem] w-[20rem] rounded-full bg-[radial-gradient(circle,rgba(122,58,255,0.10)_0%,transparent_72%)] blur-3xl" />
         </div>
@@ -53,7 +53,7 @@ export function UseCasesIndexPage() {
             </Link>
 
             <div className="mb-5 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-t3">
-              <span className="h-[5px] w-[5px] rounded-full bg-brand shadow-[0_0_6px_var(--color-brand-glow)]" aria-hidden="true" />
+              <span className="h-[5px] w-[5px] rounded-full bg-brand" aria-hidden="true" />
               Use cases
             </div>
 
@@ -79,8 +79,8 @@ export function UseCasesIndexPage() {
                     className="group relative flex h-full flex-col rounded-3xl border border-border bg-surface p-7 transition-all hover:border-border-md"
                     style={{ "--uc-accent": uc.accent } as CSSWithVars}
                   >
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--uc-accent)]">
-                      {uc.domain}
+                    <span className="inline-flex w-fit items-center rounded-md border border-border bg-white/[0.02] px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.1em] text-t3">
+                      {uc.category}
                     </span>
                     <h2 className="mt-3 text-[22px] font-semibold tracking-[-0.02em] text-t1 font-heading">
                       {uc.title}

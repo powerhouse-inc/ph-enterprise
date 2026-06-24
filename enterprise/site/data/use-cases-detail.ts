@@ -27,6 +27,8 @@ export type UseCaseDetailSlug =
 export type UseCaseDetail = {
   slug: UseCaseDetailSlug;
   title: string;
+  /** Short category label (e.g. "Finance", "Operations") shown as a tag on the index card. */
+  category: string;
   domain: string;
   /** One-line summary, used on the index grid and detail hero. */
   oneLiner: string;
@@ -54,6 +56,7 @@ export const USE_CASE_DETAILS: Record<UseCaseDetailSlug, UseCaseDetail> = {
   "invoicing-payouts": {
     slug: "invoicing-payouts",
     title: "Invoicing & Payouts",
+    category: "Finance",
     domain: "Accounts payable, global payouts & audit-ready reconciliation",
     oneLiner:
       "Take an invoice from draft to paid, by bank wire or onchain, with an audit trail that is the document itself, not a report stitched together later.",
@@ -93,6 +96,7 @@ export const USE_CASE_DETAILS: Record<UseCaseDetailSlug, UseCaseDetail> = {
   "service-offering": {
     slug: "service-offering",
     title: "Service Offering",
+    category: "Commerce",
     domain: "Commercial operations & subscription billing",
     oneLiner:
       "A no-code way to design, price, sell, and bill a productized service — and run the whole subscription lifecycle from one place.",
@@ -129,6 +133,7 @@ export const USE_CASE_DETAILS: Record<UseCaseDetailSlug, UseCaseDetail> = {
   "onboarding-operational-hub": {
     slug: "onboarding-operational-hub",
     title: "Onboarding Operational Hub",
+    category: "Operations",
     domain: "Legal entity formation & back-office operations",
     oneLiner:
       "A turnkey legal and operational home — entity, payments, compliance, and reporting — delivered to a team as a live, owned workspace rather than a folder of PDFs and a pile of SaaS logins.",
@@ -168,6 +173,7 @@ export const USE_CASE_DETAILS: Record<UseCaseDetailSlug, UseCaseDetail> = {
   "rfp-hub": {
     slug: "rfp-hub",
     title: "RFP Hub",
+    category: "Funding",
     domain: "Web3 funding discovery & open data standards",
     oneLiner:
       "A neutral aggregation layer that collects funding opportunities from every ecosystem into one open, signed schema — the shared substrate every dashboard, aggregator, and agent can read from.",
