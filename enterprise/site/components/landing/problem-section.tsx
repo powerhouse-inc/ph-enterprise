@@ -52,7 +52,7 @@ export function ProblemSection() {
             <p className="mb-4 text-[15px] font-medium text-t3">The problem.</p>
             <h2
               ref={headingRef}
-              className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 clip-reveal font-heading"
+              className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-normal text-t1 clip-reveal font-heading"
             >
               Every AI vendor
               <br />

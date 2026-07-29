@@ -79,7 +79,7 @@ export function ContactCta() {
       <SectionContainer className="relative z-10">
 <h2
           ref={headingRef}
-          className="text-[clamp(42px,6vw,80px)] font-[680] leading-[1.01] tracking-[-0.04em] text-t1 mb-6 max-w-[720px] clip-reveal font-heading"
+          className="text-[clamp(42px,6vw,80px)] font-[680] leading-[1.01] tracking-normal text-t1 mb-6 max-w-[720px] clip-reveal font-heading"
         >
           Choose your
           <br />

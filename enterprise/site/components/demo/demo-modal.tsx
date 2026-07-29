@@ -71,7 +71,7 @@ function DemoForm({ topic, onClose }: { topic: string; onClose: () => void }) {
   if (state.ok) {
     return (
       <div className="py-6 text-center">
-        <h2 className="font-heading text-[20px] font-semibold tracking-tight text-t1">
+        <h2 className="font-heading text-[20px] font-semibold tracking-normal text-t1">
           Thanks, we&rsquo;ll be in touch.
         </h2>
         <p className="mx-auto mt-3 max-w-[34ch] text-[14px] leading-[1.7] text-t2">
@@ -91,7 +91,7 @@ function DemoForm({ topic, onClose }: { topic: string; onClose: () => void }) {
 
   return (
     <>
-      <h2 className="font-heading text-[20px] font-semibold tracking-tight text-t1">
+      <h2 className="font-heading text-[20px] font-semibold tracking-normal text-t1">
         Request a demo
       </h2>
       <p className="mt-2 text-[13px] leading-[1.6] text-t2">

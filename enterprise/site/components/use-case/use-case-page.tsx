@@ -7,9 +7,10 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingLenis } from "@/components/landing/landing-lenis";
 import { GrainOverlay } from "@/components/landing/grain-overlay";
 import type { UseCaseDetail, UseCaseScreenshot } from "@/data/use-cases-detail";
+import { BAI_ENGAGEMENT_URL } from "@/lib/site";
 import type { CSSWithVars } from "@/lib/utils";
 
-function UseCaseNav({ useCase }: { useCase: UseCaseDetail }) {
+function UseCaseNav() {
   return (
     <header className="sticky top-0 z-200 h-[64px] border-b border-white/8 bg-[rgba(11,13,15,0.84)] backdrop-blur-[24px]">
       <SectionContainer className="flex h-full max-w-[1180px] items-center justify-between gap-6">
@@ -19,21 +20,19 @@ function UseCaseNav({ useCase }: { useCase: UseCaseDetail }) {
           aria-label="Powerhouse Enterprise"
         >
           <PowerhouseMark className="h-5 w-5 text-[rgba(243,245,247,0.7)]" />
-          <span className="font-heading text-[15px] font-semibold tracking-tight text-t1">
+          <span className="font-heading text-[15px] font-semibold tracking-normal text-t1">
             Powerhouse
           </span>
           <div className="h-3.5 w-px bg-border-md" aria-hidden="true" />
-          <span className="text-[11px] font-medium tracking-wide text-t3">Use Cases</span>
+          <span className="text-[11px] font-medium tracking-normal text-t3">Examples</span>
         </Link>
 
         <div className="flex items-center gap-3">
           <Button variant="outline" className="h-8 rounded-md px-4 text-[13px] max-md:hidden" asChild>
-            <Link href="/use-cases">All use cases</Link>
+            <Link href="/use-cases">All examples</Link>
           </Button>
           <Button variant="cta" className="h-8 rounded-md px-4 text-[13px]" asChild>
-            <Link href="mailto:hello@powerhouse.inc?subject=Enterprise%20Demo%20Request">
-              Demo
-            </Link>
+            <a href={BAI_ENGAGEMENT_URL}>Map workflow</a>
           </Button>
         </div>
       </SectionContainer>
@@ -43,7 +42,7 @@ function UseCaseNav({ useCase }: { useCase: UseCaseDetail }) {
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-t3">
+    <div className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-normal text-t3">
       <span
         className="h-[5px] w-[5px] rounded-full bg-[var(--uc-accent)]"
         aria-hidden="true"
@@ -263,7 +262,7 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
     <>
       <LandingLenis />
       <GrainOverlay />
-      <UseCaseNav useCase={useCase} />
+      <UseCaseNav />
 
       <main
         className="relative overflow-hidden"
@@ -286,17 +285,17 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
               className="mb-8 inline-flex items-center gap-2 text-[13px] font-medium text-t3 transition-colors hover:text-t1"
             >
               <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-              Use cases
+              Product examples
             </Link>
 
             <div className="inline-flex w-fit items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-[12px] text-t3">
               <span className="h-[5px] w-[5px] shrink-0 rounded-full bg-[var(--uc-accent)]" aria-hidden="true" />
-              <span className="font-semibold uppercase tracking-[0.12em] text-t2">Use case</span>
+              <span className="font-semibold uppercase tracking-normal text-t2">Use case</span>
               <span className="h-3 w-px bg-border-md" aria-hidden="true" />
               <span>{useCase.domain}</span>
             </div>
 
-            <h1 className="mt-6 max-w-[16ch] text-pretty text-[clamp(38px,5vw,64px)] font-[680] leading-[0.98] tracking-[-0.05em] text-t1 font-heading">
+            <h1 className="mt-6 max-w-[16ch] text-pretty text-[clamp(38px,5vw,64px)] font-[680] leading-[0.98] tracking-normal text-t1 font-heading">
               {useCase.title}
             </h1>
 
@@ -306,9 +305,7 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
 
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <Button variant="cta" className="h-10 rounded-md px-5 text-[13px] font-medium" asChild>
-                <Link href="mailto:hello@powerhouse.inc?subject=Enterprise%20Demo%20Request">
-                  Request a demo
-                </Link>
+                <a href={BAI_ENGAGEMENT_URL}>Map your first workflow</a>
               </Button>
               {useCase.liveUrl ? (
                 <Button variant="outline" className="h-10 rounded-md px-5 text-[13px] font-medium" asChild>
@@ -321,7 +318,7 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
             </div>
 
             <div className="mt-10 rounded-3xl border border-[color:var(--uc-accent-soft)] bg-[linear-gradient(135deg,var(--uc-accent-soft),rgba(255,255,255,0.03))] p-6 md:p-7">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.13em] text-t3">
+              <p className="text-[11px] font-semibold uppercase tracking-normal text-t3">
                 In short
               </p>
               <p className="mt-3 max-w-[60rem] text-[15px] leading-[1.78] text-t1 md:text-[16px]">
@@ -349,10 +346,10 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
         <section className="border-t border-border py-16 md:py-20">
           <SectionContainer className="max-w-[1180px]">
             <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 md:p-10">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.13em] text-t3">
+              <p className="text-[11px] font-semibold uppercase tracking-normal text-t3">
                 Same framework, your domain
               </p>
-              <h2 className="mt-3 max-w-[24ch] text-[clamp(26px,3vw,38px)] font-[680] leading-[1.08] tracking-[-0.04em] text-t1 font-heading">
+              <h2 className="mt-3 max-w-[24ch] text-[clamp(26px,3vw,38px)] font-[680] leading-[1.08] tracking-normal text-t1 font-heading">
                 Have a problem that looks nothing like these?
               </h2>
               <p className="mt-4 max-w-[44rem] text-[16px] leading-[1.78] text-t2">
@@ -361,15 +358,13 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
               </p>
               <div className="mt-7 flex flex-wrap items-center gap-3">
                 <Button variant="cta" className="h-10 rounded-md px-5 text-[13px] font-medium" asChild>
-                  <Link href="mailto:hello@powerhouse.inc?subject=Enterprise%20Demo%20Request">
-                    Request a demo
-                  </Link>
+                  <a href={BAI_ENGAGEMENT_URL}>Map your first workflow</a>
                 </Button>
                 <Link
                   href="/use-cases"
                   className="inline-flex items-center gap-2 text-[14px] font-medium text-t1 transition-colors hover:text-[var(--uc-accent)]"
                 >
-                  See all use cases
+                  See all examples
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
               </div>

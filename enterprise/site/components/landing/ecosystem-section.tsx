@@ -75,7 +75,7 @@ export function EcosystemSection() {
     <section ref={rootRef} className="py-24 border-t border-border">
       <SectionContainer>
         <div className="mb-14 fade-up">
-<h2 className="text-[clamp(32px,3.4vw,46px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading mb-3">
+<h2 className="text-[clamp(32px,3.4vw,46px)] font-[680] leading-[1.06] tracking-normal text-t1 font-heading mb-3">
             Infrastructure, agents, and experts.
             <br />
             <span className="text-t2">Ready to deploy.</span>
@@ -95,7 +95,7 @@ export function EcosystemSection() {
               <img src="/logos/vetra-icon.svg" alt="" aria-hidden="true" className="w-5 h-5" />
               <h3 className="text-lg font-semibold text-t1 font-heading">Vetra</h3>
             </div>
-            <p className="text-[11px] font-semibold tracking-[0.06em] uppercase text-t3 mb-4">
+            <p className="text-[11px] font-semibold tracking-normal uppercase text-t3 mb-4">
               Infrastructure Platform
             </p>
             <p className="text-sm leading-[1.72] text-t2 mb-6">
@@ -118,7 +118,7 @@ export function EcosystemSection() {
               <img src="/logos/achra-icon.svg" alt="" aria-hidden="true" className="w-5 h-5" />
               <h3 className="text-lg font-semibold text-t1 font-heading">Achra</h3>
             </div>
-            <p className="text-[11px] font-semibold tracking-[0.06em] uppercase text-t3 mb-4">
+            <p className="text-[11px] font-semibold tracking-normal uppercase text-t3 mb-4">
               Builder &amp; operator marketplace
             </p>
             <p className="text-sm leading-[1.72] text-t2 mb-6">

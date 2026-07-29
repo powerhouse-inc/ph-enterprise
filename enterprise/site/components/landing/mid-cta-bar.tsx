@@ -13,7 +13,7 @@ export function MidCtaBar() {
     <div ref={rootRef} className="border-t border-b border-border py-7 bg-surface">
       <SectionContainer>
         <div className="flex items-center justify-between gap-6 flex-wrap fade-up max-md:flex-col max-md:items-start">
-          <p className="text-base font-medium text-t1 tracking-tight">
+          <p className="text-base font-medium text-t1 tracking-normal">
             Ready to see AI-native operations on your own infrastructure?
           </p>
           <div className="flex items-center gap-4 flex-wrap">

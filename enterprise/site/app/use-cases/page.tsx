@@ -2,13 +2,16 @@ import type { Metadata } from "next";
 import { UseCasesIndexPage } from "@/components/use-case/use-cases-index-page";
 
 export const metadata: Metadata = {
-  title: "Use Cases",
+  title: "Product Examples",
   description:
-    "A few of the things teams have built on Powerhouse — the same building blocks across commercial billing, legal operations, construction data, and open funding standards.",
+    "Concrete workflow software examples built on Powerhouse, including dashboards, operational hubs, subscription workflows, and provenance-backed records.",
+  alternates: {
+    canonical: "/use-cases",
+  },
   openGraph: {
-    title: "Use Cases - Powerhouse Enterprise",
+    title: "Product Examples - Powerhouse Enterprise",
     description:
-      "One framework, many domains. A look at what teams have built on Powerhouse.",
+      "Concrete workflow software examples built on Powerhouse.",
     url: "/use-cases",
   },
 };

@@ -55,7 +55,7 @@ export function LandingHero() {
         )}
       >
         <div>
-<h1 className="hero-headline text-[clamp(44px,6vw,80px)] font-[680] leading-[1.04] tracking-[-0.04em] text-t1 mb-7 max-md:tracking-[-0.03em] font-heading">
+<h1 className="hero-headline text-[clamp(44px,6vw,80px)] font-[680] leading-[1.04] tracking-normal text-t1 mb-7 max-md:tracking-normal font-heading">
             <span className="word inline-block opacity-0 translate-y-[42px] text-t2">
               The
             </span>{" "}

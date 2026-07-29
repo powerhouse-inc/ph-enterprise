@@ -16,7 +16,7 @@ export function ComparisonSection() {
       <SectionContainer>
         {/* Header */}
         <div className="mb-8 fade-up max-w-[620px]">
-<h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading mb-4">
+<h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-normal text-t1 font-heading mb-4">
             Your vendors are adding AI.
             <br />
             <span className="text-t2">But on whose terms?</span>
@@ -33,12 +33,12 @@ export function ComparisonSection() {
         <div className="fade-up">
           {/* Column headers — desktop only */}
           <div className="grid grid-cols-[1fr_1fr] gap-3 mb-3 items-end max-md:hidden" style={{ paddingLeft: "clamp(120px, 14vw, 168px)" }}>
-            <div className="text-[11px] font-semibold tracking-[0.06em] uppercase text-t3 px-5 pb-1.5">
+            <div className="text-[11px] font-semibold tracking-normal uppercase text-t3 px-5 pb-1.5">
               Cloud AI + Legacy
             </div>
             <div className="flex items-center gap-2 px-5">
               <PowerhouseMark className="w-[22px] h-[22px] text-brand shrink-0" />
-              <span className="text-[22px] font-semibold tracking-tight gradient-text font-heading leading-none">
+              <span className="text-[22px] font-semibold tracking-normal gradient-text font-heading leading-none">
                 Powerhouse
               </span>
             </div>
@@ -54,7 +54,7 @@ export function ComparisonSection() {
                 <div className="grid grid-cols-[clamp(120px,14vw,168px)_1fr_1fr] gap-3 items-stretch max-md:grid-cols-1 max-md:gap-0">
                   {/* Dimension label */}
                   <div className="flex items-center px-4 py-4 max-md:pb-2 max-md:pt-4">
-                    <span className="text-[13px] font-semibold text-t1 tracking-tight">
+                    <span className="text-[13px] font-semibold text-t1 tracking-normal">
                       {row.dimension}
                     </span>
                   </div>

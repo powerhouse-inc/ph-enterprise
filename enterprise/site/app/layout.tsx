@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { Poppins, Inter } from "next/font/google";
-import { DemoModalProvider } from "@/components/demo/demo-modal";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -18,54 +18,48 @@ const poppins = Poppins({
   display: "swap",
 });
 
-const siteDescription =
-  "Powerhouse Enterprise: AI-native operations infrastructure designed for organizations where data confidentiality is a core requirement. Private by architecture — local deployment options, AI Act-aware governance, human oversight by design.";
-
-function siteUrl() {
-  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
-  if (explicit) return explicit.replace(/\/$/, "");
-  if (process.env.VERCEL_URL)
-    return `https://${process.env.VERCEL_URL.replace(/\/$/, "")}`;
-  return "http://localhost:3000";
-}
-
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
   title: {
-    default:
-      "Powerhouse Enterprise — AI-Native Operations. Private by Architecture.",
-    template: "%s — Powerhouse Enterprise",
+    default: SITE_TITLE,
+    template: `%s - ${SITE_NAME}`,
   },
-  description: siteDescription,
+  description: SITE_DESCRIPTION,
   keywords: [
-    "enterprise AI infrastructure",
-    "private AI operations",
-    "data sovereignty",
-    "AI-native architecture",
-    "on-premise AI",
-    "local AI models",
-    "enterprise data privacy",
-    "AI agent infrastructure",
+    "owned operational software",
+    "private workflow software",
+    "document-heavy workflows",
+    "AI powered operations",
+    "open-source workflow platform",
+    "human approval AI",
+    "portable workflow data",
+    "Powerhouse Enterprise",
   ],
   authors: [{ name: "Powerhouse" }],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "Powerhouse Enterprise",
-    title:
-      "Powerhouse Enterprise — AI-Native Operations. Private by Architecture.",
-    description: siteDescription,
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     url: "/",
   },
   twitter: {
     card: "summary_large_image",
-    title:
-      "Powerhouse Enterprise — AI-Native Operations. Private by Architecture.",
-    description: siteDescription,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
   },
   robots: {
     index: true,
     follow: true,
+  },
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/apple-icon.svg",
   },
 };
 
@@ -92,7 +86,7 @@ export default function RootLayout({
               "@type": "Organization",
               name: "Powerhouse",
               url: siteUrl(),
-              description: siteDescription,
+              description: SITE_DESCRIPTION,
               contactPoint: {
                 "@type": "ContactPoint",
                 email: "hello@powerhouse.inc",
@@ -101,7 +95,7 @@ export default function RootLayout({
             }),
           }}
         />
-        <DemoModalProvider>{children}</DemoModalProvider>
+        {children}
         <Analytics />
       </body>
     </html>

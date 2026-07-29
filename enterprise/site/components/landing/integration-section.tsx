@@ -14,7 +14,7 @@ export function IntegrationSection() {
       <SectionContainer>
         <div className="grid grid-cols-2 gap-16 max-md:grid-cols-1 max-md:gap-10">
           <div className="fade-up">
-<h2 className="text-[clamp(32px,3.4vw,46px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading mb-5">
+<h2 className="text-[clamp(32px,3.4vw,46px)] font-[680] leading-[1.06] tracking-normal text-t1 font-heading mb-5">
               Connect everything.
               <br />
               <span className="text-t2">Expose nothing.</span>
@@ -33,7 +33,7 @@ export function IntegrationSection() {
           </div>
 
           <div className="fade-up">
-            <h3 className="text-[13px] font-semibold tracking-[0.06em] uppercase text-t3 mb-6">
+            <h3 className="text-[13px] font-semibold tracking-normal uppercase text-t3 mb-6">
               Tiered AI Model Access
             </h3>
             <div className="divide-y divide-border border-t border-b border-border">

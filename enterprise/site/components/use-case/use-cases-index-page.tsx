@@ -7,6 +7,7 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingLenis } from "@/components/landing/landing-lenis";
 import { GrainOverlay } from "@/components/landing/grain-overlay";
 import { USE_CASE_DETAILS, USE_CASE_ORDER } from "@/data/use-cases-detail";
+import { BAI_ENGAGEMENT_URL } from "@/lib/site";
 import type { CSSWithVars } from "@/lib/utils";
 
 function IndexNav() {
@@ -15,14 +16,14 @@ function IndexNav() {
       <SectionContainer className="flex h-full max-w-[1180px] items-center justify-between gap-6">
         <Link href="/" className="flex min-w-0 shrink-0 items-center gap-2.5" aria-label="Powerhouse Enterprise">
           <PowerhouseMark className="h-5 w-5 text-[rgba(243,245,247,0.7)]" />
-          <span className="font-heading text-[15px] font-semibold tracking-tight text-t1">
+          <span className="font-heading text-[15px] font-semibold tracking-normal text-t1">
             Powerhouse
           </span>
           <div className="h-3.5 w-px bg-border-md" aria-hidden="true" />
-          <span className="text-[11px] font-medium tracking-wide text-t3">Use Cases</span>
+          <span className="text-[11px] font-medium tracking-normal text-t3">Examples</span>
         </Link>
         <Button variant="cta" className="h-8 rounded-md px-4 text-[13px]" asChild>
-          <Link href="mailto:hello@powerhouse.inc?subject=Enterprise%20Demo%20Request">Demo</Link>
+          <a href={BAI_ENGAGEMENT_URL}>Map workflow</a>
         </Button>
       </SectionContainer>
     </header>
@@ -52,21 +53,22 @@ export function UseCasesIndexPage() {
               Home
             </Link>
 
-            <div className="mb-5 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-t3">
+            <div className="mb-5 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-normal text-t3">
               <span className="h-[5px] w-[5px] rounded-full bg-brand" aria-hidden="true" />
-              Use cases
+              Product examples
             </div>
 
-            <h1 className="max-w-[18ch] text-[clamp(38px,4.6vw,62px)] font-[680] leading-[1.0] tracking-[-0.05em] text-t1 font-heading">
-              One framework.
+            <h1 className="max-w-[18ch] text-[clamp(38px,4.6vw,62px)] font-[680] leading-[1.0] tracking-normal text-t1 font-heading">
+              Real workflow software.
               <br />
-              <span className="text-t2">Many domains.</span>
+              <span className="text-t2">Built on Powerhouse.</span>
             </h1>
 
             <p className="mt-7 max-w-[48rem] text-[16px] leading-[1.8] text-t2 md:text-[17px]">
-              A few of the things teams have built on Powerhouse. Different problems, same
-              building blocks — document models, configurable state, signed operation history,
-              and live editors and dashboards.
+              A few of the things teams have built on Powerhouse. Different
+              workflows, same ownership pattern: structured records,
+              configurable state, signed operation history, and live editors and
+              dashboards.
             </p>
 
             <div className="mt-12 grid gap-5 md:grid-cols-2">
@@ -79,10 +81,10 @@ export function UseCasesIndexPage() {
                     className="group relative flex h-full flex-col rounded-3xl border border-border bg-surface p-7 transition-all hover:border-border-md"
                     style={{ "--uc-accent": uc.accent } as CSSWithVars}
                   >
-                    <span className="inline-flex w-fit items-center rounded-md border border-border bg-white/[0.02] px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.1em] text-t3">
+                    <span className="inline-flex w-fit items-center rounded-md border border-border bg-white/[0.02] px-2.5 py-1 text-[11px] font-medium uppercase tracking-normal text-t3">
                       {uc.category}
                     </span>
-                    <h2 className="mt-3 text-[22px] font-semibold tracking-[-0.02em] text-t1 font-heading">
+                    <h2 className="mt-3 text-[22px] font-semibold tracking-normal text-t1 font-heading">
                       {uc.title}
                     </h2>
                     <p className="mt-3 text-[14px] leading-[1.72] text-t2">{uc.oneLiner}</p>

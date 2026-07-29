@@ -13,7 +13,7 @@ export function PrivacySection() {
     <section ref={rootRef} id="privacy" className="py-24 border-t border-border">
       <SectionContainer>
         <div className="mb-14 fade-up">
-<h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading">
+<h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-normal text-t1 font-heading">
             Built into the architecture.
             <br />
             <span className="text-t2">Not bolted on.</span>
@@ -26,7 +26,7 @@ export function PrivacySection() {
               key={feat.title}
               className="fade-up rounded-2xl bg-surface border border-border p-7 transition-all hover:border-border-md"
             >
-              <h3 className="text-base font-semibold tracking-tight text-t1 mb-3 font-heading">
+              <h3 className="text-base font-semibold tracking-normal text-t1 mb-3 font-heading">
                 {feat.title}
               </h3>
               <p className="text-sm leading-[1.72] text-t2">

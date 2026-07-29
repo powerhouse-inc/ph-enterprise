@@ -53,7 +53,7 @@ export function WhySection() {
         <div className="grid grid-cols-[1fr_1fr] gap-16 max-md:grid-cols-1 max-md:gap-10">
           {/* Left — anchored copy */}
           <div className="fade-up md:sticky md:top-28 md:self-start">
-<h2 className="text-[clamp(32px,3.4vw,46px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading mb-5">
+<h2 className="text-[clamp(32px,3.4vw,46px)] font-[680] leading-[1.06] tracking-normal text-t1 font-heading mb-5">
               We build on
               <br />
               <span className="text-t2">what we ship.</span>
@@ -78,7 +78,7 @@ export function WhySection() {
                 key={item.title}
                 className="fade-up rounded-xl bg-surface border border-border p-6 transition-all hover:border-border-md flex flex-col"
               >
-                <h3 className="text-[15px] font-semibold tracking-tight text-t1 mb-2 font-heading">
+                <h3 className="text-[15px] font-semibold tracking-normal text-t1 mb-2 font-heading">
                   {item.title}
                 </h3>
                 <p className="text-[13px] leading-[1.68] text-t2">

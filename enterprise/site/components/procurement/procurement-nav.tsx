@@ -11,11 +11,11 @@ export function ProcurementNav() {
         <div className="flex min-w-0 items-center gap-4">
           <Link href="/" className="flex shrink-0 items-center gap-2.5" aria-label="Powerhouse Enterprise">
             <PowerhouseMark className="h-5 w-5 text-[rgba(243,245,247,0.7)]" />
-            <span className="font-heading text-[15px] font-semibold tracking-tight text-t1">
+            <span className="font-heading text-[15px] font-semibold tracking-normal text-t1">
               Powerhouse
             </span>
             <div className="h-3.5 w-px bg-border-md" aria-hidden="true" />
-            <span className="text-[11px] font-medium tracking-wide text-t3">
+            <span className="text-[11px] font-medium tracking-normal text-t3">
               Enterprise
             </span>
           </Link>
@@ -38,10 +38,10 @@ export function ProcurementNav() {
           </nav>
 
           <Button variant="outline" className="h-8 rounded-md px-4 text-[13px] max-md:hidden" asChild>
-            <Link href="/#platform">See the platform</Link>
+            <Link href="/architecture">Architecture</Link>
           </Button>
           <Button variant="cta" className="h-8 rounded-md px-4 text-[13px]" asChild>
-            <Link href="/#get-started">Request a Demo</Link>
+            <a href="https://bai.powerhouse.io/#contact">Map workflow</a>
           </Button>
         </div>
       </SectionContainer>

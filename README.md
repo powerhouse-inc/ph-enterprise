@@ -1,6 +1,8 @@
 # Powerhouse Enterprise
 
-Marketing kit and landing page for [enterprise.powerhouse.io](https://enterprise.powerhouse.io) — AI-native operations infrastructure for industries where data confidentiality is non-negotiable.
+Marketing kit and public site for [enterprise.powerhouse.io](https://enterprise.powerhouse.io).
+
+Canonical promise: **Turn private, document-heavy workflows into AI powered software you own.**
 
 ## Repository structure
 
@@ -42,9 +44,9 @@ npm run build
 
 ## Messaging
 
-The latest copy is `02.messaging/v7.md`. It targets CTOs / VPs of Engineering at organizations in legal, HR, finance, and procurement where data privacy is a non-negotiable requirement.
+The canonical positioning is `MESSAGE.md`. It targets operations and technology leaders responsible for valuable, private, document-heavy workflows fragmented across documents, spreadsheets, inboxes, and legacy systems.
 
-The site funnels to [bai.powerhouse.io](https://bai.powerhouse.io) for AI readiness assessments and engagement.
+The site funnels to [bai.powerhouse.io](https://bai.powerhouse.io) for the BAI five-day workflow assessment and first-workflow engagement.
 
 ## Design system
 

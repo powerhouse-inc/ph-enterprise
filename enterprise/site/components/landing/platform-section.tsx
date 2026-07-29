@@ -22,10 +22,10 @@ function PlatformCard({ comp }: { comp: PlatformComponent }) {
         aria-hidden="true"
         className="w-8 h-8 mb-4"
       />
-      <h3 className="text-xl font-semibold tracking-tight text-t1 font-heading mb-2">
+      <h3 className="text-xl font-semibold tracking-normal text-t1 font-heading mb-2">
         {comp.name}
       </h3>
-      <p className="text-[11px] font-semibold tracking-[0.08em] uppercase text-t3">
+      <p className="text-[11px] font-semibold tracking-normal uppercase text-t3">
         {comp.tagline}
       </p>
       <span className="inline-block mt-8 text-[13px] font-medium text-t3 group-hover:text-t1 transition-colors">
@@ -43,7 +43,7 @@ export function PlatformSection() {
     <section ref={rootRef} id="platform" className="py-24 border-t border-border">
       <SectionContainer>
         <div className="mb-14 fade-up">
-<h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading mb-3">
+<h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-normal text-t1 font-heading mb-3">
             Five components.
             <br />
             <span className="text-t2">Open architecture. Your brand.</span>
