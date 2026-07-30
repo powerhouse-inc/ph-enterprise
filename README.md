@@ -48,6 +48,15 @@ The canonical positioning is `MESSAGE.md`. It targets operations and technology 
 
 The site funnels to [bai.powerhouse.io](https://bai.powerhouse.io) for the BAI five-day workflow assessment and first-workflow engagement.
 
+## Deslop standards
+
+Use these files before shipping new copy or UI:
+
+- `COPY_STANDARD.md` - controlled-language, proof, terminology, and anti-AI-writing rules
+- `DESIGN_STANDARD.md` - visual hierarchy, UI quality, responsive, and anti-generic-design rules
+- `DESLOP_CHECKLIST.md` - pre-release checklist for copy, design, routes, metadata, build, and browser QA
+- `DESLOP_REPORT.md` - live audit log for findings, decisions, and remaining risks
+
 ## Design system
 
 `03.design-system/` contains the full brand identity:

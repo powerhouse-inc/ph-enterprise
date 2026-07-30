@@ -1,18 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import { Poppins, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const poppins = Poppins({
-  variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
@@ -64,7 +57,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0B0D0F",
+  themeColor: "#041322",
 };
 
 export default function RootLayout({
@@ -73,10 +66,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${poppins.variable} antialiased`}
-    >
+    <html lang="en" className={`${inter.variable} antialiased`}>
       <body className="min-h-full flex flex-col overflow-x-hidden">
         <script
           type="application/ld+json"
@@ -96,7 +86,7 @@ export default function RootLayout({
           }}
         />
         {children}
-        <Analytics />
+        {process.env.VERCEL === "1" ? <Analytics /> : null}
       </body>
     </html>
   );
