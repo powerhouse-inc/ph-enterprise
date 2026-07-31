@@ -23,7 +23,7 @@ export function UseCasesSection() {
     <section ref={rootRef} id="use-cases" className="py-24 border-t border-border">
       <SectionContainer>
         <div className="mb-14 fade-up">
-<h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-normal text-t1 font-heading">
+<h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading">
             Built for businesses taking back
             <br />
             <span className="text-t2">control of their operations.</span>
@@ -57,7 +57,7 @@ export function UseCasesSection() {
                         aria-hidden="true"
                       />
                     ) : null}
-                    <h3 className="text-lg font-semibold tracking-normal text-t1 font-heading">
+                    <h3 className="text-lg font-semibold tracking-tight text-t1 font-heading">
                       {uc.industry}
                     </h3>
                   </div>

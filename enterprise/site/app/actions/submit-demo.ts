@@ -13,6 +13,7 @@ export async function submitDemoRequest(
   _prev: DemoState,
   formData: FormData,
 ): Promise<DemoState> {
+  const intent = String(formData.get("intent") ?? "demo").trim();
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const company = String(formData.get("company") ?? "").trim();
@@ -26,7 +27,14 @@ export async function submitDemoRequest(
     return { ok: true };
   }
 
-  if (!name || !email || !company) {
+  if (intent === "workflow-email-signup" && !email) {
+    return {
+      ok: false,
+      error: "Please add your work email.",
+    };
+  }
+
+  if (intent !== "workflow-email-signup" && (!name || !email || !company)) {
     return {
       ok: false,
       error: "Please add your name, work email, and company.",
@@ -57,13 +65,16 @@ export async function submitDemoRequest(
       from,
       to,
       replyTo: email,
-      subject: `${topic}: ${company}`,
+      subject:
+        intent === "workflow-email-signup"
+          ? `${topic}: ${email}`
+          : `${topic}: ${company}`,
       text: [
         `New ${topic.toLowerCase()}`,
         "",
-        `Name:    ${name}`,
+        `Name:    ${name || "(not provided)"}`,
         `Email:   ${email}`,
-        `Company: ${company}`,
+        `Company: ${company || "(not provided)"}`,
         "",
         "Message:",
         message || "(none provided)",

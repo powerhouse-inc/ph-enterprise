@@ -2,7 +2,7 @@
 
 ## Audience
 
-Operations and technology leaders responsible for valuable, private, document-heavy workflows that are currently fragmented across documents, spreadsheets, inboxes, and legacy systems.
+Operations and technology leaders responsible for valuable, private, document-heavy workflows that are spread across documents, spreadsheets, inboxes, and legacy systems.
 
 These buyers are not looking for a generic AI assistant. They are trying to make high-value work safer, more structured, and more operable without giving up control of the workflow, data, deployment model, or software stack.
 
@@ -10,21 +10,21 @@ These buyers are not looking for a generic AI assistant. They are trying to make
 
 Owned operational software for private, document-heavy workflows.
 
-Powerhouse should be introduced as the open-source platform for building owned operational software. BAI should be introduced as the team that maps, builds, and deploys the first workflow. Vetra should be introduced as the tooling and deployment layer.
+Powerhouse should be introduced as the open-source platform for building owned operational software. BAI should be introduced as the engagement path for delivery after the Powerhouse proposition is clear. Vetra should be introduced as the tooling and deployment layer.
 
 ## Primary Promise
 
-Turn private, document-heavy workflows into AI powered software you own.
+Turn workflows into software you own.
 
 ## Problem
 
 Important operational work still lives across documents, spreadsheets, email threads, and legacy systems. That work is valuable precisely because it contains private context: approvals, exceptions, commercial terms, identities, obligations, and institutional judgment.
 
-AI cannot operate safely on that work when the underlying process has no structure, permissions, context, or attributable history. Pasting sensitive workflow fragments into a chatbot creates control, privacy, and auditability problems; replacing every incumbent system creates cost, disruption, and adoption risk.
+AI sees fragments rather than the complete process when the underlying workflow has no structure, permissions, context, or attributable history. That limits accuracy and makes automated actions difficult to trust. Pasting sensitive workflow fragments into external AI tools also creates control, privacy, and auditability problems; replacing every incumbent system creates cost, disruption, and adoption risk.
 
 ## Differentiated Value
 
-Powerhouse creates a structured workflow layer around existing systems so humans and scoped AI assistance can operate on the same owned software surface.
+Powerhouse creates a structured workflow layer around existing systems so humans and scoped AI assistance can operate on the same owned software surface. The product turns workflow context into AI-ready operational software without forcing a rip-and-replace migration.
 
 The differentiated value is ownership:
 
@@ -46,7 +46,7 @@ The differentiated value is ownership:
 ## Brand Architecture
 
 - **Powerhouse**: the open-source platform for building owned operational software.
-- **BAI**: the team that maps, builds, and deploys the first workflow.
+- **BAI**: the engagement path for delivery after the Powerhouse proposition is clear.
 - **Vetra**: the tooling and deployment layer for building, packaging, hosting, and operating Powerhouse deployments.
 - **Clint, Connect, Fusion, Switchboard, Renown**: supporting architecture. These names belong on the architecture page and in technical follow-up, not in the first homepage explanation.
 
@@ -55,6 +55,7 @@ The differentiated value is ownership:
 - owned operational software
 - private, document-heavy workflows
 - structured workflow layer
+- AI-ready operational software
 - scoped AI assistance
 - human approval
 - attributable history

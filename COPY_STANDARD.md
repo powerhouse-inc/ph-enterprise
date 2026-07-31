@@ -20,7 +20,7 @@ Use `MESSAGE.md` first. This file controls style, not positioning.
 
 The canonical promise is:
 
-> Turn private, document-heavy workflows into AI powered software you own.
+> Turn workflows into software you own.
 
 Do not rewrite that sentence unless `MESSAGE.md` changes.
 
@@ -51,7 +51,7 @@ senior operator. It should not sound like a SaaS landing-page generator.
    Target 12 to 22 words. Longer sentences need a clear reason.
 
 2. Put the actor near the verb.
-   Prefer "BAI maps the workflow" over "The workflow is mapped by BAI."
+   Prefer "Powerhouse maps the workflow" or "We map the workflow" over "The workflow is mapped by BAI."
 
 3. Use one idea per sentence.
    Split a sentence when it mixes problem, value, and proof.
@@ -115,6 +115,7 @@ Use these terms consistently:
 - owned operational software
 - private, document-heavy workflows
 - structured workflow layer
+- AI-ready operational software
 - scoped AI assistance
 - human approval
 - attributable history
@@ -134,6 +135,7 @@ Use these terms consistently:
 | magic, effortless, seamless | specific action or result |
 | autonomous agents | scoped AI assistance, unless autonomy is specifically true |
 | data sovereignty | private deployment options, portable data and schemas |
+| AI-compatible | AI-ready, then explain the structure and context that make it ready |
 | enterprise-grade | name the real capability |
 | unlock, unleash, supercharge | connect, structure, approve, retain |
 | all industries | the audience in `MESSAGE.md` |
@@ -166,6 +168,8 @@ Cut these patterns unless there is a clear reason:
 
 - H1 must use the canonical promise.
 - Supporting copy must name the audience, workflow type, and control model.
+- Do not use "sandbox" in the main proposition. Reserve it for assessment or
+  exploration environments.
 - CTA copy must be an action the prospect can actually take.
 
 ### Problem
@@ -173,11 +177,15 @@ Cut these patterns unless there is a clear reason:
 - Name the current places where work lives.
 - Explain why AI cannot safely operate without structure, permissions, and
   context.
+- Explain the causal chain: disconnected tools create fragments, AI lacks the
+  complete process, accuracy suffers, and unsafe workarounds expose data.
 - Do not turn the problem into fear marketing.
 
 ### How It Works
 
 - Use verbs: connect, structure, add, keep, retain.
+- Explain how workflow objects, permissions, approvals, and history create
+  operational context for scoped AI agents.
 - Explain the workflow before naming platform components.
 - Avoid implementation detail unless the page is technical.
 
@@ -222,4 +230,3 @@ Before copy ships, answer yes to each question:
 - Are vague AI words replaced with workflow objects and actions?
 - Are CTA destinations real?
 - Could a busy operations leader understand the page in one scan?
-

@@ -8,9 +8,10 @@ ships. It is a practical anti-slop gate for the public site.
 - anti-ui-slop: use as a lens for generic card grids, fake metrics, vague copy,
   decorative gradients, missing states, and interchangeable product UI:
   https://www.skills.sh/site/uizze.com/anti-ui-slop
-- Impeccable: use for design context, critique, polish, detector checks, and
-  browser-based iteration when installed:
+- Impeccable: use for design context, named critique/polish passes, detector
+  checks, browser iteration, and anti-slop patterns:
   https://impeccable.style/docs/
+  https://impeccable.style/slop/
 
 ## Product-Specific Design Intent
 
@@ -97,21 +98,24 @@ the page has no point of view.
 
 ## Color
 
-Use the established Powerhouse palette:
+Use the current public-site blueprint palette:
 
-- background: `#0B0D0F`
-- surface: `#141719`
-- lifted surface: `#1A1D22`
-- text primary: `#F3F5F7`
-- brand cyan: `#00D4FF`
-- brand purple: `#7A3AFF`
+- canvas: `#041322`
+- deep canvas: `#020914`
+- blueprint lift: `#06233A`
+- text primary: `#F8FBFF`
+- text secondary: `#C8DDF0`
+- text tertiary: `#8FB2CF`
+- accent green: `#04C161`
+- border: `rgba(170, 210, 240, 0.26)`
+- panel: `rgba(4, 19, 34, 0.72)`
 
 Rules:
 
-- Use cyan as the main action and proof accent.
-- Use purple sparingly.
+- Use green as the main action and proof accent.
 - Avoid purple-blue gradient domination.
-- Avoid decorative orbs, blobs, and bokeh backgrounds.
+- Avoid decorative orbs, blobs, bokeh, and radial spotlight glows.
+- Use solid text colors. Do not use gradient text for headings or metrics.
 - Avoid gray text on colored backgrounds unless contrast is verified.
 - Do not introduce one-off colors without updating this file.
 
@@ -119,8 +123,8 @@ Rules:
 
 Current type:
 
-- headings: Poppins
-- body: Inter
+- headings and body: Inter
+- metadata: system monospace
 
 Rules:
 
@@ -129,6 +133,9 @@ Rules:
 - Use 30 to 52px for section headings.
 - Use 38 to 72px for true hero headings.
 - Keep letter spacing at `0`.
+- Use monospace only for short technical metadata, nav labels, drawing stamps,
+  and compact controls.
+- Do not set long text in uppercase.
 - Do not scale font size with viewport width alone.
 - Keep body line length near 45 to 80 characters.
 - Use weight and color before adding new type sizes.
@@ -148,9 +155,13 @@ Rules:
 
 ## Radius, Borders, And Depth
 
-- Cards and panels use radius 8px or less.
-- Buttons use a modest radius.
+- Homepage panels use square corners.
+- Buttons use square technical controls.
+- Cards and panels on other routes use radius 8px or less unless the local
+  design system explicitly says otherwise.
 - Borders must be subtle.
+- Prefer borders and spacing before shadows.
+- Do not pair hairline borders with wide diffuse shadows.
 - Shadows should imply depth or focus, not decoration.
 - Sticky navigation can use blur and border, but must remain readable.
 
@@ -213,8 +224,11 @@ Avoid:
 
 Reject or revise:
 
+- hero eyebrow or pill chip above the H1
+- repeated tiny section numbers used as decoration
 - interchangeable feature card grids
 - decorative gradient blobs or orbs
+- radial spotlight glows
 - thick colored side-tab cards
 - cards inside cards
 - fake dashboards
@@ -223,11 +237,41 @@ Reject or revise:
 - vague dashboard labels
 - repeated hero-feature-proof templates
 - purple-blue gradient dominance
+- gradient text
 - glassmorphism used as a substitute for hierarchy
+- dark-mode glow effects used as decoration
 - animations that do not explain state
+- decorative pulsing status dots
+- fake terminal cursors
+- auto-scrolling marquees
+- image hover scaling
+- bounce or elastic easing on interface elements
 - hidden hover-only affordances
 - missing focus states
 - copy that could belong to any AI tool
+- generic SaaS buzzwords
+- repeated text inside one component
+- em-dash cadence in body copy
+
+## Impeccable Review Loop
+
+Use this loop for future public-page work:
+
+1. Context: read `MESSAGE.md`, `PRODUCT.md`, `DESIGN.md`, and this file.
+2. Distill: remove elements that do not explain the product or move a buyer.
+3. Typeset: check hierarchy, line length, body size, and label treatment.
+4. Layout: check section rhythm, column balance, gutters, and overflow.
+5. Clarify: rewrite vague labels and duplicated microcopy.
+6. Harden: test long text, mobile, reduced motion, missing images, and errors.
+7. Polish: run the final visual pass against screenshots, not memory.
+
+If Impeccable is installed, prefer:
+
+```text
+/impeccable critique the homepage
+/impeccable polish the homepage
+/impeccable audit the homepage
+```
 
 ## Responsive Rules
 
@@ -269,4 +313,3 @@ Before UI ships, answer yes to each question:
 - Are empty, loading, hover, focus, and reduced-motion states covered?
 - Did browser QA show no overlap, no blank states, no console errors, and no
   horizontal overflow?
-

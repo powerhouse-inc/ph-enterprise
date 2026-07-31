@@ -354,7 +354,7 @@ Reference the positioning brief (`../brief/`) for audience, emotional drivers, a
 | # | Element | Current intent | Notes |
 |---|---------|---------------|-------|
 | S6.1 | **CTA headline** | "Evaluate Switchboard for your integration landscape" | |
-| S6.2 | **CTA body** (line 161) | BAI maps existing systems, data flows, privacy requirements to Switchboard architecture | |
+| S6.2 | **CTA body** (line 161) | Powerhouse maps existing systems, data flows, and privacy requirements to Switchboard architecture | |
 
 ---
 

@@ -1,11 +1,19 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import { Inter } from "next/font/google";
+import { Poppins, Inter } from "next/font/google";
+import { DemoModalProvider } from "@/components/demo/demo-modal";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
@@ -22,7 +30,7 @@ export const metadata: Metadata = {
     "owned operational software",
     "private workflow software",
     "document-heavy workflows",
-    "AI powered operations",
+    "AI-ready operations",
     "open-source workflow platform",
     "human approval AI",
     "portable workflow data",
@@ -49,15 +57,10 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  icons: {
-    icon: "/icon.svg",
-    shortcut: "/icon.svg",
-    apple: "/apple-icon.svg",
-  },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#041322",
+  themeColor: "#0B0D0F",
 };
 
 export default function RootLayout({
@@ -66,7 +69,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} antialiased`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${poppins.variable} antialiased`}
+    >
       <body className="min-h-full flex flex-col overflow-x-hidden">
         <script
           type="application/ld+json"
@@ -85,8 +91,8 @@ export default function RootLayout({
             }),
           }}
         />
-        {children}
-        {process.env.VERCEL === "1" ? <Analytics /> : null}
+        <DemoModalProvider>{children}</DemoModalProvider>
+        <Analytics />
       </body>
     </html>
   );

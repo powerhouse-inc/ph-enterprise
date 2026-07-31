@@ -49,14 +49,16 @@ export function ProblemSection() {
       <SectionContainer>
         <div className="grid grid-cols-[1fr_1fr] gap-16 items-center max-md:grid-cols-1 max-md:gap-8 max-md:items-start">
           <div>
-            <p className="mb-4 text-[15px] font-medium text-t3">The problem.</p>
+            <p className="mb-4 text-[15px] font-medium text-t3">
+              Current reality.
+            </p>
             <h2
               ref={headingRef}
-              className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-normal text-t1 clip-reveal font-heading"
+              className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 clip-reveal font-heading"
             >
-              Every AI vendor
+              Siloed data limits
               <br />
-              wants your data.
+              what AI can deliver.
             </h2>
           </div>
 
@@ -65,9 +67,12 @@ export function ProblemSection() {
             className="opacity-0 translate-y-4 space-y-5"
           >
             <p className="text-[15px] leading-[1.72] text-t2">
-              Enterprise AI adoption is stalling because the deployment model is wrong.
-              Commercial AI often requires sending sensitive data to external
-              infrastructure, creating legal and operational risk.
+              Critical workflows are spread across disconnected tools, with no
+              shared structure, permissions, or history. AI sees fragments
+              rather than the complete process, limiting accuracy and making
+              automated actions difficult to trust. When teams move those
+              fragments into external AI tools, confidential data can also leave
+              the systems and controls designed to protect it.
             </p>
           </div>
         </div>

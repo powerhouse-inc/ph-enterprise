@@ -146,7 +146,7 @@ Design changes:
 - Added a concise workflow-boundary strip under the hero CTA on desktop.
 - Added a shorter mobile boundary line so the next section remains visible in
   the first viewport.
-- Reworked "Current reality" into a fragmented-context map instead of a plain
+- Reworked "Current reality" into a siloed-context map instead of a plain
   list.
 - Reworked "How Powerhouse works" into a pipeline-style sequence.
 - Reworked ownership into a control table.
@@ -176,3 +176,67 @@ Still needed:
 
 - Architecture page design deslop.
 - Use-cases page design deslop.
+
+## Impeccable Integration Pass
+
+Date: 2026-07-30
+
+External source:
+
+- https://impeccable.style/
+- https://impeccable.style/docs/
+- https://impeccable.style/slop/
+
+Repo-level changes:
+
+- Added `PRODUCT.md` for Impeccable-style product context.
+- Added `DESIGN.md` for Impeccable-style visual system context.
+- Updated `DESIGN_STANDARD.md` with the current blueprint palette, typography,
+  radius/depth rules, and Impeccable anti-slop gate.
+- Updated `DESLOP_CHECKLIST.md` with explicit Impeccable checks.
+
+Homepage changes:
+
+- Removed repeated tiny section-number eyebrows.
+- Removed decorative radial spotlight background.
+- Removed wide glow shadows from blueprint panels and primary CTA.
+- Removed obsolete global gradient-text, feature-card accent, and side-accent
+  helpers from `globals.css`; old unused landing components remain preserved for
+  a later archive/removal decision.
+- Kept the blueprint grid because it supports the technical drawing metaphor.
+
+Impeccable-derived findings addressed:
+
+- Hero eyebrow/pill chip: removed in the prior hero cleanup.
+- Tiny numbered section labels: removed.
+- Radial decorative glow: removed.
+- Dark-mode glow effect: reduced.
+
+Still needed:
+
+- Run `npx impeccable detect enterprise/site` only if the user explicitly
+  approves running a third-party CLI over local source files.
+
+Checks run:
+
+- Local Impeccable-style source scan on homepage-related files passed; remaining
+  matches were only the anti-slop terms documented in standards files.
+- `git diff --check` passed.
+- `npm run lint` passed.
+- `npm run build` passed.
+- Desktop browser QA passed on local production server port 3000.
+- Mobile browser QA passed on local production server port 3000.
+- Browser QA showed no console errors, no page errors, no 404 responses, no
+  missing images, no horizontal overflow, no hero tag, no repeated section
+  number labels, and next-section visibility on both desktop and mobile.
+
+Screenshots:
+
+- `/private/tmp/ph-enterprise-impeccable-desktop-viewport.png`
+- `/private/tmp/ph-enterprise-impeccable-mobile-viewport.png`
+
+Blocked:
+
+- Direct `npx impeccable detect ...` was not run. The environment rejected the
+  third-party CLI execution because it could expose local source files. Run it
+  only after explicit approval for that risk.

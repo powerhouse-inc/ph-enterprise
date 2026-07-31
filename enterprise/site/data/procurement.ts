@@ -54,7 +54,6 @@ export type ProcurementCta = {
 
 export const PROCUREMENT_BREADCRUMBS = [
   { label: "Enterprise Home", href: "/" },
-  { label: "Proof", href: "/#proof" },
   { label: "Procurement" },
 ] as const;
 
@@ -74,7 +73,7 @@ export const PROCUREMENT_HERO = {
   subhead:
     "79% of supplier teams use AI to draft RFPs. Only 4% of procurement teams have meaningful AI on the evaluation side. The volume is up. The quality is harder to read. Your negotiation positions are too sensitive to send to commercial AI services. Powerhouse is the workflow layer that closes the asymmetry — locally, defensibly, on your data.",
   primaryCta: {
-    label: "Map workflow with BAI",
+    label: "Map workflow with Powerhouse",
     href: "https://bai.powerhouse.io/#contact",
     external: true,
   },

@@ -1,61 +1,43 @@
+"use client";
+
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { useRef } from "react";
 import { PowerhouseMark } from "@/components/powerhouse-mark";
-import { Button } from "@/components/ui/button";
-import { NAV_LINKS } from "@/data/nav";
-import { BAI_ENGAGEMENT_URL } from "@/lib/site";
+import { ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { SectionContainer } from "./section-container";
+import { WorkflowSignupButton } from "./workflow-signup-button";
 
 export function LandingNav() {
-  return (
-    <header className="sticky top-0 left-0 right-0 z-200 h-[64px] border-b border-border bg-[rgba(4,19,34,0.90)] backdrop-blur-[18px]">
-      <SectionContainer className="flex h-full items-center justify-between gap-6">
-        <Link
-          href="/"
-          className="flex min-w-0 shrink-0 items-center gap-2.5"
-          aria-label="Powerhouse Enterprise"
-        >
-          <PowerhouseMark className="h-5 w-5 text-brand" />
-          <span className="font-heading text-[15px] font-semibold tracking-normal text-t1">
-            Powerhouse
-          </span>
-          <div className="h-3.5 w-px bg-border-md" aria-hidden="true" />
-          <span className="font-mono text-[11px] font-medium uppercase tracking-normal text-t3">
-            Enterprise
-          </span>
-        </Link>
+  const headerRef = useRef<HTMLElement>(null);
 
-        <div className="flex items-center gap-5">
-          <nav aria-label="Primary navigation" className="max-md:hidden">
-            <ul className="flex list-none items-center gap-5" role="list">
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
-                  {link.route ? (
-                    <Link
-                      href={link.href}
-                      className="font-mono text-[12px] font-medium uppercase tracking-normal text-t2 transition-colors hover:text-brand"
-                    >
-                      {link.label}
-                    </Link>
-                  ) : (
-                    <a
-                      href={link.href}
-                      className="font-mono text-[12px] font-medium uppercase tracking-normal text-t2 transition-colors hover:text-brand"
-                    >
-                      {link.label}
-                    </a>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <Button variant="cta" className="h-9 px-4 text-[12px]" asChild>
-            <a href={BAI_ENGAGEMENT_URL}>
-              Map workflow
-              <ArrowRight className="ml-1.5 h-3.5 w-3.5" aria-hidden="true" />
-            </a>
-          </Button>
-        </div>
+  useGSAP(
+    (_, contextSafe) => {
+      const cs = contextSafe!;
+      const nav = headerRef.current;
+      if (!nav) return;
+
+      ScrollTrigger.create({
+        start: "top -20",
+        onEnter: cs(() => nav.classList.add("scrolled")),
+        onLeaveBack: cs(() => nav.classList.remove("scrolled")),
+      });
+    },
+    { scope: headerRef },
+  );
+
+  return (
+    <header
+      ref={headerRef}
+      className="fixed top-0 left-0 right-0 z-200 h-[58px] flex items-center border-b border-transparent transition-all duration-400 [&.scrolled]:bg-[rgba(11,13,15,0.85)] [&.scrolled]:backdrop-blur-[24px] [&.scrolled]:border-border"
+    >
+      <SectionContainer className="flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-2.5" aria-label="Powerhouse Enterprise">
+          <PowerhouseMark className="w-5 h-5 text-[rgba(243,245,247,0.65)]" />
+          <span className="text-[15px] font-semibold tracking-tight text-t1 font-heading">Powerhouse</span>
+          <div className="w-px h-3.5 bg-border-md" aria-hidden="true" />
+          <span className="text-[11px] font-medium text-t3 tracking-wide">Enterprise</span>
+        </Link>
+        <WorkflowSignupButton />
       </SectionContainer>
     </header>
   );

@@ -44,7 +44,7 @@ const roles = [
   {
     name: "BAI",
     role: "First-workflow delivery team",
-    body: "The team that maps the target workflow, designs the operating model, builds the first deployment, and hands over a working system.",
+    body: "The delivery team behind the first workflow engagement: operating model, first deployment, and handover.",
   },
   {
     name: "Vetra",
@@ -326,8 +326,8 @@ export default function ArchitecturePage() {
                     Map the first private workflow before choosing components.
                   </h2>
                   <p className="mt-4 max-w-[62ch] text-[15px] leading-[1.72] text-t2">
-                    BAI identifies the workflow, source systems, approval model,
-                    data boundaries, and deployment path. The component choices
+                    We identify the workflow, source systems, approval model,
+                    data boundaries, and deployment path. Component choices
                     follow from that map.
                   </p>
                 </div>

@@ -9,6 +9,8 @@ copy/design pass.
 - [ ] Confirm no deployment or domain action is included unless explicitly
       requested.
 - [ ] Read `MESSAGE.md`.
+- [ ] Read `PRODUCT.md`.
+- [ ] Read `DESIGN.md`.
 - [ ] Read `COPY_STANDARD.md`.
 - [ ] Read `DESIGN_STANDARD.md`.
 - [ ] Preserve unrelated work in the git tree.
@@ -42,13 +44,30 @@ copy/design pass.
 - [ ] The first viewport explains the proposition and shows the primary CTA.
 - [ ] The next section is visible or clearly hinted on desktop and mobile.
 - [ ] The page uses real product screenshots or concrete system visuals.
+- [ ] No hero eyebrow or pill chip sits above the H1.
+- [ ] No repeated tiny section numbers are used as decoration.
 - [ ] No nested cards remain.
 - [ ] No generic feature-card grid carries the story.
 - [ ] Visual hierarchy is obvious in a 10-second glance test.
 - [ ] Typography follows the standard.
 - [ ] Colors follow the standard.
+- [ ] No gradient text, radial glow, glassmorphism, or dark-mode glow effect is
+      used as decoration.
 - [ ] Icons are useful, not ornamental.
 - [ ] Motion is purposeful and respects reduced motion.
+
+## 3A. Impeccable Anti-Slop Gate
+
+- [ ] Fonts, colors, radius, and type sizes match `DESIGN.md`.
+- [ ] No side-tab accent card, ghost card, or over-rounded small card remains.
+- [ ] Type hierarchy is not flat.
+- [ ] Body copy line length stays under roughly 80 characters.
+- [ ] Text does not overflow or touch the viewport edge.
+- [ ] No decorative pulse, fake cursor, marquee, bounce easing, or image hover
+      scale is present.
+- [ ] Copy avoids generic SaaS buzzwords, repeated labels, manufactured
+      aphorisms, and em-dash cadence.
+- [ ] Content is visible at rest without reveal animation.
 
 ## 4. Implementation Gate
 
@@ -111,4 +130,3 @@ Suggested Impeccable commands after install:
 /impeccable polish the homepage
 /impeccable audit the homepage
 ```
-

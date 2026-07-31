@@ -29,7 +29,7 @@ function ReportNav({ report }: { report: IndustryReport }) {
 
         <div className="flex items-center gap-3">
           <Button variant="outline" className="h-8 rounded-md px-4 text-[13px] max-md:hidden" asChild>
-            <Link href="/#proof">Proof</Link>
+            <Link href="/architecture">Architecture</Link>
           </Button>
           <Button variant="cta" className="h-8 rounded-md px-4 text-[13px]" asChild>
             <a href={BAI_ENGAGEMENT_URL}>Map workflow</a>

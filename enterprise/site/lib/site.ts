@@ -6,9 +6,9 @@ export const ASSESSMENT_EMAIL_URL =
 
 export const SITE_NAME = "Powerhouse Enterprise";
 export const SITE_TITLE =
-  "Powerhouse Enterprise - Owned AI Workflow Software";
+  "Powerhouse Enterprise - AI-Ready Workflow Software";
 export const SITE_DESCRIPTION =
-  "Turn private, document-heavy workflows into AI powered software you own. Powerhouse is the open-source platform for structured workflow software with scoped AI assistance, human approval, and attributable history.";
+  "Turn workflows into software you own. Powerhouse gives sensitive, document-heavy workflows shared structure, permissions, and history, creating operational software that teams and AI can use safely.";
 
 export function siteUrl() {
   return (process.env.NEXT_PUBLIC_SITE_URL ?? CANONICAL_SITE_URL).replace(
