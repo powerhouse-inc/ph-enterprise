@@ -12,6 +12,10 @@ export const metadata: Metadata = {
     description: report.metaDescription,
     url: "/hr",
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function HrRoute() {

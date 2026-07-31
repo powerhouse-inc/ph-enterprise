@@ -54,7 +54,6 @@ export type ProcurementCta = {
 
 export const PROCUREMENT_BREADCRUMBS = [
   { label: "Enterprise Home", href: "/" },
-  { label: "Industries", href: "/#use-cases" },
   { label: "Procurement" },
 ] as const;
 
@@ -74,13 +73,13 @@ export const PROCUREMENT_HERO = {
   subhead:
     "79% of supplier teams use AI to draft RFPs. Only 4% of procurement teams have meaningful AI on the evaluation side. The volume is up. The quality is harder to read. Your negotiation positions are too sensitive to send to commercial AI services. Powerhouse is the workflow layer that closes the asymmetry — locally, defensibly, on your data.",
   primaryCta: {
-    label: "Request a procurement demo",
-    href: "mailto:hello@powerhouse.inc?subject=Procurement%20Workflow%20Demo",
-    external: false,
+    label: "Map workflow with Powerhouse",
+    href: "https://bai.powerhouse.io/#contact",
+    external: true,
   },
   secondaryCta: {
-    label: "See the platform",
-    href: "/#platform",
+    label: "See the architecture",
+    href: "/architecture",
   },
 } as const;
 
@@ -317,15 +316,16 @@ export const PROCUREMENT_CTAS: readonly ProcurementCta[] = [
     title: "Explore the platform",
     body:
       "See how Clint, Connect, Switchboard, and Renown work together for procurement teams.",
-    href: "/#platform",
+    href: "/architecture",
     label: "See the platform",
   },
   {
     title: "Request a demo",
     body:
       "See the procurement workspace with a real RFP evaluation flow running on local AI.",
-    href: "/#get-started",
-    label: "Request a demo",
+    href: "https://bai.powerhouse.io/#contact",
+    label: "Map workflow",
+    external: true,
   },
 ] as const;
 

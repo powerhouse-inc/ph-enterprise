@@ -12,6 +12,10 @@ export const metadata: Metadata = {
     description: report.metaDescription,
     url: "/finance",
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function FinanceRoute() {

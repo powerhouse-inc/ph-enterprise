@@ -13,12 +13,19 @@ export function SolutionSection() {
     <section ref={rootRef} id="solution" className="py-24 border-t border-border">
       <SectionContainer>
         <div className="mb-14 fade-up">
-          <p className="mb-4 text-[15px] font-medium text-t3">The solution.</p>
+          <p className="mb-4 text-[15px] font-medium text-t3">
+            How Powerhouse works.
+          </p>
           <h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading">
-            Private data. AI-native.
+            Structure the workflow.
             <br />
-            <span className="text-t2">Real-time.</span>
+            <span className="text-t2">Put AI to work.</span>
           </h2>
+          <p className="mt-5 max-w-[600px] text-[15px] leading-[1.72] text-t2">
+            Powerhouse models the objects, permissions, approvals, and history
+            behind a workflow, then makes that operational context available to
+            your team and scoped AI agents.
+          </p>
         </div>
 
         <div className="grid grid-cols-3 gap-x-10 gap-y-12 border-t border-border pt-10 max-lg:grid-cols-1 max-lg:gap-y-10">

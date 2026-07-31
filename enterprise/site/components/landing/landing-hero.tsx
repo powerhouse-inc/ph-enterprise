@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { DemoButton } from "@/components/demo/demo-button";
 import { PowerhouseMark } from "@/components/powerhouse-mark";
+import { BAI_ENGAGEMENT_URL } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { useHeroAnimation } from "@/hooks/use-hero-animation";
 import styles from "./landing-hero.module.css";
@@ -25,7 +25,7 @@ export function LandingHero() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-svh flex flex-col justify-end pt-20 pb-24 overflow-hidden"
+      className="relative min-h-[78svh] md:min-h-[88svh] flex flex-col justify-end pt-20 pb-16 md:pb-20 overflow-hidden"
       aria-label="Introduction"
     >
       <div
@@ -55,25 +55,25 @@ export function LandingHero() {
         )}
       >
         <div>
-<h1 className="hero-headline text-[clamp(44px,6vw,80px)] font-[680] leading-[1.04] tracking-[-0.04em] text-t1 mb-7 max-md:tracking-[-0.03em] font-heading">
+          <h1
+            className="hero-headline text-[clamp(44px,6vw,80px)] font-[680] leading-[1.04] tracking-[-0.04em] text-t1 mb-7 max-md:tracking-[-0.03em] font-heading"
+            aria-label="Turn workflows into software you own."
+          >
             <span className="word inline-block opacity-0 translate-y-[42px] text-t2">
-              The
+              Turn
             </span>{" "}
             <span className="word inline-block opacity-0 translate-y-[42px]">
-              open-source
+              workflows
             </span>{" "}
             <span className="word inline-block opacity-0 translate-y-[42px]">
-              backend
+              into
             </span>
             <br />
-            <span className="word inline-block opacity-0 translate-y-[42px] text-t2">
-              for
+            <span className="word inline-block opacity-0 translate-y-[42px] gradient-text">
+              software
             </span>{" "}
             <span className="word inline-block opacity-0 translate-y-[42px] gradient-text">
-              AI-native
-            </span>{" "}
-            <span className="word inline-block opacity-0 translate-y-[42px] gradient-text">
-              operations.
+              you own.
             </span>
           </h1>
 
@@ -81,26 +81,29 @@ export function LandingHero() {
             ref={subRef}
             className="text-[17px] font-normal leading-[1.68] text-t2 max-w-[520px] mb-10 opacity-0 translate-y-4"
           >
-            Built so your business data never leaves your infrastructure.
+            Powerhouse gives sensitive, document-heavy workflows shared
+            structure, permissions, and history, creating operational software
+            that teams and AI can use safely.
           </p>
 
           <div
             ref={actionsRef}
             className="flex items-center gap-3 opacity-0 translate-y-4 max-md:flex-col max-md:items-start"
           >
-            <DemoButton
+            <Button
               variant="cta"
               className="h-10 px-5 rounded-md text-[13px] font-medium"
+              asChild
             >
-              Request a Demo
-            </DemoButton>
+              <a href={BAI_ENGAGEMENT_URL}>Map your first workflow</a>
+            </Button>
             <Button
               variant="outline"
               className="h-10 px-5 rounded-md text-[13px] font-medium"
               asChild
             >
               <Link href="#solution" prefetch={false}>
-                See How It Works
+                See how it works
               </Link>
             </Button>
           </div>

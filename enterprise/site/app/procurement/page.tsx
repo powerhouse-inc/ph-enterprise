@@ -15,6 +15,10 @@ export const metadata: Metadata = {
       "Close the buyer-side AI gap with local proposal evaluation, audit-ready workflows, and architecture-level data control.",
     url: "/procurement",
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function ProcurementRoute() {

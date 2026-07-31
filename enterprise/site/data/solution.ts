@@ -2,18 +2,18 @@ import type { SolutionPillar } from "./types";
 
 export const SOLUTION_PILLARS: SolutionPillar[] = [
   {
-    title: "Private by default",
+    title: "Connect existing systems",
     accent: "cyan",
-    body: "Business critical data should stay on infrastructure you control.",
+    body: "Start from the documents, spreadsheets, inboxes, and legacy systems already carrying the work.",
   },
   {
-    title: "AI-native from the data layer up",
+    title: "Structure the workflow",
     accent: "purple",
-    body: "AI performs best on structured and defined data.",
+    body: "Define the objects, permissions, approval steps, and operational context AI needs before it can help.",
   },
   {
-    title: "Real-time and scalable",
+    title: "Add scoped AI assistance",
     accent: "gradient",
-    body: "Business data syncs across users, apps, and agents in real time.",
+    body: "Use AI to extract, compare, draft, flag, and route work while humans retain approval and every action remains attributable.",
   },
 ];

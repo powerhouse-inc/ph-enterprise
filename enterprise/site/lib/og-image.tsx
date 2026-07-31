@@ -1,8 +1,9 @@
 import { ImageResponse } from "next/og";
+import { SITE_TITLE } from "./site";
 
 export const ogImageSize = { width: 1200, height: 630 };
 
-export const ogImageAlt = "Powerhouse Enterprise — AI-Native Operations. Private by Architecture.";
+export const ogImageAlt = `${SITE_TITLE}.`;
 
 const PH_MARK_PATH =
   "M16.8849 0L5.7651 9.20777C4.13402 10.5584 4.0154 13.0182 5.50895 14.5195L9.35592 18.3865C10.4846 19.521 10.7288 21.2645 9.95531 22.6655L7.56213 27H3.6C1.61177 27 0 25.3882 0 23.4V3.6C0 1.61177 1.61178 0 3.6 0H16.8849ZM18.9736 0L16.8966 3.78374C16.1308 5.17879 16.3718 6.91114 17.4894 8.04414L21.5704 12.1815C23.0607 13.6924 22.9274 16.158 21.2828 17.4993L9.6343 27H23.4C25.3882 27 27 25.3882 27 23.4V3.6C27 1.61178 25.3882 0 23.4 0H18.9736Z";
@@ -88,22 +89,22 @@ export async function createOgImageResponse() {
                 fontSize: 52,
                 fontWeight: 700,
                 color: "#F3F5F7",
-                letterSpacing: "-0.04em",
-                lineHeight: 1.08,
-              }}
-            >
-              AI-Native Operations.
+              letterSpacing: "0",
+              lineHeight: 1.08,
+            }}
+          >
+              Turn workflows into
             </span>
             <span
               style={{
                 fontSize: 52,
                 fontWeight: 700,
                 color: "rgba(243,245,247,0.5)",
-                letterSpacing: "-0.04em",
+                letterSpacing: "0",
                 lineHeight: 1.08,
               }}
             >
-              Private by Architecture.
+              software you own.
             </span>
           </div>
 
@@ -125,10 +126,10 @@ export async function createOgImageResponse() {
               fontWeight: 500,
               color: "rgba(243,245,247,0.5)",
               marginTop: 20,
-              letterSpacing: "-0.01em",
+              letterSpacing: "0",
             }}
           >
-            Powerhouse Enterprise
+            {SITE_TITLE}
           </span>
         </div>
 

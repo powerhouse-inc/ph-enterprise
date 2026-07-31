@@ -29,6 +29,9 @@ export async function generateMetadata({
   return {
     title: uc.title,
     description: uc.metaDescription,
+    alternates: {
+      canonical: `/use-cases/${slug}`,
+    },
     openGraph: {
       title: `${uc.title} - Powerhouse Enterprise`,
       description: uc.metaDescription,

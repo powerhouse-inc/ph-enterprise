@@ -40,7 +40,7 @@ const ACCENT = "#F5D45B";
 
 function SectionHeading({ line1, line2 }: { line1: ReactNode; line2: ReactNode }) {
   return (
-    <h2 className="fade-up max-w-[20ch] text-[clamp(32px,3.4vw,46px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading">
+    <h2 className="fade-up max-w-[20ch] text-[clamp(32px,3.4vw,46px)] font-[680] leading-[1.06] tracking-normal text-t1 font-heading">
       {line1}
       <br />
       <span className="text-t2">{line2}</span>
@@ -61,7 +61,7 @@ export function ProcurementPage() {
         <SectionContainer>
           <div className="fade-up mb-8 inline-flex items-center gap-3 rounded-full border border-border bg-surface px-4 py-2 text-[12px] text-t3">
             <span
-              className="font-semibold uppercase tracking-[0.12em]"
+              className="font-semibold uppercase tracking-normal"
               style={{ color: ACCENT }}
             >
               {PROCUREMENT_HERO.eyebrow}
@@ -70,7 +70,7 @@ export function ProcurementPage() {
             <span>Buyer-side workflow infrastructure</span>
           </div>
 
-          <h1 className="fade-up max-w-[16ch] text-pretty text-[clamp(38px,5vw,66px)] font-[680] leading-[0.98] tracking-[-0.05em] text-t1 font-heading">
+          <h1 className="fade-up max-w-[16ch] text-pretty text-[clamp(38px,5vw,66px)] font-[680] leading-[0.98] tracking-normal text-t1 font-heading">
             {PROCUREMENT_HERO.headline[0]}
             <br />
             <span className="text-t2">{PROCUREMENT_HERO.headline[1]}</span>
@@ -100,11 +100,11 @@ export function ProcurementPage() {
           {/* The asymmetry — the aha, instantly readable */}
           <div className="fade-up mt-16 grid max-w-[680px] gap-4 sm:grid-cols-2">
             <div className="rounded-2xl border border-border bg-surface p-6">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-t3">
+              <p className="text-[11px] font-semibold uppercase tracking-normal text-t3">
                 Supplier side
               </p>
               <p
-                className="mt-3 text-[56px] font-[680] leading-none tracking-[-0.05em] font-heading"
+                className="mt-3 text-[56px] font-[680] leading-none tracking-normal font-heading"
                 style={{ color: ACCENT }}
               >
                 79%
@@ -114,10 +114,10 @@ export function ProcurementPage() {
               </p>
             </div>
             <div className="rounded-2xl border border-border bg-surface p-6">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-t3">
+              <p className="text-[11px] font-semibold uppercase tracking-normal text-t3">
                 Buyer side
               </p>
-              <p className="mt-3 text-[56px] font-[680] leading-none tracking-[-0.05em] text-t1 font-heading">
+              <p className="mt-3 text-[56px] font-[680] leading-none tracking-normal text-t1 font-heading">
                 4%
               </p>
               <p className="mt-3 text-[13px] leading-[1.6] text-t2">
@@ -142,7 +142,7 @@ export function ProcurementPage() {
                 key={problem.title}
                 className="fade-up rounded-xl bg-surface border border-border p-6 transition-all hover:border-border-md"
               >
-                <h3 className="text-[16px] font-semibold tracking-tight text-t1 mb-3 font-heading">
+                <h3 className="text-[16px] font-semibold tracking-normal text-t1 mb-3 font-heading">
                   {problem.title}
                 </h3>
                 <p className="text-[13px] leading-[1.7] text-t2">
@@ -174,7 +174,7 @@ export function ProcurementPage() {
                     <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-white/[0.03] text-t2">
                       <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
                     </span>
-                    <h3 className="text-[16px] font-semibold tracking-tight text-t1 font-heading">
+                    <h3 className="text-[16px] font-semibold tracking-normal text-t1 font-heading">
                       {capability.title}
                     </h3>
                   </div>
@@ -205,7 +205,7 @@ export function ProcurementPage() {
                       (heading) => (
                         <th
                           key={heading}
-                          className="px-6 py-4 text-[11px] font-semibold uppercase tracking-[0.08em] text-t3"
+                          className="px-6 py-4 text-[11px] font-semibold uppercase tracking-normal text-t3"
                         >
                           {heading}
                         </th>
@@ -223,7 +223,7 @@ export function ProcurementPage() {
                           "border-b border-border",
                       )}
                     >
-                      <th className="w-[170px] px-6 py-5 text-[13px] font-semibold tracking-tight text-t1">
+                      <th className="w-[170px] px-6 py-5 text-[13px] font-semibold tracking-normal text-t1">
                         {row.dimension}
                       </th>
                       <td className="px-6 py-5 text-[13px] leading-[1.7] text-t2">
@@ -260,7 +260,7 @@ export function ProcurementPage() {
                   <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-white/[0.03] text-t2 mb-4">
                     <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
                   </span>
-                  <h3 className="text-[16px] font-semibold tracking-tight text-t1 mb-3 font-heading">
+                  <h3 className="text-[16px] font-semibold tracking-normal text-t1 mb-3 font-heading">
                     {regulation.title}
                   </h3>
                   <p className="text-[13px] leading-[1.7] text-t2">
@@ -287,7 +287,7 @@ export function ProcurementPage() {
                 key={cta.title}
                 className="fade-up flex flex-col rounded-xl bg-surface border border-border p-6 transition-all hover:border-border-md"
               >
-                <h3 className="text-[16px] font-semibold tracking-tight text-t1 font-heading">
+                <h3 className="text-[16px] font-semibold tracking-normal text-t1 font-heading">
                   {cta.title}
                 </h3>
                 <p className="mt-3 text-[13px] leading-[1.7] text-t2">
@@ -319,7 +319,7 @@ export function ProcurementPage() {
           </div>
 
           <div className="fade-up mt-14 border-t border-border pt-12 text-center">
-            <p className="mx-auto max-w-[760px] text-[clamp(22px,2.6vw,32px)] font-[640] leading-[1.2] tracking-[-0.03em] text-t1 font-heading">
+            <p className="mx-auto max-w-[760px] text-[clamp(22px,2.6vw,32px)] font-[640] leading-[1.2] tracking-normal text-t1 font-heading">
               {PROCUREMENT_FOOTER_HOOK}
             </p>
           </div>
