@@ -1,13 +1,59 @@
 "use server";
 
+import { appendFile } from "node:fs/promises";
 import { Resend } from "resend";
 
-export type DemoState = {
-  ok: boolean;
-  error?: string;
-};
+export type DemoState =
+  | { ok: true; delivery?: "email" | "local" }
+  | { ok: false; error?: string };
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+const CONTACT_EMAIL = "hello@powerhouse.inc";
+const WORKFLOW_SIGNUP_INTENT = "workflow-email-signup";
+const LOCAL_LEADS_FILE = "/tmp/ph-enterprise-leads.jsonl";
+
+type LeadRequest = {
+  company: string;
+  createdAt: string;
+  email: string;
+  intent: string;
+  message: string;
+  name: string;
+  topic: string;
+};
+
+function isWorkflowSignup(intent: string) {
+  return intent === WORKFLOW_SIGNUP_INTENT;
+}
+
+function fallbackError(intent: string) {
+  return isWorkflowSignup(intent)
+    ? `This form is not connected in this preview. Email ${CONTACT_EMAIL} to request a workflow assessment.`
+    : `This form is not connected in this preview. Email ${CONTACT_EMAIL} to request a demo.`;
+}
+
+function sendError(intent: string) {
+  return isWorkflowSignup(intent)
+    ? `We couldn't send the assessment request. Please try again or email ${CONTACT_EMAIL}.`
+    : `We couldn't send the demo request. Please try again or email ${CONTACT_EMAIL}.`;
+}
+
+function canCaptureLocalLead() {
+  return process.env.VERCEL !== "1";
+}
+
+async function captureLocalLead(lead: LeadRequest): Promise<DemoState> {
+  try {
+    await appendFile(LOCAL_LEADS_FILE, `${JSON.stringify(lead)}\n`, "utf8");
+    console.warn(
+      `[submit-demo] RESEND_API_KEY is not set; captured lead locally at ${LOCAL_LEADS_FILE}.`,
+    );
+    return { ok: true, delivery: "local" };
+  } catch (err) {
+    console.error("[submit-demo] Local lead capture failed:", err);
+    return { ok: false, error: fallbackError(lead.intent) };
+  }
+}
 
 export async function submitDemoRequest(
   _prev: DemoState,
@@ -24,17 +70,17 @@ export async function submitDemoRequest(
 
   if (honeypot) {
     // Silently accept bot submissions without sending.
-    return { ok: true };
+    return { ok: true, delivery: "email" };
   }
 
-  if (intent === "workflow-email-signup" && !email) {
+  if (isWorkflowSignup(intent) && !email) {
     return {
       ok: false,
       error: "Please add your work email.",
     };
   }
 
-  if (intent !== "workflow-email-signup" && (!name || !email || !company)) {
+  if (!isWorkflowSignup(intent) && (!name || !email || !company)) {
     return {
       ok: false,
       error: "Please add your name, work email, and company.",
@@ -45,17 +91,30 @@ export async function submitDemoRequest(
     return { ok: false, error: "Please enter a valid email address." };
   }
 
+  const lead: LeadRequest = {
+    company,
+    createdAt: new Date().toISOString(),
+    email,
+    intent,
+    message,
+    name,
+    topic,
+  };
+
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
+    if (canCaptureLocalLead()) {
+      return captureLocalLead(lead);
+    }
+
     console.error("[submit-demo] RESEND_API_KEY is not set.");
     return {
       ok: false,
-      error:
-        "Demo requests aren't fully configured yet. Please email hello@powerhouse.inc.",
+      error: fallbackError(intent),
     };
   }
 
-  const to = process.env.DEMO_LEADS_TO ?? "hello@powerhouse.inc";
+  const to = process.env.DEMO_LEADS_TO ?? CONTACT_EMAIL;
   const from = process.env.DEMO_LEADS_FROM ?? "Powerhouse <onboarding@resend.dev>";
 
   const resend = new Resend(apiKey);
@@ -66,7 +125,7 @@ export async function submitDemoRequest(
       to,
       replyTo: email,
       subject:
-        intent === "workflow-email-signup"
+        isWorkflowSignup(intent)
           ? `${topic}: ${email}`
           : `${topic}: ${company}`,
       text: [
@@ -86,17 +145,16 @@ export async function submitDemoRequest(
       console.error("[submit-demo] Resend error:", error);
       return {
         ok: false,
-        error:
-          "Something went wrong sending your request. Please try again or email hello@powerhouse.inc.",
+        error: sendError(intent),
       };
     }
 
-    return { ok: true };
+    return { ok: true, delivery: "email" };
   } catch (err) {
     console.error("[submit-demo] Unexpected error:", err);
     return {
       ok: false,
-      error: "Something went wrong. Please email hello@powerhouse.inc.",
+      error: sendError(intent),
     };
   }
 }

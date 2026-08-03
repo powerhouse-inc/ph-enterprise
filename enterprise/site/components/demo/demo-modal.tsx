@@ -75,8 +75,9 @@ function DemoForm({ topic, onClose }: { topic: string; onClose: () => void }) {
           Thanks, we&rsquo;ll be in touch.
         </h2>
         <p className="mx-auto mt-3 max-w-[34ch] text-[14px] leading-[1.7] text-t2">
-          Your request is on its way to our team. We&rsquo;ll reach out at the
-          email you provided.
+          {state.delivery === "local"
+            ? "Your request was captured in this local preview."
+            : "Your request is on its way to our team. We\u2019ll reach out at the email you provided."}
         </p>
         <Button
           variant="outline"

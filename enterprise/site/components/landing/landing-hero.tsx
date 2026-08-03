@@ -4,11 +4,11 @@ import Link from "next/link";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { PowerhouseMark } from "@/components/powerhouse-mark";
-import { BAI_ENGAGEMENT_URL } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { useHeroAnimation } from "@/hooks/use-hero-animation";
 import styles from "./landing-hero.module.css";
 import { SectionContainer } from "./section-container";
+import { WorkflowSignupButton } from "./workflow-signup-button";
 
 export function LandingHero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -90,13 +90,10 @@ export function LandingHero() {
             ref={actionsRef}
             className="flex items-center gap-3 opacity-0 translate-y-4 max-md:flex-col max-md:items-start"
           >
-            <Button
-              variant="cta"
+            <WorkflowSignupButton
+              label="Map your first workflow"
               className="h-10 px-5 rounded-md text-[13px] font-medium"
-              asChild
-            >
-              <a href={BAI_ENGAGEMENT_URL}>Map your first workflow</a>
-            </Button>
+            />
             <Button
               variant="outline"
               className="h-10 px-5 rounded-md text-[13px] font-medium"

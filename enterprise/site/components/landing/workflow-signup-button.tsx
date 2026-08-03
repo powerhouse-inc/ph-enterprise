@@ -1,9 +1,11 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { submitDemoRequest, type DemoState } from "@/app/actions/submit-demo";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const initialState: DemoState = { ok: false };
 
@@ -17,11 +19,12 @@ function WorkflowSignupForm({ onClose }: { onClose: () => void }) {
     return (
       <div className="py-5 text-center">
         <h2 className="font-heading text-[20px] font-semibold tracking-tight text-t1">
-          Thanks, we&rsquo;ll be in touch.
+          Thanks. We&rsquo;ll be in touch.
         </h2>
         <p className="mx-auto mt-3 max-w-[34ch] text-[14px] leading-[1.7] text-t2">
-          We received your email and will follow up about mapping your first
-          workflow.
+          {state.delivery === "local"
+            ? "Your request was captured in this local preview."
+            : "Your request has been sent. We\u2019ll reply about mapping the first workflow."}
         </p>
         <Button
           variant="outline"
@@ -37,16 +40,16 @@ function WorkflowSignupForm({ onClose }: { onClose: () => void }) {
   return (
     <>
       <h2 className="font-heading text-[20px] font-semibold tracking-tight text-t1">
-        Map your workflow
+        Start with a workflow assessment
       </h2>
       <p className="mt-2 text-[13px] leading-[1.6] text-t2">
-        Leave your work email and we&rsquo;ll follow up about the workflow
-        assessment.
+        Share your work email. We&rsquo;ll reply to identify the first workflow
+        to map.
       </p>
 
       <form action={formAction} className="mt-6 space-y-3">
         <input type="hidden" name="intent" value="workflow-email-signup" />
-        <input type="hidden" name="topic" value="Workflow mapping request" />
+        <input type="hidden" name="topic" value="Workflow assessment request" />
         <input
           type="text"
           name="company_url"
@@ -75,7 +78,9 @@ function WorkflowSignupForm({ onClose }: { onClose: () => void }) {
         </div>
 
         {state.error ? (
-          <p className="text-[12px] text-red-400">{state.error}</p>
+          <p className="text-[12px] text-red-400" role="alert">
+            {state.error}
+          </p>
         ) : null}
 
         <Button
@@ -84,17 +89,25 @@ function WorkflowSignupForm({ onClose }: { onClose: () => void }) {
           disabled={pending}
           className="h-10 w-full rounded-md px-5 text-[13px] font-medium"
         >
-          {pending ? "Sending..." : "Send email"}
+          {pending ? "Sending..." : "Request assessment"}
         </Button>
         <p className="text-center text-[11px] text-t3">
-          No spam. We&rsquo;ll only use this to contact you about Powerhouse.
+          Used only to respond to this request.
         </p>
       </form>
     </>
   );
 }
 
-export function WorkflowSignupButton() {
+type WorkflowSignupButtonProps = {
+  className?: string;
+  label?: string;
+};
+
+export function WorkflowSignupButton({
+  className,
+  label = "Map workflow",
+}: WorkflowSignupButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [instanceId, setInstanceId] = useState(0);
 
@@ -121,43 +134,48 @@ export function WorkflowSignupButton() {
     };
   }, [isOpen]);
 
+  const dialog =
+    isOpen && typeof document !== "undefined"
+      ? createPortal(
+          <div
+            className="fixed inset-0 z-[300] grid min-h-svh place-items-center overflow-y-auto px-4 py-8"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Map your workflow"
+          >
+            <button
+              type="button"
+              aria-label="Close dialog"
+              onClick={close}
+              className="fixed inset-0 cursor-default bg-black/75 backdrop-blur-sm"
+            />
+            <div className="relative z-10 w-full max-w-[420px] max-h-[calc(100svh-64px)] overflow-y-auto rounded-2xl border border-border bg-[#0E1013] p-7 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
+              <button
+                type="button"
+                onClick={close}
+                aria-label="Close"
+                className="absolute right-4 top-4 text-t3 transition-colors hover:text-t1"
+              >
+                <X className="h-4 w-4" />
+              </button>
+              <WorkflowSignupForm key={instanceId} onClose={close} />
+            </div>
+          </div>,
+          document.body,
+        )
+      : null;
+
   return (
     <>
       <Button
         type="button"
         variant="cta"
-        className="h-8 px-4 rounded-md text-[13px]"
+        className={cn("h-8 px-4 rounded-md text-[13px]", className)}
         onClick={open}
       >
-        Map workflow
+        {label}
       </Button>
-
-      {isOpen ? (
-        <div
-          className="fixed inset-0 z-[300] flex items-center justify-center p-4"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Map your workflow"
-        >
-          <button
-            type="button"
-            aria-label="Close dialog"
-            onClick={close}
-            className="absolute inset-0 cursor-default bg-black/70 backdrop-blur-sm"
-          />
-          <div className="relative z-10 w-full max-w-[420px] rounded-2xl border border-border bg-[#0E1013] p-7 shadow-[0_30px_80px_rgba(0,0,0,0.5)]">
-            <button
-              type="button"
-              onClick={close}
-              aria-label="Close"
-              className="absolute right-4 top-4 text-t3 transition-colors hover:text-t1"
-            >
-              <X className="h-4 w-4" />
-            </button>
-            <WorkflowSignupForm key={instanceId} onClose={close} />
-          </div>
-        </div>
-      ) : null}
+      {dialog}
     </>
   );
 }
