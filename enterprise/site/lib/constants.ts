@@ -1,13 +1,12 @@
 /** Brand colors — keep in sync with globals.css theme tokens. */
 export const COLORS = {
-  BRAND: "#00D4FF",
-  BRAND_PURPLE: "#7A3AFF",
-  BRAND_SHADOW: "rgba(0,212,255,0.75)",
-  BRAND_GLOW_MID: "rgba(0,212,255,0.38)",
-  BRAND_GLOW_FAINT: "rgba(0,212,255,0.15)",
-  BRAND_BLOB: "rgba(0,212,255,0.14)",
-  PURPLE_BLOB: "rgba(122,58,255,0.14)",
-  PURPLE_GLOW: "rgba(122,58,255,0.10)",
+  BRAND: "#24D7E8",
+  PROOF: "#10B981",
+  INK: "#0A0D10",
+  PAPER: "#F5F2EC",
+  BRAND_SHADOW: "rgba(36,215,232,0.28)",
+  BRAND_GLOW_MID: "rgba(36,215,232,0.18)",
+  BRAND_GLOW_FAINT: "rgba(36,215,232,0.10)",
 } as const;
 
 /** Reusable GSAP animation presets. */

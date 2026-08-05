@@ -7,7 +7,7 @@ import { SectionContainer } from "@/components/landing/section-container";
 export function ProcurementNav() {
   return (
     <header className="sticky top-0 z-200 h-[64px] border-b border-white/8 bg-[rgba(11,13,15,0.84)] backdrop-blur-[24px]">
-      <SectionContainer className="flex h-full max-w-[1260px] items-center justify-between gap-6">
+      <SectionContainer className="flex h-full items-center justify-between gap-6">
         <div className="flex min-w-0 items-center gap-4">
           <Link href="/" className="flex shrink-0 items-center gap-2.5" aria-label="Powerhouse Enterprise">
             <PowerhouseMark className="h-5 w-5 text-[rgba(243,245,247,0.7)]" />

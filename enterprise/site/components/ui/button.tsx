@@ -13,12 +13,12 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
         outline:
-          "border-border bg-background hover:bg-muted hover:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
+          "border-border bg-transparent text-foreground hover:border-border-md hover:bg-white/5 hover:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50",
         link: "text-primary underline-offset-4 hover:underline",
-        cta: "bg-brand text-[#0B0D0F] border-brand font-semibold hover:opacity-[0.87] hover:-translate-y-px",
+        cta: "bg-brand text-ink border-brand font-semibold hover:bg-[#68E6F0] hover:-translate-y-px",
       },
       size: {
         default: "h-8 gap-1.5 px-2.5",

@@ -27,43 +27,47 @@
   --radius-2xl: calc(var(--radius) * 1.8);
 
   /* Enterprise brand colors */
-  --color-t1: #F3F5F7;
-  --color-t2: rgba(243, 245, 247, 0.55);
-  --color-t3: rgba(243, 245, 247, 0.28);
-  --color-brand: #00D4FF;
-  --color-brand-purple: #7A3AFF;
-  --color-brand-mid: rgba(0, 212, 255, 0.18);
-  --color-brand-low: rgba(0, 212, 255, 0.08);
-  --color-brand-halo: rgba(0, 212, 255, 0.22);
-  --color-brand-glow: rgba(0, 212, 255, 0.80);
-  --color-brand-blob: rgba(0, 212, 255, 0.14);
-  --color-purple-blob: rgba(122, 58, 255, 0.14);
-  --color-purple-glow: rgba(122, 58, 255, 0.10);
-  --color-surface: #141719;
-  --color-lifted: #1A1D22;
-  --color-border-md: rgba(255, 255, 255, 0.10);
+  --color-t1: #F6F8F5;
+  --color-t2: #C4CEC8;
+  --color-t3: #7E8B84;
+  --color-ink: #0A0D10;
+  --color-ink-deep: #050708;
+  --color-paper: #F5F2EC;
+  --color-paper-muted: #E7E0D4;
+  --color-paper-soft: #FBF9F4;
+  --color-copy: #111614;
+  --color-copy-muted: #59625D;
+  --color-brand: #24D7E8;
+  --color-proof: #10B981;
+  --color-brand-mid: rgba(36, 215, 232, 0.18);
+  --color-brand-low: rgba(36, 215, 232, 0.08);
+  --color-proof-low: rgba(16, 185, 129, 0.12);
+  --color-surface: #12171A;
+  --color-lifted: #182024;
+  --color-border-md: rgba(246, 248, 245, 0.16);
+  --color-border-light: rgba(17, 22, 20, 0.14);
 }
 
 :root {
-  --background: #0B0D0F;
-  --foreground: #F3F5F7;
-  --card: #141719;
-  --card-foreground: #F3F5F7;
-  --popover: #141719;
-  --popover-foreground: #F3F5F7;
-  --primary: #F3F5F7;
-  --primary-foreground: #0B0D0F;
-  --secondary: #1A1D22;
-  --secondary-foreground: #F3F5F7;
-  --muted: #141719;
-  --muted-foreground: rgba(243, 245, 247, 0.55);
-  --accent: #00D4FF;
-  --accent-foreground: #ffffff;
+  --background: #0A0D10;
+  --foreground: #F6F8F5;
+  --card: #12171A;
+  --card-foreground: #F6F8F5;
+  --popover: #12171A;
+  --popover-foreground: #F6F8F5;
+  --primary: #F6F8F5;
+  --primary-foreground: #0A0D10;
+  --secondary: #182024;
+  --secondary-foreground: #F6F8F5;
+  --muted: #12171A;
+  --muted-foreground: #C4CEC8;
+  --accent: #24D7E8;
+  --accent-foreground: #0A0D10;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: rgba(255, 255, 255, 0.07);
-  --input: rgba(255, 255, 255, 0.07);
-  --ring: rgba(255, 255, 255, 0.13);
-  --radius: 0.625rem;
+  --border: rgba(246, 248, 245, 0.12);
+  --input: rgba(246, 248, 245, 0.12);
+  --ring: rgba(36, 215, 232, 0.32);
+  --radius: 0.75rem;
 }
 
 @layer base {
@@ -87,7 +91,7 @@
   inset: -300px;
   pointer-events: none;
   z-index: 999;
-  opacity: 0.028;
+  opacity: 0.018;
   background-repeat: repeat;
   background-size: 128px 128px;
   animation: grain-drift 8s linear infinite;
@@ -102,13 +106,33 @@
 }
 
 /* ═══════════════════════════════════════
-   GRADIENT TEXT UTILITY
+   HERO MARK — glow, float, halo pulse
+   Cursor parallax is applied by GSAP to the wrapper
+   elements, so these animations stay on inner nodes to
+   avoid both writing to transform.
 ═══════════════════════════════════════ */
-.gradient-text {
-  background: linear-gradient(135deg, #00D4FF, #7A3AFF);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.hero-mark {
+  filter:
+    drop-shadow(0 0 20px rgba(36, 215, 232, 0.5))
+    drop-shadow(0 0 60px rgba(36, 215, 232, 0.28))
+    drop-shadow(0 0 130px rgba(36, 215, 232, 0.14));
+  animation: hero-mark-float 7s ease-in-out infinite;
+  will-change: transform, filter;
+}
+@keyframes hero-mark-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-14px) rotate(1deg); }
+}
+
+.hero-halo {
+  animation: hero-halo-pulse 6s ease-in-out infinite;
+}
+.hero-halo-outer {
+  animation: hero-halo-pulse 8s ease-in-out 1.5s infinite;
+}
+@keyframes hero-halo-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.1); }
 }
 
 /* ═══════════════════════════════════════
@@ -118,7 +142,7 @@
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, var(--card-accent, #00D4FF) 0%, transparent 70%);
+  background: linear-gradient(90deg, var(--card-accent, #24D7E8) 0%, transparent 70%);
   opacity: 0.4;
   transition: opacity 0.25s;
 }
@@ -132,7 +156,7 @@
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 2px;
-  background: var(--svc-accent, #00D4FF);
+  background: var(--svc-accent, #24D7E8);
   opacity: 0;
   transition: opacity 0.25s;
   border-radius: 0 2px 2px 0;
@@ -146,7 +170,7 @@
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent 0%, var(--card-accent, #00D4FF) 40%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, var(--card-accent, #24D7E8) 40%, transparent 100%);
   opacity: 0.5;
   transition: opacity 0.3s;
 }
@@ -156,15 +180,15 @@
    ANIMATION BASE STATES
 ═══════════════════════════════════════ */
 .fade-up {
-  opacity: 0;
-  transform: translateY(28px);
+  opacity: 1;
+  transform: none;
 }
 .fade-in {
-  opacity: 0;
+  opacity: 1;
 }
 .clip-reveal {
-  clip-path: inset(0 0 100% 0);
-  transform: translateY(16px);
+  clip-path: none;
+  transform: none;
 }
 
 /* ═══════════════════════════════════════
@@ -172,6 +196,9 @@
 ═══════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
   .grain { animation: none; }
+  .hero-mark,
+  .hero-halo,
+  .hero-halo-outer { animation: none; }
   .fade-up { opacity: 1; transform: none; }
   .fade-in { opacity: 1; }
   .clip-reveal { clip-path: none; transform: none; }

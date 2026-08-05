@@ -1,122 +1,64 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { PowerhouseMark } from "@/components/powerhouse-mark";
-import { cn } from "@/lib/utils";
-import { useHeroAnimation } from "@/hooks/use-hero-animation";
-import styles from "./landing-hero.module.css";
+import { HeroMark } from "./hero-mark";
 import { SectionContainer } from "./section-container";
 import { WorkflowSignupButton } from "./workflow-signup-button";
 
 export function LandingHero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const subRef = useRef<HTMLParagraphElement>(null);
-  const actionsRef = useRef<HTMLDivElement>(null);
-  const markRef = useRef<HTMLDivElement>(null);
-
-  useHeroAnimation(sectionRef, {
-    sub: subRef,
-    actions: actionsRef,
-    mark: markRef,
-  });
-
   return (
     <section
-      ref={sectionRef}
-      className="relative min-h-[78svh] md:min-h-[88svh] flex flex-col justify-end pt-20 pb-16 md:pb-20 overflow-hidden"
+      className="relative flex min-h-svh flex-col justify-center overflow-hidden bg-ink-deep pt-24 pb-14 md:pb-18"
       aria-label="Introduction"
     >
       <div
-        className="absolute inset-0 pointer-events-none overflow-hidden"
-        aria-hidden="true"
-      >
-        <div className={styles.blob1} />
-        <div className={styles.blob2} />
-        <div className={styles.blob3} />
-        <div className={styles.blob4} />
-        <div className={styles.blob5} />
-      </div>
-
-      <div
-        className="absolute top-0 left-0 right-0 h-px"
+        className="absolute inset-x-0 top-0 h-px"
         style={{
           background:
-            "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.07) 20%, rgba(255,255,255,0.13) 50%, rgba(255,255,255,0.07) 80%, transparent 100%)",
+            "linear-gradient(90deg, transparent 0%, rgba(246,248,245,0.08) 18%, rgba(246,248,245,0.2) 50%, rgba(246,248,245,0.08) 82%, transparent 100%)",
         }}
         aria-hidden="true"
       />
 
-      <SectionContainer
-        className={cn(
-          "relative z-10 grid grid-cols-[1fr_380px] items-end gap-12",
-          "max-lg:grid-cols-1",
-        )}
-      >
-        <div>
-          <h1
-            className="hero-headline text-[clamp(44px,6vw,80px)] font-[680] leading-[1.04] tracking-[-0.04em] text-t1 mb-7 max-md:tracking-[-0.03em] font-heading"
-            aria-label="Turn workflows into software you own."
-          >
-            <span className="word inline-block opacity-0 translate-y-[42px] text-t2">
-              Turn
-            </span>{" "}
-            <span className="word inline-block opacity-0 translate-y-[42px]">
-              workflows
-            </span>{" "}
-            <span className="word inline-block opacity-0 translate-y-[42px]">
-              into
-            </span>
-            <br />
-            <span className="word inline-block opacity-0 translate-y-[42px] gradient-text">
-              software
-            </span>{" "}
-            <span className="word inline-block opacity-0 translate-y-[42px] gradient-text">
-              you own.
-            </span>
-          </h1>
+      <SectionContainer className="relative z-10">
+        <h1 className="font-heading mb-10 max-w-[1040px] text-[clamp(44px,5.4vw,74px)] font-[660] leading-[1.02] text-t1 max-md:text-[44px] max-sm:text-[41px]">
+          <span className="block">
+            Turn workflows <span className="max-sm:block">into</span>
+          </span>
+          <span className="block text-brand">
+            <span className="max-sm:block">software</span>{" "}
+            <span className="max-sm:block">you own.</span>
+          </span>
+        </h1>
 
-          <p
-            ref={subRef}
-            className="text-[17px] font-normal leading-[1.68] text-t2 max-w-[520px] mb-10 opacity-0 translate-y-4"
-          >
-            Powerhouse gives sensitive, document-heavy workflows shared
-            structure, permissions, and history, creating operational software
-            that teams and AI can use safely.
-          </p>
+        <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,0.72fr)_minmax(520px,1fr)] lg:gap-16">
+          <div className="pb-6 max-lg:pb-0">
+            <p className="mb-9 max-w-[31ch] text-[17px] leading-[1.7] text-t2 sm:max-w-[560px]">
+              Powerhouse gives sensitive, document-heavy workflows shared
+              structure, permissions, and history, creating operational software
+              that teams and AI can use safely.
+            </p>
 
-          <div
-            ref={actionsRef}
-            className="flex items-center gap-3 opacity-0 translate-y-4 max-md:flex-col max-md:items-start"
-          >
-            <WorkflowSignupButton
-              label="Map your first workflow"
-              className="h-10 px-5 rounded-md text-[13px] font-medium"
-            />
-            <Button
-              variant="outline"
-              className="h-10 px-5 rounded-md text-[13px] font-medium"
-              asChild
-            >
-              <Link href="#solution" prefetch={false}>
-                See how it works
-              </Link>
-            </Button>
+            <div className="flex items-center gap-3 max-md:flex-col max-md:items-start">
+              <WorkflowSignupButton
+                label="Map your first workflow"
+                className="h-11 px-5 text-[13px] font-semibold"
+              />
+              <Button
+                variant="outline"
+                className="h-11 px-5 text-[13px] font-medium"
+                asChild
+              >
+                <Link href="#solution" prefetch={false}>
+                  See how it works
+                </Link>
+              </Button>
+            </div>
           </div>
-        </div>
 
-        <div
-          className="flex items-center justify-center relative h-[280px] max-lg:hidden"
-          aria-hidden="true"
-        >
-          <div className={cn(styles.heroMarkHaloOuter, "absolute -inset-40 bg-[radial-gradient(circle,var(--color-brand-low)_0%,transparent_65%)] rounded-full")} />
-          <div className={cn(styles.heroMarkHalo, "absolute -inset-20 bg-[radial-gradient(circle,var(--color-brand-halo)_0%,transparent_65%)] rounded-full")} />
-          <div
-            ref={markRef}
-            className={cn(styles.heroMark, "relative z-10 w-[140px] h-[140px] opacity-0")}
-          >
-            <PowerhouseMark className="w-full h-full text-white drop-shadow-[0_0_20px_rgba(0,212,255,0.75)] drop-shadow-[0_0_60px_rgba(122,58,255,0.38)] drop-shadow-[0_0_130px_rgba(0,212,255,0.15)]" />
+          <div className="relative hidden sm:block lg:max-w-none">
+            <HeroMark />
           </div>
         </div>
       </SectionContainer>

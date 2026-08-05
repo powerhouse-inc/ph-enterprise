@@ -11,7 +11,7 @@ export function SectionContainer({
   return (
     <div
       className={cn(
-        "w-full max-w-[1100px] mx-auto px-13 max-md:px-5 max-lg:px-8",
+        "w-full max-w-[1280px] mx-auto px-5 md:px-8 lg:px-13",
         className,
       )}
     >

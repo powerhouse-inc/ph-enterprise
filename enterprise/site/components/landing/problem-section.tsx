@@ -1,79 +1,66 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
-import { TIMING, SCROLL_START } from "@/lib/constants";
+import { useFadeUpInScope } from "@/hooks/use-fade-up-scope";
 import { SectionContainer } from "./section-container";
 
 export function ProblemSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const bodyRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    (_, contextSafe) => {
-      const cs = contextSafe!;
-      const h2 = headingRef.current;
-      const body = bodyRef.current;
-      if (!h2 || !body) return;
-
-      ScrollTrigger.create({
-        trigger: h2,
-        start: SCROLL_START.HEADING,
-        onEnter: cs(() => {
-          gsap.to(h2, {
-            clipPath: "inset(0 0 0% 0)",
-            y: 0,
-            ...TIMING.HEADING_REVEAL,
-          });
-        }),
-      });
-
-      ScrollTrigger.create({
-        trigger: body,
-        start: SCROLL_START.LEDE,
-        onEnter: cs(() => {
-          gsap.to(body, {
-            opacity: 1,
-            y: 0,
-            ...TIMING.LEDE_FADE,
-          });
-        }),
-      });
-    },
-    { scope: sectionRef },
-  );
+  useFadeUpInScope(sectionRef);
 
   return (
-    <section ref={sectionRef} id="problem" className="py-24 border-t border-border">
+    <section
+      ref={sectionRef}
+      id="problem"
+      className="border-t border-border-light bg-paper py-24 text-copy"
+    >
       <SectionContainer>
-        <div className="grid grid-cols-[1fr_1fr] gap-16 items-center max-md:grid-cols-1 max-md:gap-8 max-md:items-start">
-          <div>
-            <p className="mb-4 text-[15px] font-medium text-t3">
+        <div className="grid grid-cols-1 gap-9 md:grid-cols-[0.88fr_1fr] md:gap-16">
+          <div className="fade-up">
+            <p className="mb-4 text-[14px] font-medium text-copy-muted">
               Current reality.
             </p>
-            <h2
-              ref={headingRef}
-              className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 clip-reveal font-heading"
-            >
+            <h2 className="font-heading text-[clamp(34px,4vw,54px)] font-[680] leading-[1.04] text-copy">
               Siloed data limits
               <br />
               what AI can deliver.
             </h2>
           </div>
 
-          <div
-            ref={bodyRef}
-            className="opacity-0 translate-y-4 space-y-5"
-          >
-            <p className="text-[15px] leading-[1.72] text-t2">
+          <div className="fade-up">
+            <p className="max-w-[660px] text-[18px] leading-[1.65] text-copy">
               Critical workflows are spread across disconnected tools, with no
-              shared structure, permissions, or history. AI sees fragments
-              rather than the complete process, limiting accuracy and making
-              automated actions difficult to trust. When teams move those
-              fragments into external AI tools, confidential data can also leave
-              the systems and controls designed to protect it.
+              shared structure, permissions, or history.
             </p>
+
+            <div className="mt-9 divide-y divide-border-light border-y border-border-light">
+              {[
+                {
+                  title: "AI sees fragments",
+                  body: "Documents, spreadsheets, email threads, and legacy records do not add up to one trusted workflow boundary.",
+                },
+                {
+                  title: "Private data moves too easily",
+                  body: "Confidential context can be copied into external AI tools before access, storage, and approval rules are clear.",
+                },
+                {
+                  title: "No accountable history",
+                  body: "Teams need to know which source, human, model, and rule changed the state of work.",
+                },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  className="grid grid-cols-1 gap-2 py-5 sm:grid-cols-[170px_1fr] sm:gap-8"
+                >
+                  <h3 className="text-[14px] font-semibold text-copy">
+                    {item.title}
+                  </h3>
+                  <p className="text-[14px] leading-[1.65] text-copy-muted">
+                    {item.body}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </SectionContainer>

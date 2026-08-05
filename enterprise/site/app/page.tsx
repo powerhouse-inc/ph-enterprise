@@ -4,6 +4,7 @@ import { LandingNav } from "@/components/landing/landing-nav";
 import { LandingHero } from "@/components/landing/landing-hero";
 import { ProblemSection } from "@/components/landing/problem-section";
 import { SolutionSection } from "@/components/landing/solution-section";
+import { AppAnatomySection } from "@/components/landing/app-anatomy-section";
 import { WorkflowExampleSection } from "@/components/landing/workflow-example-section";
 import { WhySection } from "@/components/landing/why-section";
 import { ContactCta } from "@/components/landing/contact-cta";
@@ -19,6 +20,7 @@ export default function Home() {
       <LandingHero />
       <ProblemSection />
       <SolutionSection />
+      <AppAnatomySection />
       <WorkflowExampleSection />
       <WhySection />
       <ContactCta />

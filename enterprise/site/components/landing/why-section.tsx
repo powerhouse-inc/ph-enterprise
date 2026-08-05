@@ -1,11 +1,11 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { CheckCircle2 } from "lucide-react";
 import { useRef } from "react";
 import { useFadeUpInScope } from "@/hooks/use-fade-up-scope";
 import { SectionContainer } from "./section-container";
 
-const WHY_ITEMS: { title: string; body: ReactNode }[] = [
+const WHY_ITEMS = [
   {
     title: "Private deployment options",
     body: "Choose local, self-hosted, or managed deployment according to the sensitivity and operational requirements of each workflow.",
@@ -19,27 +19,12 @@ const WHY_ITEMS: { title: string; body: ReactNode }[] = [
     body: "The useful asset is the structured workflow: data, schema, permissions, approvals, and history in formats you can keep.",
   },
   {
-    title: "Production evidence",
-    body: (
-      <>
-        <span
-          className="font-medium text-[#7A3AFF]"
-          style={{ WebkitTextStroke: "0.1px #000" }}
-        >
-          Achra
-        </span>{" "}
-        and{" "}
-        <span
-          className="font-medium text-[#04C161]"
-          style={{ WebkitTextStroke: "0.1px #000" }}
-        >
-          Vetra
-        </span>{" "}
-        run on Powerhouse architecture. Powerhouse architecture already supports
-        22 business modules. In one measured deployment, an invoice-review
-        workflow reduced review time by 65%.
-      </>
-    ),
+    title: "Model choice",
+    body: "Scope assistance to the model and deployment path that fits the task, then change that choice as needs and policy evolve.",
+  },
+  {
+    title: "No rip-and-replace requirement",
+    body: "Powerhouse connects to existing systems and turns the valuable workflow into owned software over time.",
   },
 ];
 
@@ -48,16 +33,23 @@ export function WhySection() {
   useFadeUpInScope(rootRef);
 
   return (
-    <section ref={rootRef} id="ownership" className="py-24 border-t border-border">
+    <section
+      ref={rootRef}
+      id="ownership"
+      className="border-t border-border-light bg-paper py-24 text-copy"
+    >
       <SectionContainer>
-        <div className="grid grid-cols-[1fr_1fr] gap-16 max-md:grid-cols-1 max-md:gap-10">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[0.86fr_1fr] md:gap-16">
           <div className="fade-up md:sticky md:top-28 md:self-start">
-            <h2 className="text-[clamp(32px,3.4vw,46px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading mb-5">
-              Keep the workflow
+            <p className="mb-4 text-[14px] font-medium text-copy-muted">
+              Why ownership matters.
+            </p>
+            <h2 className="font-heading mb-5 text-[clamp(34px,4vw,54px)] font-[680] leading-[1.04] text-copy">
+              You own the boundary,
               <br />
-              <span className="text-t2">and its data under your control.</span>
+              the schema, and the history.
             </h2>
-            <div className="space-y-4 text-[15px] leading-[1.72] text-t2">
+            <div className="space-y-4 text-[16px] leading-[1.7] text-copy-muted">
               <p>
                 Powerhouse creates a controlled software boundary around the
                 workflow. You decide who and what can access its data, where it
@@ -72,16 +64,20 @@ export function WhySection() {
             </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="fade-up divide-y divide-border-light border-y border-border-light">
             {WHY_ITEMS.map((item) => (
               <div
                 key={item.title}
-                className="fade-up rounded-xl bg-surface border border-border p-6 transition-all hover:border-border-md flex flex-col"
+                className="grid grid-cols-[28px_1fr] gap-5 gap-y-2 py-6 sm:grid-cols-[32px_220px_1fr]"
               >
-                <h3 className="text-[15px] font-semibold tracking-tight text-t1 mb-2 font-heading">
+                <CheckCircle2
+                  className="mt-0.5 h-5 w-5 text-proof"
+                  aria-hidden="true"
+                />
+                <h3 className="font-heading text-[16px] font-semibold text-copy">
                   {item.title}
                 </h3>
-                <p className="text-[13px] leading-[1.68] text-t2">
+                <p className="col-span-2 text-[14px] leading-[1.7] text-copy-muted sm:col-span-1">
                   {item.body}
                 </p>
               </div>

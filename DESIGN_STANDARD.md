@@ -10,19 +10,19 @@ ships. It is a practical anti-slop gate for the public site.
   https://www.skills.sh/site/uizze.com/anti-ui-slop
 - Impeccable: use for design context, named critique/polish passes, detector
   checks, browser iteration, and anti-slop patterns:
-  https://impeccable.style/docs/
+  https://impeccable.style/
   https://impeccable.style/slop/
 
 ## Product-Specific Design Intent
 
 Powerhouse Enterprise should feel:
 
-- quiet
-- credible
-- technical
-- inspectable
-- operational
-- specific to private workflows
+- professional-grade
+- trusted by operations and technology leaders
+- precise about private workflow ownership
+- grounded in real product evidence
+- calm, editorial, and commercially credible
+- technical without looking like an internal engineering diagram
 
 It should not feel:
 
@@ -31,6 +31,7 @@ It should not feel:
 - like an AI chatbot product
 - like a consulting brochure
 - like a buffet of unrelated industries
+- like a dated blueprint theme
 
 ## First-Viewport Rules
 
@@ -43,10 +44,11 @@ The first viewport must answer:
 
 Required:
 
-- The H1 uses the canonical promise.
+- The H1 uses the approved concise promise.
 - The primary CTA is visible.
 - The next section is visible or clearly hinted on desktop and mobile.
-- The hero uses product evidence or a concrete system visual, not abstract art.
+- The hero uses product evidence or a concrete workflow visual, not abstract
+  art.
 
 Forbidden:
 
@@ -55,6 +57,7 @@ Forbidden:
 - fake dashboard mockups
 - text trapped inside a marketing card
 - large ornamental elements that do not explain the product
+- hero pills or tags above the H1
 
 ## Layout Rules
 
@@ -76,19 +79,19 @@ Primary:
 
 - H1 and H2
 - primary CTA
-- proof metrics
+- proof metrics with attribution
 - product screenshots
 
 Secondary:
 
 - supporting paragraphs
 - section descriptions
-- card titles
+- process step titles
 - navigation links
 
 Tertiary:
 
-- eyebrows
+- labels
 - captions
 - metadata
 - footnotes
@@ -98,26 +101,33 @@ the page has no point of view.
 
 ## Color
 
-Use the current public-site blueprint palette:
+Use a composed enterprise palette:
 
-- canvas: `#041322`
-- deep canvas: `#020914`
-- blueprint lift: `#06233A`
-- text primary: `#F8FBFF`
-- text secondary: `#C8DDF0`
-- text tertiary: `#8FB2CF`
-- accent green: `#04C161`
-- border: `rgba(170, 210, 240, 0.26)`
-- panel: `rgba(4, 19, 34, 0.72)`
+- ink: `#0A0D10`
+- near black: `#050708`
+- paper: `#F5F2EC`
+- muted paper: `#E7E0D4`
+- surface: `#12171A`
+- lifted surface: `#182024`
+- text primary on dark: `#F6F8F5`
+- text secondary on dark: `#C4CEC8`
+- text primary on light: `#111614`
+- text secondary on light: `#59625D`
+- action cyan: `#24D7E8`
+- proof green: `#10B981`
+- dark border: `rgba(246, 248, 245, 0.12)`
+- light border: `rgba(17, 22, 20, 0.14)`
 
 Rules:
 
-- Use green as the main action and proof accent.
+- Use cyan as the main action accent.
+- Use green for proof, completion, and control.
 - Avoid purple-blue gradient domination.
 - Avoid decorative orbs, blobs, bokeh, and radial spotlight glows.
 - Use solid text colors. Do not use gradient text for headings or metrics.
 - Avoid gray text on colored backgrounds unless contrast is verified.
 - Do not introduce one-off colors without updating this file.
+- Do not let the page become a one-note dark blue, beige, or green theme.
 
 ## Typography
 
@@ -129,16 +139,15 @@ Current type:
 Rules:
 
 - Use 12, 13, or 14px for labels and metadata.
-- Use 16 to 18px for body and supporting copy.
+- Use 15 to 18px for body and supporting copy.
 - Use 30 to 52px for section headings.
-- Use 38 to 72px for true hero headings.
+- Use 44 to 76px for true hero headings.
 - Keep letter spacing at `0`.
-- Use monospace only for short technical metadata, nav labels, drawing stamps,
-  and compact controls.
+- Use monospace only for short technical metadata, status, and compact controls.
 - Do not set long text in uppercase.
 - Do not scale font size with viewport width alone.
 - Keep body line length near 45 to 80 characters.
-- Use weight and color before adding new type sizes.
+- Use weight, contrast, and whitespace before adding new type sizes.
 
 ## Spacing
 
@@ -150,20 +159,19 @@ Rules:
 
 - Spacing within a group must be smaller than spacing between groups.
 - Page sections usually need 64 to 96px vertical rhythm on desktop.
-- Compact operational surfaces need denser spacing.
+- Compact product evidence can be denser.
 - Avoid one-off padding values unless they solve a real alignment problem.
 
 ## Radius, Borders, And Depth
 
-- Homepage panels use square corners.
-- Buttons use square technical controls.
-- Cards and panels on other routes use radius 8px or less unless the local
-  design system explicitly says otherwise.
+- Radius should be deliberate, usually 8px to 14px.
+- Buttons should feel precise, not oversized.
+- Screenshot frames can use modest radius and a stronger shadow.
+- Cards and panels use radius only where it helps distinguish a surface.
 - Borders must be subtle.
 - Prefer borders and spacing before shadows.
 - Do not pair hairline borders with wide diffuse shadows.
 - Shadows should imply depth or focus, not decoration.
-- Sticky navigation can use blur and border, but must remain readable.
 
 ## Imagery And Product Evidence
 
@@ -186,7 +194,7 @@ Avoid:
 
 ### Buttons
 
-- Primary CTA uses brand cyan.
+- Primary CTA uses action cyan.
 - Secondary CTA is quiet and clearly secondary.
 - Buttons use icons only when the icon clarifies the action.
 - Button text must fit on mobile.
@@ -217,8 +225,11 @@ Avoid:
 
 - Motion must clarify state, hierarchy, or flow.
 - Decorative motion is a liability.
+- Content must be visible at rest without animation.
 - Respect `prefers-reduced-motion`.
 - Avoid blank initial states while animation code loads.
+- Avoid decorative pulsing status dots, fake terminal cursors, auto-scrolling
+  marquees, image hover scaling, and bounce easing.
 
 ## Anti-UI-Slop Rejection List
 

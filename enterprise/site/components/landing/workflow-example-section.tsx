@@ -1,47 +1,42 @@
 "use client";
 
-import type { LucideIcon } from "lucide-react";
+import Image from "next/image";
 import {
-  ArrowRight,
-  FileText,
+  BarChart3,
+  FileCheck2,
+  FileSearch,
   History,
-  Inbox,
-  ListChecks,
-  UserCheck,
+  LockKeyhole,
 } from "lucide-react";
 import { useRef } from "react";
 import { useFadeUpInScope } from "@/hooks/use-fade-up-scope";
 import { SectionContainer } from "./section-container";
 
-const WORKFLOW_STEPS: {
-  title: string;
-  body: string;
-  icon: LucideIcon;
-}[] = [
+const PROOF_ITEMS = [
   {
-    title: "Inbox and documents",
-    body: "An invoice arrives by email with supporting files and context scattered across tools.",
-    icon: Inbox,
+    title: "Access is scoped to the workflow",
+    body: "Objects, roles, and approval state define who or what can see, change, or route work.",
+    icon: LockKeyhole,
   },
   {
-    title: "Structured records",
-    body: "Powerhouse extracts and structures the relevant data as workflow objects.",
-    icon: FileText,
+    title: "Ownership stays portable",
+    body: "Data, schemas, exports, and workflow state remain inspectable and usable outside a single vendor surface.",
+    icon: FileCheck2,
   },
   {
-    title: "Rules and exceptions",
-    body: "The system checks the record against workflow rules and flags exceptions for review.",
-    icon: ListChecks,
+    title: "Approvals stay human-readable",
+    body: "Exceptions, review state, and operator decisions are part of the record rather than buried in inboxes.",
+    icon: FileSearch,
   },
   {
-    title: "Human approval",
-    body: "An accountable operator approves, rejects, or revises the work with the needed context.",
-    icon: UserCheck,
-  },
-  {
-    title: "Attributable history",
-    body: "Every AI-assisted and human action is preserved as part of the operational record.",
+    title: "History remains attributable",
+    body: "Source links, exports, status changes, and provenance are visible as first-class product surfaces.",
     icon: History,
+  },
+  {
+    title: "Production evidence is measurable",
+    body: "Powerhouse architecture supports 22 business modules. In one measured invoice-review deployment, review time was reduced by 65%. Treat this as deployment evidence, not a universal guarantee.",
+    icon: BarChart3,
   },
 ];
 
@@ -50,49 +45,57 @@ export function WorkflowExampleSection() {
   useFadeUpInScope(rootRef);
 
   return (
-    <section ref={rootRef} className="py-24 border-t border-border">
+    <section ref={rootRef} className="border-t border-border bg-ink py-24">
       <SectionContainer>
-        <div className="mb-12 max-w-[720px] fade-up">
-          <p className="mb-4 text-[15px] font-medium text-t3">
-            Example workflow.
+        <div className="fade-up mb-14 grid grid-cols-1 gap-6 md:grid-cols-[0.9fr_1fr] md:gap-16">
+          <div>
+            <p className="mb-4 text-[14px] font-medium text-t3">
+              Control and ownership.
+            </p>
+            <h2 className="font-heading text-[clamp(34px,4vw,54px)] font-[680] leading-[1.04] text-t1">
+              Control is visible
+              <br />
+              in the workflow.
+            </h2>
+          </div>
+          <p className="max-w-[620px] self-end text-[17px] leading-[1.68] text-t2">
+            Powerhouse turns access, storage, approvals, exports, and history
+            into product surfaces your team can inspect and operate.
           </p>
-          <h2 className="text-[clamp(36px,3.8vw,52px)] font-[680] leading-[1.06] tracking-[-0.04em] text-t1 font-heading">
-            From documents to
-            <br />
-            <span className="text-t2">an operational workflow.</span>
-          </h2>
         </div>
 
-        <div className="fade-up grid grid-cols-[repeat(5,minmax(0,1fr))] gap-3 max-lg:grid-cols-1">
-          {WORKFLOW_STEPS.map((step, index) => {
-            const Icon = step.icon;
-            const showArrow = index < WORKFLOW_STEPS.length - 1;
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.08fr)_360px]">
+          <div className="fade-up overflow-hidden rounded-2xl border border-border bg-paper-soft shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
+            <Image
+              src="/usecases/rfp-hub/03-rfp-detail-provenance.png"
+              alt="Powerhouse product screenshot showing a structured RFP record with provenance, application context, dates, and source links."
+              width={988}
+              height={1218}
+              className="h-auto w-full"
+            />
+          </div>
 
-            return (
-              <div
-                key={step.title}
-                className="relative rounded-xl border border-border bg-surface p-5 transition-all hover:border-border-md"
-              >
-                <div className="mb-5 flex items-center justify-between gap-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-md border border-brand-low bg-brand-low text-brand">
-                    <Icon className="h-4 w-4" aria-hidden="true" />
-                  </span>
-                  {showArrow ? (
-                    <ArrowRight
-                      className="h-4 w-4 text-t3 max-lg:rotate-90"
-                      aria-hidden="true"
-                    />
-                  ) : null}
+          <div className="fade-up divide-y divide-border">
+            {PROOF_ITEMS.map((step) => {
+              const Icon = step.icon;
+
+              return (
+                <div key={step.title} className="py-6 first:pt-0 last:pb-0">
+                  <div className="mb-3 flex items-center gap-3">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-lifted text-brand">
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                    <h3 className="font-heading text-[16px] font-semibold text-t1">
+                      {step.title}
+                    </h3>
+                  </div>
+                  <p className="text-[14px] leading-[1.7] text-t2">
+                    {step.body}
+                  </p>
                 </div>
-                <h3 className="mb-2 text-[15px] font-semibold tracking-tight text-t1 font-heading">
-                  {step.title}
-                </h3>
-                <p className="text-[13px] leading-[1.68] text-t2">
-                  {step.body}
-                </p>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </SectionContainer>
     </section>
