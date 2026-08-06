@@ -5,6 +5,7 @@ import { useId, useRef, useState } from "react";
 import { useFadeUpInScope } from "@/hooks/use-fade-up-scope";
 import { cn } from "@/lib/utils";
 import { SectionContainer } from "./section-container";
+import { SectionHeading } from "./section-heading";
 
 type Hotspot = {
   id: string;
@@ -89,23 +90,19 @@ export function AppAnatomySection() {
     <section
       ref={sectionRef}
       id="app-anatomy"
-      className="border-t border-border-light bg-paper py-24 text-copy"
+      className="border-t border-border-light bg-paper py-20 text-copy"
     >
       <SectionContainer>
-        <div className="fade-up mb-12 grid grid-cols-1 gap-6 md:grid-cols-[0.9fr_1fr] md:gap-16">
-          <div>
-            <h2 className="font-heading text-[clamp(34px,4vw,54px)] font-[680] leading-[1.04] text-copy">
+        <SectionHeading
+          className="fade-up mb-14"
+          title={
+            <>
               Every field is
-              <br />
-              part of the model.
-            </h2>
-          </div>
-          <p className="max-w-[620px] self-end text-[18px] leading-[1.65] text-copy">
-            This is a Powerhouse invoice application. What looks like a form is
-            a typed document model, with approval states, identity, history, and
-            export built in as product surfaces.
-          </p>
-        </div>
+              <br className="max-sm:hidden" /> part of the model.
+            </>
+          }
+          lead="This is a Powerhouse invoice application. What looks like a form is a typed document model, with approval states, identity, history, and export built in as product surfaces."
+        />
 
         <div
           className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_296px] lg:gap-10"

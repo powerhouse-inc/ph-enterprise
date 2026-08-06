@@ -11,6 +11,7 @@ import {
 import { useRef } from "react";
 import { useFadeUpInScope } from "@/hooks/use-fade-up-scope";
 import { SectionContainer } from "./section-container";
+import { SectionHeading } from "./section-heading";
 
 const PROOF_ITEMS = [
   {
@@ -45,27 +46,23 @@ export function WorkflowExampleSection() {
   useFadeUpInScope(rootRef);
 
   return (
-    <section ref={rootRef} className="border-t border-border bg-ink py-24">
+    <section ref={rootRef} className="border-t border-border bg-ink py-20">
       <SectionContainer>
-        <div className="fade-up mb-14 grid grid-cols-1 gap-6 md:grid-cols-[0.9fr_1fr] md:gap-16">
-          <div>
-            <p className="mb-4 text-[14px] font-medium text-t3">
-              Control and ownership.
-            </p>
-            <h2 className="font-heading text-[clamp(34px,4vw,54px)] font-[680] leading-[1.04] text-t1">
+        <SectionHeading
+          className="fade-up mb-14"
+          tone="dark"
+          eyebrow="Control and ownership"
+          title={
+            <>
               Control is visible
-              <br />
-              in the workflow.
-            </h2>
-          </div>
-          <p className="max-w-[620px] self-end text-[17px] leading-[1.68] text-t2">
-            Powerhouse turns access, storage, approvals, exports, and history
-            into product surfaces your team can inspect and operate.
-          </p>
-        </div>
+              <br className="max-sm:hidden" /> in the workflow.
+            </>
+          }
+          lead="Powerhouse turns access, storage, approvals, exports, and history into product surfaces your team can inspect and operate."
+        />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.08fr)_360px]">
-          <div className="fade-up overflow-hidden rounded-2xl border border-border bg-paper-soft shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
+          <div className="fade-up overflow-hidden rounded-[16px] border border-border bg-paper-soft">
             <Image
               src="/usecases/rfp-hub/03-rfp-detail-provenance.png"
               alt="Powerhouse product screenshot showing a structured RFP record with provenance, application context, dates, and source links."

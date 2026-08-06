@@ -22,44 +22,42 @@ export function LandingHero() {
       />
 
       <SectionContainer className="relative z-10">
-        <h1 className="font-heading mb-10 max-w-[1040px] text-[clamp(44px,5.4vw,74px)] font-[660] leading-[1.02] text-t1 max-md:text-[44px] max-sm:text-[41px]">
-          <span className="block">
-            Turn workflows <span className="max-sm:block">into</span>
-          </span>
-          <span className="block text-brand">
-            <span className="max-sm:block">software</span>{" "}
-            <span className="max-sm:block">you own.</span>
-          </span>
-        </h1>
+        <div className="mx-auto max-w-[880px] text-center">
+          <h1 className="font-heading mb-7 text-[clamp(44px,5.4vw,74px)] font-[660] leading-[1.02] tracking-[-0.02em] text-t1 max-md:text-[44px] max-sm:text-[41px]">
+            <span className="block">
+              Turn workflows <span className="max-sm:block">into</span>
+            </span>
+            <span className="block text-brand">
+              <span className="max-sm:block">software</span>{" "}
+              <span className="max-sm:block">you own.</span>
+            </span>
+          </h1>
 
-        <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,0.72fr)_minmax(520px,1fr)] lg:gap-16">
-          <div className="pb-6 max-lg:pb-0">
-            <p className="mb-9 max-w-[31ch] text-[17px] leading-[1.7] text-t2 sm:max-w-[560px]">
-              Powerhouse gives sensitive, document-heavy workflows shared
-              structure, permissions, and history, creating operational software
-              that teams and AI can use safely.
-            </p>
+          <p className="mx-auto mb-9 max-w-[640px] text-[18px] leading-[1.65] text-t2">
+            Powerhouse gives sensitive, document-heavy workflows shared
+            structure, permissions, and history, creating operational software
+            that teams and AI can use safely.
+          </p>
 
-            <div className="flex items-center gap-3 max-md:flex-col max-md:items-start">
-              <WorkflowSignupButton
-                label="Map your first workflow"
-                className="h-11 px-5 text-[13px] font-semibold"
-              />
-              <Button
-                variant="outline"
-                className="h-11 px-5 text-[13px] font-medium"
-                asChild
-              >
-                <Link href="#solution" prefetch={false}>
-                  See how it works
-                </Link>
-              </Button>
-            </div>
+          <div className="flex items-center justify-center gap-3 max-sm:flex-col">
+            <WorkflowSignupButton
+              label="Map your first workflow"
+              className="h-11 px-5 text-[13px] font-semibold max-sm:w-full"
+            />
+            <Button
+              variant="outline"
+              className="h-11 px-5 text-[13px] font-medium max-sm:w-full"
+              asChild
+            >
+              <Link href="#solution" prefetch={false}>
+                See how it works
+              </Link>
+            </Button>
           </div>
+        </div>
 
-          <div className="relative hidden sm:block lg:max-w-none">
-            <HeroMark />
-          </div>
+        <div className="relative hidden sm:block">
+          <HeroMark />
         </div>
       </SectionContainer>
     </section>

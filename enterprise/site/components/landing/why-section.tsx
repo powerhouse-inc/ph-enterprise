@@ -4,6 +4,7 @@ import { CheckCircle2 } from "lucide-react";
 import { useRef } from "react";
 import { useFadeUpInScope } from "@/hooks/use-fade-up-scope";
 import { SectionContainer } from "./section-container";
+import { SectionHeading } from "./section-heading";
 
 const WHY_ITEMS = [
   {
@@ -36,53 +37,39 @@ export function WhySection() {
     <section
       ref={rootRef}
       id="ownership"
-      className="border-t border-border-light bg-paper py-24 text-copy"
+      className="border-t border-border-light bg-paper py-20 text-copy"
     >
       <SectionContainer>
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-[0.86fr_1fr] md:gap-16">
-          <div className="fade-up md:sticky md:top-28 md:self-start">
-            <p className="mb-4 text-[14px] font-medium text-copy-muted">
-              Why ownership matters.
-            </p>
-            <h2 className="font-heading mb-5 text-[clamp(34px,4vw,54px)] font-[680] leading-[1.04] text-copy">
+        <SectionHeading
+          className="fade-up"
+          eyebrow="Why ownership matters"
+          title={
+            <>
               You own the boundary,
-              <br />
-              the schema, and the history.
-            </h2>
-            <div className="space-y-4 text-[16px] leading-[1.7] text-copy-muted">
-              <p>
-                Powerhouse creates a controlled software boundary around the
-                workflow. You decide who and what can access its data, where it
-                is stored, which actions require approval, and how history is
-                retained.
-              </p>
-              <p>
-                There is no rip-and-replace requirement. Powerhouse connects to
-                existing systems and gives your team model choice as the workflow
-                matures.
+              <br className="max-sm:hidden" /> the schema, and the history.
+            </>
+          }
+          lead="Powerhouse creates a controlled software boundary around the workflow. You decide who and what can access its data, where it is stored, which actions require approval, and how history is retained."
+        />
+
+        <div className="fade-up mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {WHY_ITEMS.map((item) => (
+            <div
+              key={item.title}
+              className="rounded-[16px] border border-border-light bg-white p-6"
+            >
+              <CheckCircle2
+                className="mb-4 h-5 w-5 text-proof"
+                aria-hidden="true"
+              />
+              <h3 className="font-heading mb-2 text-[16px] font-semibold text-copy">
+                {item.title}
+              </h3>
+              <p className="text-[14px] leading-[1.65] text-copy-muted">
+                {item.body}
               </p>
             </div>
-          </div>
-
-          <div className="fade-up divide-y divide-border-light border-y border-border-light">
-            {WHY_ITEMS.map((item) => (
-              <div
-                key={item.title}
-                className="grid grid-cols-[28px_1fr] gap-5 gap-y-2 py-6 sm:grid-cols-[32px_220px_1fr]"
-              >
-                <CheckCircle2
-                  className="mt-0.5 h-5 w-5 text-proof"
-                  aria-hidden="true"
-                />
-                <h3 className="font-heading text-[16px] font-semibold text-copy">
-                  {item.title}
-                </h3>
-                <p className="col-span-2 text-[14px] leading-[1.7] text-copy-muted sm:col-span-1">
-                  {item.body}
-                </p>
-              </div>
-            ))}
-          </div>
+          ))}
         </div>
       </SectionContainer>
     </section>

@@ -11,6 +11,7 @@ import {
 import { useRef } from "react";
 import { useFadeUpInScope } from "@/hooks/use-fade-up-scope";
 import { SectionContainer } from "./section-container";
+import { SectionHeading } from "./section-heading";
 
 const WORKFLOW_STEPS = [
   {
@@ -48,43 +49,42 @@ export function SolutionSection() {
     <section
       ref={rootRef}
       id="solution"
-      className="border-t border-border-light bg-paper-soft py-24 text-copy"
+      className="border-t border-border-light bg-paper-soft py-20 text-copy"
     >
       <SectionContainer>
-        <div className="fade-up mb-14 grid grid-cols-1 gap-6 md:grid-cols-[0.9fr_1fr] md:gap-16">
-          <div>
-            <p className="mb-4 text-[14px] font-medium text-copy-muted">
-              How Powerhouse works.
-            </p>
-            <h2 className="font-heading text-[clamp(34px,4vw,54px)] font-[680] leading-[1.04] text-copy">
+        <SectionHeading
+          className="fade-up"
+          eyebrow="How Powerhouse works"
+          title={
+            <>
               Map the workflow.
-              <br />
-              Keep the boundary.
-            </h2>
-          </div>
-          <p className="max-w-[620px] self-end text-[18px] leading-[1.65] text-copy">
-            Powerhouse turns your private processes into AI-ready software that
-            you own. Explore solutions in a Powerhouse sandbox, then choose
-            local, self-hosted, or remote deployment according to your needs.
-          </p>
-        </div>
+              <br className="max-sm:hidden" /> Keep the boundary.
+            </>
+          }
+          lead="Powerhouse turns your private processes into AI-ready software that you own. Explore solutions in a Powerhouse sandbox, then choose local, self-hosted, or remote deployment according to your needs."
+        />
 
-        <ol className="fade-up divide-y divide-border-light border-y border-border-light">
+        <ol className="fade-up mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {WORKFLOW_STEPS.map((step, index) => {
             const Icon = step.icon;
 
             return (
               <li
                 key={step.title}
-                className="grid grid-cols-[44px_1fr] items-start gap-x-4 gap-y-2 py-6 md:grid-cols-[64px_240px_1fr] md:gap-8"
+                className="rounded-[16px] border border-border-light bg-white p-6"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border-light bg-white text-copy">
-                  <Icon className="h-4 w-4" aria-hidden="true" />
+                <div className="mb-4 flex items-center gap-3">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-border-light bg-paper-soft text-copy">
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                  </span>
+                  <span className="text-[12px] font-semibold tabular-nums text-copy-muted">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
                 </div>
-                <h3 className="font-heading text-[17px] font-semibold text-copy md:col-auto">
-                  {index + 1}. {step.title}
+                <h3 className="font-heading mb-2 text-[16px] font-semibold text-copy">
+                  {step.title}
                 </h3>
-                <p className="col-span-2 text-[15px] leading-[1.7] text-copy-muted md:col-span-1">
+                <p className="text-[14px] leading-[1.65] text-copy-muted">
                   {step.body}
                 </p>
               </li>
@@ -92,7 +92,7 @@ export function SolutionSection() {
           })}
         </ol>
 
-        <div className="fade-up mt-8 flex flex-col items-start gap-3 rounded-2xl border border-border-light bg-copy px-5 py-4 text-paper md:flex-row">
+        <div className="fade-up mt-4 flex flex-col items-start gap-3 rounded-[16px] border border-border-light bg-copy px-5 py-4 text-paper md:flex-row">
           <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-proof text-ink">
             <Check className="h-3.5 w-3.5" aria-hidden="true" />
           </span>
