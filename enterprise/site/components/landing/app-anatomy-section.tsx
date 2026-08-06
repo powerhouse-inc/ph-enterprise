@@ -82,7 +82,6 @@ export function AppAnatomySection() {
   const activeId = hoveredId ?? pinnedId ?? HOTSPOTS[0].id;
   const activeIndex = HOTSPOTS.findIndex((spot) => spot.id === activeId);
   const active = HOTSPOTS[activeIndex] ?? HOTSPOTS[0];
-  const calloutOpen = hoveredId !== null || pinnedId !== null;
 
   const clear = () => setHoveredId(null);
 
@@ -135,8 +134,6 @@ export function AppAnatomySection() {
 
                 {HOTSPOTS.map((spot, index) => {
                   const isActive = spot.id === active.id;
-                  const flipX = spot.x > 58;
-                  const flipY = spot.y > 66;
 
                   return (
                     <div
@@ -170,26 +167,6 @@ export function AppAnatomySection() {
                         />
                       ) : null}
 
-                      {isActive && calloutOpen ? (
-                        <div
-                          role="presentation"
-                          className={cn(
-                            "pointer-events-none absolute z-20 hidden w-[260px] rounded-xl border border-border-light bg-white/98 p-4 shadow-[0_18px_50px_rgba(17,22,20,0.18)] backdrop-blur-sm md:block",
-                            flipX ? "right-5" : "left-5",
-                            flipY ? "bottom-5" : "top-5",
-                          )}
-                        >
-                          <p className="mb-1.5 text-[11px] font-medium tabular-nums text-copy-muted">
-                            {String(index + 1).padStart(2, "0")}
-                          </p>
-                          <p className="font-heading text-[15px] font-semibold leading-[1.3] text-copy">
-                            {spot.label}
-                          </p>
-                          <p className="mt-1.5 text-[13px] leading-[1.6] text-copy-muted">
-                            {spot.body}
-                          </p>
-                        </div>
-                      ) : null}
                     </div>
                   );
                 })}
@@ -207,18 +184,39 @@ export function AppAnatomySection() {
               id={panelId}
               role="status"
               aria-live="polite"
-              className="rounded-2xl border border-border-light bg-white p-5"
+              className="grid rounded-2xl border border-border-light bg-white p-5"
             >
-              <p className="mb-2 text-[11px] font-medium tabular-nums text-copy-muted">
-                {String(activeIndex + 1).padStart(2, "0")} /{" "}
-                {String(HOTSPOTS.length).padStart(2, "0")}
-              </p>
-              <p className="font-heading text-[17px] font-semibold leading-[1.3] text-copy">
-                {active.label}
-              </p>
-              <p className="mt-2 text-[14px] leading-[1.7] text-copy-muted">
-                {active.body}
-              </p>
+              {/*
+                All descriptions are stacked in the same grid cell and only the
+                active one is visible, so the panel keeps the height of the
+                tallest entry. Without this the box resizes on every hover and
+                the list below it jumps.
+              */}
+              {HOTSPOTS.map((spot, index) => {
+                const isActive = spot.id === active.id;
+
+                return (
+                  <div
+                    key={spot.id}
+                    aria-hidden={!isActive}
+                    className={cn(
+                      "col-start-1 row-start-1",
+                      !isActive && "invisible",
+                    )}
+                  >
+                    <p className="mb-2 text-[11px] font-medium tabular-nums text-copy-muted">
+                      {String(index + 1).padStart(2, "0")} /{" "}
+                      {String(HOTSPOTS.length).padStart(2, "0")}
+                    </p>
+                    <p className="font-heading text-[17px] font-semibold leading-[1.3] text-copy">
+                      {spot.label}
+                    </p>
+                    <p className="mt-2 text-[14px] leading-[1.7] text-copy-muted">
+                      {spot.body}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
 
             <ul className="mt-4 divide-y divide-border-light border-y border-border-light">
