@@ -12,28 +12,23 @@ function StageText({
   num,
   title,
   body,
-  accent = false,
   children,
 }: {
   num: string;
   title: string;
   body: string;
-  accent?: boolean;
   children?: React.ReactNode;
 }) {
   return (
-    <div>
-      <span
-        className={cn(
-          "font-heading block text-[24px] leading-none font-semibold tabular-nums",
-          accent ? "text-[#b18cff]" : "text-white/45",
-        )}
-      >
-        {num}
-      </span>
-      <h3 className="font-heading mt-2.5 text-[17px] font-semibold text-white">
-        {title}
-      </h3>
+    <div className="lg:pt-8">
+      <div className="flex items-baseline gap-3">
+        <span className="font-heading w-[26px] shrink-0 text-[20px] leading-none font-semibold text-white/45">
+          {num}
+        </span>
+        <h3 className="font-heading text-[17px] font-semibold text-white">
+          {title}
+        </h3>
+      </div>
       <p className="mt-1.5 max-w-[520px] text-[14px] leading-[1.65] text-white/60">
         {body}
       </p>
@@ -45,9 +40,9 @@ function StageText({
 /** Scattered source-document mini cards for stage 01. */
 function SourceCards() {
   return (
-    <div className="relative mx-auto h-[196px] w-full max-w-[360px]">
+    <div className="relative mx-auto h-[152px] w-full max-w-[360px]">
       {/* Receipts */}
-      <div className="absolute top-[4px] left-[16px] h-[66px] w-[108px] -rotate-[6deg] rounded-[10px] bg-white p-2 shadow-[0_10px_24px_rgba(0,0,0,0.35)]">
+      <div className="absolute top-[0px] left-[16px] h-[66px] w-[108px] -rotate-[6deg] rounded-[10px] bg-white p-2 shadow-[0_10px_24px_rgba(0,0,0,0.35)]">
         <p className="text-[9px] font-semibold tracking-[0.04em] text-slate-500 uppercase">
           Receipts
         </p>
@@ -61,7 +56,7 @@ function SourceCards() {
       </div>
 
       {/* Invoices */}
-      <div className="absolute top-[24px] left-[150px] h-[66px] w-[108px] rotate-[4deg] rounded-[10px] bg-white p-2 shadow-[0_10px_24px_rgba(0,0,0,0.35)]">
+      <div className="absolute top-[12px] left-[150px] h-[66px] w-[108px] rotate-[4deg] rounded-[10px] bg-white p-2 shadow-[0_10px_24px_rgba(0,0,0,0.35)]">
         <p className="text-[9px] font-semibold tracking-[0.04em] text-slate-500 uppercase">
           Invoices
         </p>
@@ -73,7 +68,7 @@ function SourceCards() {
       </div>
 
       {/* Claim status */}
-      <div className="absolute top-[96px] left-[40px] h-[66px] w-[108px] -rotate-[3deg] rounded-[10px] bg-white p-2 shadow-[0_10px_24px_rgba(0,0,0,0.35)]">
+      <div className="absolute top-[74px] left-[40px] h-[66px] w-[108px] -rotate-[3deg] rounded-[10px] bg-white p-2 shadow-[0_10px_24px_rgba(0,0,0,0.35)]">
         <p className="text-[9px] font-semibold tracking-[0.04em] text-slate-500 uppercase">
           Claim status
         </p>
@@ -84,7 +79,7 @@ function SourceCards() {
       </div>
 
       {/* Emails */}
-      <div className="absolute top-[114px] left-[184px] h-[66px] w-[108px] rotate-[5deg] rounded-[10px] bg-white p-2 shadow-[0_10px_24px_rgba(0,0,0,0.35)]">
+      <div className="absolute top-[86px] left-[184px] h-[66px] w-[108px] rotate-[5deg] rounded-[10px] bg-white p-2 shadow-[0_10px_24px_rgba(0,0,0,0.35)]">
         <p className="text-[9px] font-semibold tracking-[0.04em] text-slate-500 uppercase">
           Emails
         </p>
@@ -116,9 +111,9 @@ function ArrowDown({ className }: { className?: string }) {
       className={className}
     >
       <path
-        d="M6 0v30m0 0-4.5-5M6 30l4.5-5"
-        stroke="rgba(255,255,255,0.35)"
-        strokeWidth="1.5"
+        d="M6 0v30m0 0-5-5.5M6 30l5-5.5"
+        stroke="rgba(255,255,255,0.6)"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -172,18 +167,18 @@ function ForkConnector() {
       aria-hidden="true"
       className="mx-auto block h-[56px] w-full max-w-[360px]"
     >
-      <path d={left} stroke="rgba(255,255,255,0.28)" strokeWidth="1.5" />
-      <path d={right} stroke="rgba(255,255,255,0.28)" strokeWidth="1.5" />
+      <path d={left} stroke="rgba(255,255,255,0.55)" strokeWidth="2" />
+      <path d={right} stroke="rgba(255,255,255,0.55)" strokeWidth="2" />
       <path
         d={left}
-        stroke="rgba(126,217,167,0.7)"
-        strokeWidth="1.5"
+        stroke="rgba(126,217,167,0.85)"
+        strokeWidth="2"
         strokeDasharray="5 5"
       />
       <path
         d={right}
-        stroke="rgba(156,107,255,0.7)"
-        strokeWidth="1.5"
+        stroke="rgba(156,107,255,0.85)"
+        strokeWidth="2"
         strokeDasharray="5 5"
       />
     </svg>
@@ -398,7 +393,7 @@ export function HowPowerhouseWorks() {
           />
           <div
             aria-hidden="true"
-            className="hpw-pulse absolute left-[252px] hidden h-2 w-2 rounded-full lg:block"
+            className="hpw-pulse absolute left-[225px] hidden h-2 w-2 rounded-full lg:block"
             style={{
               background:
                 "radial-gradient(circle, rgba(126,217,167,0.95) 0%, rgba(126,217,167,0.4) 60%, transparent 100%)",
@@ -409,7 +404,7 @@ export function HowPowerhouseWorks() {
 
           <div className="relative">
             {/* 01 — Connect existing systems */}
-            <div className="fade-up grid items-center gap-6 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-14">
+            <div className="fade-up grid items-start gap-6 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-14">
               <SourceCards />
               <StageText
                 num="01"
@@ -418,43 +413,42 @@ export function HowPowerhouseWorks() {
               />
             </div>
 
-            <div className="my-1 flex w-full justify-center lg:w-[360px]">
+            <div className="flex w-full justify-center lg:w-[360px]">
               <ArrowDown />
             </div>
 
-            {/* Boundary box wrapping 02 + 03 */}
-            <div className="fade-up relative mt-1 rounded-[20px] border-[1.5px] border-dashed border-[rgba(146,92,255,0.8)] bg-[rgba(122,58,255,0.06)] p-6 pb-16">
-              <div>
+            {/* Boundary box wrapping 02 + 03. Bleeds out by its own padding on
+                lg so the columns inside align exactly with the outer rows. */}
+            <div className="fade-up relative rounded-[20px] border-[1.5px] border-dashed border-[rgba(146,92,255,0.8)] bg-[rgba(122,58,255,0.06)] p-6 pb-14 lg:-mx-6">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-[rgba(146,92,255,0.5)] bg-[rgba(122,58,255,0.25)] px-3 py-1 text-[11px] font-semibold text-[#e4d5ff]">
                   <Lock className="h-[11px] w-[11px]" aria-hidden="true" />
                   Your boundary
                 </span>
-                <p className="mt-2 text-[12.5px] text-[rgba(205,178,255,0.85)]">
+                <p className="text-[12.5px] text-[rgba(205,178,255,0.85)]">
                   You control which users and what systems access your data.
                 </p>
               </div>
 
               {/* 02 — Structure the workflow */}
-              <div className="mt-6 grid items-center gap-6 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-14">
+              <div className="mt-4 grid items-start gap-6 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-14">
                 <WorkflowRows />
                 <StageText
                   num="02"
-                  accent
                   title="Structure the workflow"
                   body="Model the objects, approvals, permissions, exceptions, and data history behind the process."
                 />
               </div>
 
-              <div className="mt-1 w-full lg:w-[360px]">
+              <div className="my-4 w-full lg:w-[360px]">
                 <ForkConnector />
               </div>
 
               {/* 03 — Add scoped AI assistance */}
-              <div className="grid items-center gap-6 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-14">
+              <div className="grid items-start gap-6 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-14">
                 <ZoneCards />
                 <StageText
                   num="03"
-                  accent
                   title="Add scoped AI assistance"
                   body="Use AI to extract, compare, draft, flag, and route work inside the approved workflow boundary."
                 >
@@ -491,8 +485,8 @@ export function HowPowerhouseWorks() {
             </div>
 
             {/* 04 — Keep human approval */}
-            <div className="fade-up grid items-center gap-4 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-14">
-              <div className="flex flex-col items-center pt-11 lg:pl-12">
+            <div className="fade-up grid items-start gap-6 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-14">
+              <div className="flex flex-col items-center pt-10">
                 <ArrowDown />
                 <div className="mt-2">
                   <OutputCard />
@@ -500,14 +494,13 @@ export function HowPowerhouseWorks() {
               </div>
               <StageText
                 num="04"
-                accent
                 title="Keep human approval"
                 body="Operators approve, reject, or revise important actions with the right context in front of them. Here, an operator approves the batch claim and updates the claim status."
               />
             </div>
 
             {/* 05 — Retain attributable history */}
-            <div className="fade-up mt-8 grid items-center gap-6 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-14">
+            <div className="fade-up mt-9 grid items-start gap-6 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-14">
               <LedgerCard />
               <StageText
                 num="05"

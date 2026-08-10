@@ -2,7 +2,7 @@ import { GrainOverlay } from "@/components/landing/grain-overlay";
 import { LandingLenis } from "@/components/landing/landing-lenis";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { LandingHero } from "@/components/landing/landing-hero";
-import { ProblemSection } from "@/components/landing/problem-section";
+import { SiloedDataSection } from "@/components/landing/siloed-data-section";
 import { HowPowerhouseWorks } from "@/components/landing/how-powerhouse-works";
 import { AppAnatomySection } from "@/components/landing/app-anatomy-section";
 import { WorkflowExampleSection } from "@/components/landing/workflow-example-section";
@@ -19,7 +19,7 @@ export default function Home() {
 
       <LandingNav />
       <LandingHero />
-      <ProblemSection />
+      <SiloedDataSection />
       <HowPowerhouseWorks />
       <AppAnatomySection />
       <WorkflowExampleSection />

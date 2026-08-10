@@ -1,17 +1,24 @@
 "use client";
 
 import { useRef } from "react";
-import { PowerhouseMark } from "@/components/powerhouse-mark";
+import { SVG3D } from "3dsvg";
 import { gsap, useGSAP } from "@/lib/gsap";
 
 /**
- * How far each layer travels with the cursor, in pixels, and how much the
- * mark tilts. Different travel per layer is what reads as depth.
+ * How far each layer travels with the cursor, in pixels. Different travel
+ * per layer is what reads as depth. The mark itself no longer tilts via
+ * GSAP — the SVG3D canvas orbits toward the cursor on its own, so GSAP
+ * only translates it.
  */
 const MARK_TRAVEL = 26;
-const MARK_TILT = 7;
 const HALO_TRAVEL = 15;
 const HALO_OUTER_TRAVEL = 8;
+
+/** Powerhouse mark, extruded by the 3dsvg engine at runtime. */
+const MARK_SVG = `<svg width="47.25" height="47.25" overflow="visible" style="display: block;" viewBox="0 0 47.25 47.25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path id="Subtract" fill-rule="evenodd" clip-rule="evenodd" d="M29.5486 0L10.0889 16.1136C7.23454 18.4772 7.02695 22.7819 9.64066 25.4092L16.3729 32.1763C18.3481 34.1618 18.7755 37.2129 17.4218 39.6646L13.2337 47.25H6.3C2.82061 47.25 0 44.4294 0 40.95V6.3C0 2.82061 2.82061 0 6.3 0H29.5486ZM33.2039 0L29.5691 6.62154C28.2289 9.06288 28.6507 12.0945 30.6065 14.0772L37.7482 21.3177C40.3562 23.9617 40.1229 28.2765 37.2449 30.6239L16.86 47.25H40.95C44.4294 47.25 47.25 44.4294 47.25 40.95V6.3C47.25 2.82061 44.4294 0 40.95 0H33.2039Z" fill="var(--fill-0, #32373B)"/>
+</svg>
+`;
 
 export function HeroMark() {
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -35,24 +42,15 @@ export function HeroMark() {
       if (reducedMotion || !finePointer) return;
 
       const layers = [
-        { el: markRef.current, travel: MARK_TRAVEL, tilt: MARK_TILT },
-        { el: haloRef.current, travel: HALO_TRAVEL, tilt: 0 },
-        { el: haloOuterRef.current, travel: HALO_OUTER_TRAVEL, tilt: 0 },
+        { el: markRef.current, travel: MARK_TRAVEL },
+        { el: haloRef.current, travel: HALO_TRAVEL },
+        { el: haloOuterRef.current, travel: HALO_OUTER_TRAVEL },
       ].filter((layer) => layer.el !== null);
 
       const followers = layers.map((layer) => ({
         travel: layer.travel,
-        tilt: layer.tilt,
         x: gsap.quickTo(layer.el, "x", { duration: 1.1, ease: "power3.out" }),
         y: gsap.quickTo(layer.el, "y", { duration: 1.1, ease: "power3.out" }),
-        rotationX: gsap.quickTo(layer.el, "rotationX", {
-          duration: 1.4,
-          ease: "power3.out",
-        }),
-        rotationY: gsap.quickTo(layer.el, "rotationY", {
-          duration: 1.4,
-          ease: "power3.out",
-        }),
       }));
 
       const onPointerMove = (event: PointerEvent) => {
@@ -76,11 +74,6 @@ export function HeroMark() {
         followers.forEach((follower) => {
           follower.x(offsetX * follower.travel);
           follower.y(offsetY * follower.travel);
-
-          if (follower.tilt) {
-            follower.rotationY(offsetX * follower.tilt);
-            follower.rotationX(-offsetY * follower.tilt);
-          }
         });
       };
 
@@ -114,9 +107,17 @@ export function HeroMark() {
 
       <div
         ref={markRef}
-        className="relative z-10 aspect-square w-[200px] lg:w-[240px]"
+        className="relative z-10 aspect-square w-[280px] lg:w-[340px]"
       >
-        <PowerhouseMark className="hero-mark h-full w-full text-t1" />
+        <SVG3D
+          svg={MARK_SVG}
+          smoothness={0.6}
+          color="#ffffff"
+          animate="float"
+          shadow={false}
+          draggable={false}
+          intro="none"
+        />
       </div>
     </div>
   );
