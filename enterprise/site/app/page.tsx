@@ -5,7 +5,7 @@ import { LandingHero } from "@/components/landing/landing-hero";
 import { SiloedDataSection } from "@/components/landing/siloed-data-section";
 import { HowPowerhouseWorks } from "@/components/landing/how-powerhouse-works";
 import { AppAnatomySection } from "@/components/landing/app-anatomy-section";
-import { WorkflowExampleSection } from "@/components/landing/workflow-example-section";
+import { ControlOwnershipSection } from "@/components/landing/control-ownership-section";
 import { WhySection } from "@/components/landing/why-section";
 import { StackSection } from "@/components/landing/stack-section";
 import { ContactCta } from "@/components/landing/contact-cta";
@@ -22,7 +22,7 @@ export default function Home() {
       <SiloedDataSection />
       <HowPowerhouseWorks />
       <AppAnatomySection />
-      <WorkflowExampleSection />
+      <ControlOwnershipSection />
       <WhySection />
       <StackSection />
       <ContactCta />
