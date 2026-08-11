@@ -11,8 +11,14 @@ export const SITE_DESCRIPTION =
   "Turn workflows into software you own. Powerhouse gives sensitive, document-heavy workflows shared structure, permissions, and history, creating operational software that teams and AI can use safely.";
 
 export function siteUrl() {
-  return (process.env.NEXT_PUBLIC_SITE_URL ?? CANONICAL_SITE_URL).replace(
-    /\/$/,
-    "",
-  );
+  // Until the canonical domain has DNS, absolute URLs (og:image, canonical,
+  // sitemap) must point at the domain actually serving the site, or link
+  // preview scrapers fail to fetch the image. VERCEL_PROJECT_PRODUCTION_URL
+  // switches to the custom domain automatically once it is attached.
+  const url =
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : CANONICAL_SITE_URL);
+  return url.replace(/\/$/, "");
 }
