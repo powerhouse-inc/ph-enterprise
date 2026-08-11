@@ -1,10 +1,14 @@
 "use client";
 // ControlOwnershipSection — "Control and ownership: Control is visible in the workflow."
 // Deliberately styled inline (own warm palette) rather than with theme tokens,
-// matching SiloedDataSection. The product shots overlap: the dark document-history
-// view at 78% width, the RFP record with provenance pinned over its bottom-right.
+// matching SiloedDataSection. The product shots overlap: the offering editor at
+// 78% width, its annotated revision history pinned over the bottom-right. Both
+// show the same OperationalHubOffering document. The annotated history is a
+// static export of the design_handoff_product_shot composition (1600x1000 @2x).
 
 import Image from "next/image";
+import { createPortal } from "react-dom";
+import { Maximize2, X } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
@@ -12,8 +16,10 @@ const INK = "oklch(0.337 0.006 214)";
 const MUTED = "oklch(0.53 0.01 240)";
 const BORDER = "oklch(0.882 0.002 247)";
 
-const MAIN_SHOT = "/product/doc-history-revisions.png"; // viewable, verifiable document history
-const DETAIL_SHOT = "/usecases/rfp-hub/03-rfp-detail-provenance.png"; // structured RFP record with provenance
+const MAIN_SHOT = "/product/offering-pricing-tiers.png"; // service offering editor with pricing tiers
+const DETAIL_SHOT = "/product/doc-history-annotated.png"; // annotated verifiable document history
+const DETAIL_ALT =
+  "Powerhouse document history with a highlighted signed revision linked to its operation payload, signer address, and signature verification details.";
 
 function Reveal({
   children,
@@ -93,6 +99,66 @@ function TiltFrame({
   );
 }
 
+// Full-size viewer for the annotated history shot. Same portal pattern as the
+// signup modal: fixed overlay, closed by backdrop click, Escape, or the X.
+function Lightbox({
+  src,
+  alt,
+  onClose,
+}: {
+  src: string;
+  alt: string;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [onClose]);
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[300] grid place-items-center p-4 md:p-10"
+      role="dialog"
+      aria-modal="true"
+      aria-label={alt}
+    >
+      <button
+        type="button"
+        aria-label="Close"
+        onClick={onClose}
+        className="fixed inset-0 cursor-zoom-out bg-black/75 backdrop-blur-sm"
+      />
+      <div className="relative z-10">
+        <Image
+          src={src}
+          alt={alt}
+          width={3200}
+          height={2000}
+          sizes="92vw"
+          className="h-auto max-h-[88svh] w-auto max-w-[92vw] rounded-2xl shadow-[0_30px_80px_rgba(0,0,0,0.55)]"
+        />
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/55 text-white/85 backdrop-blur-sm transition-colors hover:text-white"
+        >
+          <X className="h-4 w-4" aria-hidden="true" />
+        </button>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
 const POINTS = [
   {
     title: "Access is scoped to the workflow",
@@ -113,6 +179,8 @@ const POINTS = [
 ];
 
 export function ControlOwnershipSection() {
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
   return (
     <section
       style={{
@@ -175,9 +243,9 @@ export function ControlOwnershipSection() {
             >
               <Image
                 src={MAIN_SHOT}
-                alt="Powerhouse product screenshot showing a verifiable document history with signed revisions and commit timestamps."
+                alt="Powerhouse product screenshot showing a service offering with pricing tiers, billing cycles, and configured service groups."
                 width={2992}
-                height={1730}
+                height={1728}
                 sizes="(min-width: 1100px) 810px, 78vw"
                 style={{ display: "block", width: "100%", height: "auto" }}
               />
@@ -195,13 +263,31 @@ export function ControlOwnershipSection() {
                 boxShadow: "1px 4px 15px rgba(52,56,57,0.25)",
               }}
             >
-              <Image
-                src={DETAIL_SHOT}
-                alt="Powerhouse product screenshot showing a structured RFP record with provenance, application context, dates, and source links."
-                fill
-                sizes="(min-width: 1100px) 458px, 44vw"
-                style={{ objectFit: "cover", objectPosition: "top" }}
-              />
+              <button
+                type="button"
+                onClick={() => setLightboxOpen(true)}
+                aria-label="View the document history detail at full size"
+                className="group/zoom"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  padding: 0,
+                  border: "none",
+                  background: "transparent",
+                  cursor: "zoom-in",
+                }}
+              >
+                <Image
+                  src={DETAIL_SHOT}
+                  alt={DETAIL_ALT}
+                  fill
+                  sizes="(min-width: 1100px) 458px, 44vw"
+                  style={{ objectFit: "cover" }}
+                />
+                <span className="absolute right-2.5 bottom-2.5 flex h-7 w-7 items-center justify-center rounded-md bg-black/50 text-white/85 opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover/zoom:opacity-100">
+                  <Maximize2 className="h-3.5 w-3.5" aria-hidden="true" />
+                </span>
+              </button>
             </TiltFrame>
           </div>
           <div
@@ -213,8 +299,8 @@ export function ControlOwnershipSection() {
               maxWidth: 720,
             }}
           >
-            A verifiable document history, alongside a structured RFP record
-            with provenance, application context, dates, and source links.
+            A service offering document and its verifiable revision history,
+            with signed operations and inspectable payloads.
           </div>
         </Reveal>
 
@@ -256,6 +342,14 @@ export function ControlOwnershipSection() {
           </div>
         </Reveal>
       </div>
+
+      {lightboxOpen ? (
+        <Lightbox
+          src={DETAIL_SHOT}
+          alt={DETAIL_ALT}
+          onClose={() => setLightboxOpen(false)}
+        />
+      ) : null}
     </section>
   );
 }
