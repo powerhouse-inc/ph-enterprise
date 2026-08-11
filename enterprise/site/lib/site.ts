@@ -4,6 +4,10 @@ export const BAI_ENGAGEMENT_URL = `${BAI_SITE_URL}/#contact`;
 export const ASSESSMENT_EMAIL_URL =
   "mailto:hello@powerhouse.inc?subject=5-Day%20Assessment%20Request";
 
+// Canonical CTA label. COPY_STANDARD.md's controlled-language rules require
+// one verb phrase per action; every assessment CTA renders this string.
+export const CTA_LABEL = "Request an assessment";
+
 export const SITE_NAME = "Powerhouse Enterprise";
 export const SITE_TITLE =
   "Powerhouse Enterprise - AI-Ready Workflow Software";

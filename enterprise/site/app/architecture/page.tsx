@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  ArrowRight,
   Bot,
   Boxes,
   Braces,
@@ -18,7 +17,7 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { SectionContainer } from "@/components/landing/section-container";
 import { Button } from "@/components/ui/button";
-import { BAI_ENGAGEMENT_URL } from "@/lib/site";
+import { BAI_ENGAGEMENT_URL, CTA_LABEL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Architecture",
@@ -183,16 +182,10 @@ export default function ArchitecturePage() {
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 <Button variant="cta" className="h-11 rounded-md px-5 text-[14px]" asChild>
-                  <a href={BAI_ENGAGEMENT_URL}>
-                    Map your first workflow
-                    <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-                  </a>
+                  <a href={BAI_ENGAGEMENT_URL}>{CTA_LABEL}</a>
                 </Button>
                 <Button variant="outline" className="h-11 rounded-md px-5 text-[14px]" asChild>
-                  <Link href="/#how-it-works">
-                    Back to overview
-                    <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-                  </Link>
+                  <Link href="/#how-it-works">Back to overview</Link>
                 </Button>
               </div>
             </div>
@@ -318,24 +311,21 @@ export default function ArchitecturePage() {
             <div className="rounded-lg border border-brand-low bg-brand-low/30 p-7 md:p-8">
               <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
                 <div>
-                  <div className="mb-4 flex items-center gap-2 text-[12px] font-semibold uppercase tracking-normal text-t3">
+                  <div className="mb-4 flex items-center gap-2 text-[13px] font-medium text-t3">
                     <ShieldCheck className="h-4 w-4 text-brand" aria-hidden="true" />
                     Start with the boundary
                   </div>
                   <h2 className="font-heading text-[clamp(28px,3.5vw,42px)] font-[680] leading-[1.1] tracking-normal text-t1">
-                    Map the first private workflow before choosing components.
+                    Assess the first private workflow before choosing components.
                   </h2>
                   <p className="mt-4 max-w-[62ch] text-[15px] leading-[1.72] text-t2">
                     We identify the workflow, source systems, approval model,
                     data boundaries, and deployment path. Component choices
-                    follow from that map.
+                    follow from that assessment.
                   </p>
                 </div>
                 <Button variant="cta" className="h-11 rounded-md px-5 text-[14px]" asChild>
-                  <a href={BAI_ENGAGEMENT_URL}>
-                    Map your first workflow
-                    <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-                  </a>
+                  <a href={BAI_ENGAGEMENT_URL}>{CTA_LABEL}</a>
                 </Button>
               </div>
             </div>

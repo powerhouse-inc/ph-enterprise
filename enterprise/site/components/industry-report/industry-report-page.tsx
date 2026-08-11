@@ -5,7 +5,7 @@ import { SectionContainer } from "@/components/landing/section-container";
 import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingLenis } from "@/components/landing/landing-lenis";
 import { GrainOverlay } from "@/components/landing/grain-overlay";
-import { BAI_ENGAGEMENT_URL } from "@/lib/site";
+import { BAI_ENGAGEMENT_URL, CTA_LABEL } from "@/lib/site";
 import type { IndustryReport } from "@/data/industry-reports";
 
 function ReportNav({ report }: { report: IndustryReport }) {
@@ -32,7 +32,7 @@ function ReportNav({ report }: { report: IndustryReport }) {
             <Link href="/architecture">Architecture</Link>
           </Button>
           <Button variant="cta" className="h-8 rounded-md px-4 text-[13px]" asChild>
-            <a href={BAI_ENGAGEMENT_URL}>Map workflow</a>
+            <a href={BAI_ENGAGEMENT_URL}>{CTA_LABEL}</a>
           </Button>
         </div>
       </SectionContainer>

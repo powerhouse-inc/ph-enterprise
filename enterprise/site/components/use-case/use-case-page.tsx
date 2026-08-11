@@ -7,7 +7,7 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingLenis } from "@/components/landing/landing-lenis";
 import { GrainOverlay } from "@/components/landing/grain-overlay";
 import type { UseCaseDetail, UseCaseScreenshot } from "@/data/use-cases-detail";
-import { BAI_ENGAGEMENT_URL } from "@/lib/site";
+import { BAI_ENGAGEMENT_URL, CTA_LABEL } from "@/lib/site";
 import type { CSSWithVars } from "@/lib/utils";
 
 function UseCaseNav() {
@@ -32,7 +32,7 @@ function UseCaseNav() {
             <Link href="/use-cases">All examples</Link>
           </Button>
           <Button variant="cta" className="h-8 rounded-md px-4 text-[13px]" asChild>
-            <a href={BAI_ENGAGEMENT_URL}>Map workflow</a>
+            <a href={BAI_ENGAGEMENT_URL}>{CTA_LABEL}</a>
           </Button>
         </div>
       </SectionContainer>
@@ -288,12 +288,7 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
               Product examples
             </Link>
 
-            <div className="inline-flex w-fit items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-[12px] text-t3">
-              <span className="h-[5px] w-[5px] shrink-0 rounded-full bg-[var(--uc-accent)]" aria-hidden="true" />
-              <span className="font-semibold uppercase tracking-normal text-t2">Use case</span>
-              <span className="h-3 w-px bg-border-md" aria-hidden="true" />
-              <span>{useCase.domain}</span>
-            </div>
+            <p className="text-[13px] font-medium text-t3">{useCase.domain}</p>
 
             <h1 className="mt-6 max-w-[16ch] text-pretty text-[clamp(38px,5vw,64px)] font-[680] leading-[0.98] tracking-normal text-t1 font-heading">
               {useCase.title}
@@ -305,7 +300,7 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
 
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <Button variant="cta" className="h-10 rounded-md px-5 text-[13px] font-medium" asChild>
-                <a href={BAI_ENGAGEMENT_URL}>Map your first workflow</a>
+                <a href={BAI_ENGAGEMENT_URL}>{CTA_LABEL}</a>
               </Button>
               {useCase.liveUrl ? (
                 <Button variant="outline" className="h-10 rounded-md px-5 text-[13px] font-medium" asChild>
@@ -358,7 +353,7 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
               </p>
               <div className="mt-7 flex flex-wrap items-center gap-3">
                 <Button variant="cta" className="h-10 rounded-md px-5 text-[13px] font-medium" asChild>
-                  <a href={BAI_ENGAGEMENT_URL}>Map your first workflow</a>
+                  <a href={BAI_ENGAGEMENT_URL}>{CTA_LABEL}</a>
                 </Button>
                 <Link
                   href="/use-cases"

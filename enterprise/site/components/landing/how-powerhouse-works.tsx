@@ -367,7 +367,7 @@ export function HowPowerhouseWorks() {
           eyebrow="How Powerhouse works"
           title={
             <>
-              Map the workflow.
+              Structure the workflow.
               <br className="max-sm:hidden" /> Control the boundary.
             </>
           }

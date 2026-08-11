@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PowerhouseMark } from "@/components/powerhouse-mark";
 import { PROCUREMENT_SECTION_LINKS } from "@/data/procurement";
+import { CTA_LABEL } from "@/lib/site";
 import { SectionContainer } from "@/components/landing/section-container";
 
 export function ProcurementNav() {
@@ -41,7 +42,7 @@ export function ProcurementNav() {
             <Link href="/architecture">Architecture</Link>
           </Button>
           <Button variant="cta" className="h-8 rounded-md px-4 text-[13px]" asChild>
-            <a href="https://bai.powerhouse.io/#contact">Map workflow</a>
+            <a href="https://bai.powerhouse.io/#contact">{CTA_LABEL}</a>
           </Button>
         </div>
       </SectionContainer>

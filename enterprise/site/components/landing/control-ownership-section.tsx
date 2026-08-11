@@ -132,10 +132,6 @@ export function ControlOwnershipSection() {
             gap: 20,
           }}
         >
-          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border-light bg-white px-3 py-1 text-[12px] font-semibold text-copy-muted">
-            <span className="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden="true" />
-            Control and ownership
-          </span>
           <h2
             style={{
               margin: 0,

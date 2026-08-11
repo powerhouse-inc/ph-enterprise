@@ -51,7 +51,7 @@ senior operator. It should not sound like a SaaS landing-page generator.
    Target 12 to 22 words. Longer sentences need a clear reason.
 
 2. Put the actor near the verb.
-   Prefer "Powerhouse maps the workflow" or "We map the workflow" over "The workflow is mapped by BAI."
+   Prefer "Powerhouse structures the workflow" or "We assess the workflow" over "The workflow is assessed by BAI."
 
 3. Use one idea per sentence.
    Split a sentence when it mixes problem, value, and proof.
@@ -142,6 +142,7 @@ Use these terms consistently:
 | end-to-end platform | open-source platform plus BAI delivery path |
 | democratize | say who gets what capability |
 | future-proof | portable, inspectable, open-source |
+| map (as the CTA or action verb) | assess, structure, identify |
 
 ## AI Slop Tells
 
@@ -171,6 +172,9 @@ Cut these patterns unless there is a clear reason:
 - Do not use "sandbox" in the main proposition. Reserve it for assessment or
   exploration environments.
 - CTA copy must be an action the prospect can actually take.
+- The canonical CTA label is "Request an assessment". It is defined once as
+  `CTA_LABEL` in `enterprise/site/lib/site.ts`; render that constant instead
+  of retyping the label, and do not introduce variants.
 
 ### Problem
 
@@ -211,7 +215,7 @@ Cut these patterns unless there is a clear reason:
 
 | Sloppy | Better |
 | --- | --- |
-| Unlock AI transformation across your enterprise. | Map one private workflow and turn it into owned software. |
+| Unlock AI transformation across your enterprise. | Assess one private workflow and turn it into owned software. |
 | Our platform seamlessly integrates with your stack. | Powerhouse connects records, documents, and events beside existing systems. |
 | Autonomous agents revolutionize operations. | Scoped AI assistance can extract, compare, draft, and flag within an approved workflow boundary. |
 | Enterprise-grade security keeps your data safe. | Sensitive workflows can use private deployment options, depending on the customer environment. |

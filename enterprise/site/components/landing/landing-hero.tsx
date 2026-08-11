@@ -88,13 +88,10 @@ export function LandingHero() {
           </p>
 
           <div className="flex items-center justify-center gap-3 max-sm:flex-col">
-            <WorkflowSignupButton
-              label="Map your first workflow"
-              className="h-11 px-5 text-[13px] font-semibold max-sm:w-full"
-            />
+            <WorkflowSignupButton className="h-11 px-5 text-[13px] font-semibold max-sm:w-full" />
             <Button
               variant="outline"
-              className="h-11 px-5 text-[13px] font-medium max-sm:w-full"
+              className="h-11 rounded-md px-5 text-[13px] font-medium max-sm:w-full"
               asChild
             >
               <Link href="#solution" prefetch={false}>

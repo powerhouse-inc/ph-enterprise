@@ -31,7 +31,7 @@ const VETRA_CAPABILITIES: CapabilityRow[] = [
 const ACHRA_CAPABILITIES: CapabilityRow[] = [
   {
     title: "Deployment planning",
-    description: "Map your systems, data sensitivity, privacy tiers, and deployment path.",
+    description: "Identify your systems, data sensitivity, privacy tiers, and deployment path.",
   },
   {
     title: "Implementation partners",

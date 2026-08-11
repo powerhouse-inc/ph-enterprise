@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import {
-  ArrowRight,
   ClipboardCheck,
   FileText,
   GitBranch,
@@ -91,19 +90,15 @@ export function ContactCta() {
           <div ref={actionsRef}>
             <p className="mx-auto mb-8 max-w-[600px] text-[18px] leading-[1.65] text-copy-muted">
               Find out where Powerhouse can improve operational efficiency. We
-              map the first workflow before a build starts.
+              assess the first workflow before a build starts.
             </p>
             <div className="flex items-center justify-center gap-3 max-sm:flex-col">
-              <WorkflowSignupButton
-                label="Map your first workflow"
-                className="h-11 px-5 text-[13px] font-semibold max-sm:w-full"
-              />
+              <WorkflowSignupButton className="h-11 px-5 text-[13px] font-semibold max-sm:w-full" />
               <Link
                 href="/architecture"
-                className="inline-flex h-11 items-center gap-2 rounded-lg border border-border-light bg-white px-5 text-[13px] font-medium text-copy-muted transition-colors hover:border-copy-muted/40 hover:text-copy max-sm:w-full max-sm:justify-center"
+                className="inline-flex h-11 items-center rounded-md border border-border-light bg-white px-5 text-[13px] font-medium text-copy-muted transition-colors hover:border-copy-muted/40 hover:text-copy max-sm:w-full max-sm:justify-center"
               >
                 Architecture
-                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
               </Link>
             </div>
           </div>

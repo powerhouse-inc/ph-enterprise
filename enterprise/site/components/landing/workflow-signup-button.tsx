@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { submitDemoRequest, type DemoState } from "@/app/actions/submit-demo";
 import { Button } from "@/components/ui/button";
+import { CTA_LABEL } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const initialState: DemoState = { ok: false };
@@ -24,7 +25,7 @@ function WorkflowSignupForm({ onClose }: { onClose: () => void }) {
         <p className="mx-auto mt-3 max-w-[34ch] text-[14px] leading-[1.7] text-t2">
           {state.delivery === "local"
             ? "Your request was captured in this local preview."
-            : "Your request has been sent. We\u2019ll reply about mapping the first workflow."}
+            : "Your request has been sent. We\u2019ll reply about assessing the first workflow."}
         </p>
         <Button
           variant="outline"
@@ -44,7 +45,7 @@ function WorkflowSignupForm({ onClose }: { onClose: () => void }) {
       </h2>
       <p className="mt-2 text-[13px] leading-[1.6] text-t2">
         Share your work email. We&rsquo;ll reply to identify the first workflow
-        to map.
+        to assess.
       </p>
 
       <form action={formAction} className="mt-6 space-y-3">
@@ -89,7 +90,7 @@ function WorkflowSignupForm({ onClose }: { onClose: () => void }) {
           disabled={pending}
           className="h-10 w-full rounded-md px-5 text-[13px] font-medium"
         >
-          {pending ? "Sending..." : "Request assessment"}
+          {pending ? "Sending..." : CTA_LABEL}
         </Button>
         <p className="text-center text-[11px] text-t3">
           Used only to respond to this request.
@@ -106,7 +107,7 @@ type WorkflowSignupButtonProps = {
 
 export function WorkflowSignupButton({
   className,
-  label = "Map workflow",
+  label = CTA_LABEL,
 }: WorkflowSignupButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [instanceId, setInstanceId] = useState(0);
@@ -141,7 +142,7 @@ export function WorkflowSignupButton({
             className="fixed inset-0 z-[300] grid min-h-svh place-items-center overflow-y-auto px-4 py-8"
             role="dialog"
             aria-modal="true"
-            aria-label="Map your workflow"
+            aria-label={CTA_LABEL}
           >
             <button
               type="button"

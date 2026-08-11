@@ -2,7 +2,9 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Centred section heading: pill eyebrow, tight headline, muted lead beneath.
+ * Centred section heading: quiet plain-text eyebrow, tight headline, muted
+ * lead beneath. The eyebrow is deliberately unchromed (no pill, no dot) —
+ * keep it that way; bordered chips above headlines read as template output.
  *
  * The landing page alternates ink and paper sections, so `tone` picks the text
  * and pill colours rather than each caller restating them.
@@ -25,22 +27,14 @@ export function SectionHeading({
   return (
     <div className={cn("mx-auto max-w-[820px] text-center", className)}>
       {eyebrow ? (
-        <span
+        <p
           className={cn(
-            "mb-5 inline-flex items-center rounded-full px-3 py-1 text-[12px] font-semibold",
-            onDark
-              ? "bg-brand-low text-brand"
-              : "gap-2 border border-border-light bg-white text-copy-muted",
+            "mb-4 text-[13px] font-medium",
+            onDark ? "text-t3" : "text-copy-muted",
           )}
         >
-          {onDark ? null : (
-            <span
-              className="h-1.5 w-1.5 rounded-full bg-brand"
-              aria-hidden="true"
-            />
-          )}
           {eyebrow}
-        </span>
+        </p>
       ) : null}
 
       <h2
