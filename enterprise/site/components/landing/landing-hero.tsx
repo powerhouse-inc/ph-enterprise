@@ -25,7 +25,7 @@ export function LandingHero() {
         <div className="mx-auto max-w-[880px] text-center">
           <h1 className="font-heading mb-7 text-[clamp(44px,5.4vw,74px)] font-[660] leading-[1.02] tracking-[-0.02em] text-t1 max-md:text-[44px] max-sm:text-[41px]">
             <span className="block">
-              Turn workflows <span className="max-sm:block">into</span>
+              Turn operational <span className="max-sm:block">workflows into</span>
             </span>
             <span className="block text-brand">
               <span className="max-sm:block">software</span>{" "}
@@ -34,9 +34,10 @@ export function LandingHero() {
           </h1>
 
           <p className="mx-auto mb-9 max-w-[640px] text-[18px] leading-[1.65] text-t2">
-            Powerhouse gives sensitive, document-heavy workflows shared
-            structure, permissions, and history, creating operational software
-            that teams and AI can use safely.
+            Powerhouse transforms sensitive, document-heavy processes into
+            structured applications. With permissions, approvals, and
+            attributable history built in. Your teams and AI can work together
+            without giving up control of your data.
           </p>
 
           <div className="flex items-center justify-center gap-3 max-sm:flex-col">

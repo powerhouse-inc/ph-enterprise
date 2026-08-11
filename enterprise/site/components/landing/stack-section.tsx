@@ -44,18 +44,20 @@ export function StackSection() {
   useFadeUpInScope(rootRef);
 
   return (
-    <section ref={rootRef} className="border-t border-border bg-ink py-20">
+    <section
+      ref={rootRef}
+      className="border-t border-border-light bg-paper-soft py-20 text-copy"
+    >
       <SectionContainer>
         <SectionHeading
           className="fade-up mb-14"
-          tone="dark"
           title="Part of the Powerhouse Stack"
           lead="Tools that make distributed work local-first and private."
         />
 
         <div className="fade-up grid grid-cols-1 items-stretch gap-6 lg:grid-cols-3">
           {/* Achra */}
-          <div className="flex flex-col rounded-[16px] border border-[#9810fa]/40 bg-[radial-gradient(120%_100%_at_100%_0%,rgba(152,16,250,0.16)_0%,transparent_60%)] p-7">
+          <div className="flex flex-col rounded-[16px] border border-[#9810fa]/40 bg-ink bg-[radial-gradient(120%_100%_at_100%_0%,rgba(152,16,250,0.16)_0%,transparent_60%)] p-7 shadow-[0_2px_12px_rgba(17,22,20,0.1)]">
             <Image
               src="/logos/stack/achra-ph-logo-light.svg"
               alt="Achra, powered by Powerhouse"
@@ -83,7 +85,7 @@ export function StackSection() {
           </div>
 
           {/* Powerhouse */}
-          <div className="flex flex-col rounded-[16px] border border-brand/30 bg-[radial-gradient(120%_100%_at_50%_0%,rgba(36,215,232,0.14)_0%,transparent_60%)] p-7">
+          <div className="flex flex-col rounded-[16px] border border-brand/30 bg-ink bg-[radial-gradient(120%_100%_at_50%_0%,rgba(36,215,232,0.14)_0%,transparent_60%)] p-7 shadow-[0_2px_12px_rgba(17,22,20,0.1)]">
             <Image
               src="/logos/stack/stack-logo-powerhouse.svg"
               alt="Powerhouse"
@@ -129,7 +131,7 @@ export function StackSection() {
           </div>
 
           {/* Vetra */}
-          <div className="flex flex-col rounded-[16px] border border-[#00a63e]/40 bg-[radial-gradient(120%_100%_at_0%_0%,rgba(0,166,62,0.16)_0%,transparent_60%)] p-7">
+          <div className="flex flex-col rounded-[16px] border border-[#00a63e]/40 bg-ink bg-[radial-gradient(120%_100%_at_0%_0%,rgba(0,166,62,0.16)_0%,transparent_60%)] p-7 shadow-[0_2px_12px_rgba(17,22,20,0.1)]">
             <Image
               src="/logos/stack/vetra-ph-logo-light.svg"
               alt="Vetra, powered by Powerhouse"

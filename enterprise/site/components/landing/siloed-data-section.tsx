@@ -198,29 +198,30 @@ export function SiloedDataSection() {
               textWrap: "pretty",
             }}
           >
-            Critical workflows are spread across disconnected tools, with no
-            shared structure, permissions, or history.
+            Critical processes are spread across documents, spreadsheets,
+            inboxes, and legacy systems. Without shared structure and controls,
+            AI lacks the context needed to work reliably.
           </p>
           <div style={{ display: "flex", flexDirection: "column", marginTop: 12 }}>
             <div style={{ padding: "20px 0", borderTop: `1px solid ${BORDER}` }}>
-              <div style={point}>AI sees fragments</div>
+              <div style={point}>AI works from fragments</div>
               <div style={pointDesc}>
-                Documents, spreadsheets, email threads, and legacy records do
-                not add up to one trusted workflow boundary.
+                Documents, spreadsheets, emails, and system records rarely
+                provide one complete, trusted view of the workflow.
               </div>
             </div>
             <div style={{ padding: "20px 0", borderTop: `1px solid ${BORDER}` }}>
-              <div style={point}>Private data moves too easily</div>
+              <div style={point}>Sensitive data crosses unclear boundaries</div>
               <div style={pointDesc}>
-                Confidential context can be copied into external AI tools
-                before access, storage, and approval rules are clear.
+                Confidential information can be copied into external AI tools
+                before access, storage, and approval policies are established.
               </div>
             </div>
             <div style={{ padding: "20px 0 0", borderTop: `1px solid ${BORDER}` }}>
-              <div style={point}>No accountable history</div>
+              <div style={point}>Decisions are difficult to audit</div>
               <div style={pointDesc}>
-                Teams need to know which source, human, model, and rule changed
-                the state of work.
+                Teams need to know which source, person, model, or rule changed
+                the state of the work.
               </div>
             </div>
           </div>

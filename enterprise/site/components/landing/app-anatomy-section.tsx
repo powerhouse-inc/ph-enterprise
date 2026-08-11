@@ -96,11 +96,11 @@ export function AppAnatomySection() {
           className="fade-up mb-14"
           title={
             <>
-              Every field is
-              <br className="max-sm:hidden" /> part of the model.
+              A form is only
+              <br className="max-sm:hidden" /> the interface.
             </>
           }
-          lead="This is a Powerhouse invoice application. What looks like a form is a typed document model, with approval states, identity, history, and export built in as product surfaces."
+          lead="This invoice application is powered by a typed document model. Approval states, identities, calculations, history, and exports are part of the application, not conventions held in a spreadsheet or someone's head."
         />
 
         <div
