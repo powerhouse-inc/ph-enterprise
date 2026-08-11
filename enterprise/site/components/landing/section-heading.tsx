@@ -30,9 +30,15 @@ export function SectionHeading({
             "mb-5 inline-flex items-center rounded-full px-3 py-1 text-[12px] font-semibold",
             onDark
               ? "bg-brand-low text-brand"
-              : "border border-border-light bg-white text-copy-muted",
+              : "gap-2 border border-border-light bg-white text-copy-muted",
           )}
         >
+          {onDark ? null : (
+            <span
+              className="h-1.5 w-1.5 rounded-full bg-brand"
+              aria-hidden="true"
+            />
+          )}
           {eyebrow}
         </span>
       ) : null}

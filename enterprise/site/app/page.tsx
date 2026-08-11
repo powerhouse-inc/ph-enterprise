@@ -19,14 +19,17 @@ export default function Home() {
 
       <LandingNav />
       <LandingHero />
-      <SiloedDataSection />
-      <HowPowerhouseWorks />
-      <AppAnatomySection />
-      <ControlOwnershipSection />
-      <WhySection />
-      <StackSection />
-      <ContactCta />
-      <LandingFooter />
+      {/* Stacks above the sticky hero so the page scrolls up and over it. */}
+      <div className="relative z-10">
+        <SiloedDataSection />
+        <HowPowerhouseWorks />
+        <AppAnatomySection />
+        <ControlOwnershipSection />
+        <WhySection />
+        <StackSection />
+        <ContactCta />
+        <LandingFooter />
+      </div>
     </>
   );
 }

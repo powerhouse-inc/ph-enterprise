@@ -97,11 +97,11 @@ export function HeroMark() {
         edges, which shows up as a hard rim. Square keeps the 65% fade inside the
         box on every axis, at any viewport width.
       */}
-      <div ref={haloOuterRef} className="absolute inset-0">
+      <div ref={haloOuterRef} className="absolute inset-0 opacity-60">
         <div className="hero-halo-outer absolute top-1/2 left-1/2 -mt-[280px] -ml-[280px] h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,var(--color-brand-low)_0%,transparent_65%)] lg:-mt-[360px] lg:-ml-[360px] lg:h-[720px] lg:w-[720px]" />
       </div>
 
-      <div ref={haloRef} className="absolute inset-0">
+      <div ref={haloRef} className="absolute inset-0 opacity-60">
         <div className="hero-halo absolute top-1/2 left-1/2 -mt-[210px] -ml-[210px] h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,var(--color-brand-mid)_0%,transparent_65%)] lg:-mt-[260px] lg:-ml-[260px] lg:h-[520px] lg:w-[520px]" />
       </div>
 

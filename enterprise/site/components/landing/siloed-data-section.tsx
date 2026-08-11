@@ -161,6 +161,7 @@ export function SiloedDataSection() {
   return (
     <section
       id="problem"
+      className="relative z-10 rounded-t-[40px]"
       style={{
         fontFamily: "Inter, sans-serif",
         background: "#faf9f7",
@@ -173,7 +174,8 @@ export function SiloedDataSection() {
       >
         {/* Copy column */}
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          <span className="inline-flex w-fit items-center rounded-full border border-border-light bg-white px-3 py-1 text-[12px] font-semibold text-copy-muted">
+          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border-light bg-white px-3 py-1 text-[12px] font-semibold text-copy-muted">
+            <span className="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden="true" />
             Current reality
           </span>
           <h2
