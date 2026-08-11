@@ -368,7 +368,7 @@ export function HowPowerhouseWorks() {
           title={
             <>
               Map the workflow.
-              <br className="max-sm:hidden" /> Keep the boundary.
+              <br className="max-sm:hidden" /> Control the boundary.
             </>
           }
           lead="Powerhouse turns your private processes into AI-ready software that you own. Explore solutions in a Powerhouse sandbox, then choose local, self-hosted, or remote deployment according to your needs."

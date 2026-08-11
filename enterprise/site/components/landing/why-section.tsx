@@ -16,10 +16,6 @@ const WHY_ITEMS = [
     body: "Powerhouse is the open-source platform for owned operational software. Your team can inspect, extend, and operate the system.",
   },
   {
-    title: "Portable data and schemas",
-    body: "The useful asset is the structured workflow: data, schema, permissions, approvals, and history in formats you can keep.",
-  },
-  {
     title: "Model choice",
     body: "Scope assistance to the model and deployment path that fits the task, then change that choice as needs and policy evolve.",
   },
@@ -36,23 +32,23 @@ export function WhySection() {
   return (
     <section
       ref={rootRef}
-      id="ownership"
+      id="why-powerhouse"
       className="border-t border-border-light bg-paper py-20 text-copy"
     >
       <SectionContainer>
         <SectionHeading
           className="fade-up"
-          eyebrow="Why ownership matters"
+          eyebrow="Why teams choose Powerhouse"
           title={
             <>
-              You own the boundary,
-              <br className="max-sm:hidden" /> the schema, and the history.
+              Adopt it on your terms,
+              <br className="max-sm:hidden" /> next to what you already run.
             </>
           }
-          lead="Powerhouse creates a controlled software boundary around the workflow. You decide who and what can access its data, where it is stored, which actions require approval, and how history is retained."
+          lead="Deployment, tooling, and model choices stay with your team. Powerhouse connects to your existing systems instead of asking you to replace them."
         />
 
-        <div className="fade-up mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="fade-up mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {WHY_ITEMS.map((item) => (
             <div
               key={item.title}
