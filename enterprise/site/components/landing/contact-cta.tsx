@@ -143,11 +143,6 @@ export function ContactCta() {
               </div>
             </div>
 
-          <p className="text-center text-[12px] leading-[1.6] text-copy-muted">
-            Contact requests are routed through the workflow assessment form.
-            Local previews capture test submissions locally when email delivery
-            is not configured.
-          </p>
         </div>
       </SectionContainer>
     </div>
