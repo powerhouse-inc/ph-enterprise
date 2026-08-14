@@ -38,7 +38,6 @@ export function WhySection() {
       <SectionContainer>
         <SectionHeading
           className="fade-up"
-          eyebrow="Why teams choose Powerhouse"
           title={
             <>
               Adopt it on your terms,

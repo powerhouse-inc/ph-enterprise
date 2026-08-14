@@ -1,35 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import {
-  ClipboardCheck,
-  FileText,
-  GitBranch,
-  ShieldCheck,
-} from "lucide-react";
 import { useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { TIMING, SCROLL_START } from "@/lib/constants";
 import { SectionContainer } from "./section-container";
 import { WorkflowSignupButton } from "./workflow-signup-button";
-
-const DELIVERABLES = [
-  {
-    title: "Workflow map",
-    body: "The process boundary, sources, roles, approvals, exceptions, and handoffs.",
-    icon: GitBranch,
-  },
-  {
-    title: "AI readiness review",
-    body: "Where structure, permissions, or human review are needed before AI can help safely.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Build plan",
-    body: "A first sandbox scope with integrations, data model, risks, and deployment path.",
-    icon: ClipboardCheck,
-  },
-];
 
 export function ContactCta() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -76,7 +51,7 @@ export function ContactCta() {
     <div
       ref={rootRef}
       id="get-started"
-      className="border-t border-border-light bg-paper py-20 text-copy md:py-24"
+      className="border-t border-border-light bg-paper py-28 text-copy md:py-36"
     >
       <SectionContainer>
         <div className="mx-auto max-w-[820px] text-center">
@@ -88,61 +63,25 @@ export function ContactCta() {
           </h2>
 
           <div ref={actionsRef}>
-            <p className="mx-auto mb-8 max-w-[600px] text-[18px] leading-[1.65] text-copy-muted">
+            <p className="mx-auto mb-9 max-w-[600px] text-[18px] leading-[1.65] text-copy-muted">
               Find out where Powerhouse can improve operational efficiency. We
-              assess the first workflow before a build starts.
+              map the first workflow before a build starts.
             </p>
-            <div className="flex items-center justify-center gap-3 max-sm:flex-col">
-              <WorkflowSignupButton className="h-11 px-5 text-[13px] font-semibold max-sm:w-full" />
-              <Link
-                href="/architecture"
+            <div className="flex items-center justify-center gap-4 max-sm:flex-col">
+              <WorkflowSignupButton
+                label="Map your first workflow"
+                className="h-12 rounded-lg border-[#7A3AFF] bg-[#7A3AFF] px-6 text-[15px] font-semibold text-white hover:bg-[#6B2DF2] max-sm:w-full"
+              />
+              <a
+                href="https://vetra.io/"
+                target="_blank"
+                rel="noreferrer"
                 className="inline-flex h-11 items-center rounded-md border border-border-light bg-white px-5 text-[13px] font-medium text-copy-muted transition-colors hover:border-copy-muted/40 hover:text-copy max-sm:w-full max-sm:justify-center"
               >
-                Architecture
-              </Link>
+                Explore the docs
+              </a>
             </div>
           </div>
-        </div>
-
-        <div className="mx-auto mt-14 max-w-[720px] space-y-4">
-          <div className="rounded-[16px] border border-border-light bg-white p-6">
-              <div className="mb-5 flex items-center gap-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-proof-low text-proof">
-                  <FileText className="h-4 w-4" aria-hidden="true" />
-                </span>
-                <div>
-                  <p className="font-heading text-[17px] font-semibold text-copy">
-                    Five-day assessment
-                  </p>
-                  <p className="text-[13px] text-copy-muted">
-                    Assessment first. Build after the workflow is clear.
-                  </p>
-                </div>
-              </div>
-
-              <div className="divide-y divide-border-light">
-                {DELIVERABLES.map(({ icon: Icon, title, body }) => (
-                  <div
-                    key={title}
-                    className="grid grid-cols-[28px_1fr] gap-4 py-4 first:pt-0 last:pb-0"
-                  >
-                    <Icon
-                      className="mt-0.5 h-4 w-4 text-proof"
-                      aria-hidden="true"
-                    />
-                    <div>
-                      <h3 className="font-heading text-[15px] font-semibold text-copy">
-                        {title}
-                      </h3>
-                      <p className="mt-1 text-[13px] leading-[1.6] text-copy-muted">
-                        {body}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
         </div>
       </SectionContainer>
     </div>

@@ -4,6 +4,10 @@ This file defines how Powerhouse Enterprise copy should read before it ships.
 It adapts controlled-language principles for this specific site. It does not
 reproduce ASD-STE100.
 
+For the full de-slop review process covering copy, UI, and motion together,
+see `DESLOP.md`. That standard governs how diffs are reviewed; this one
+governs what the words say.
+
 ## External References
 
 - ASD-STE100 Simplified Technical English: use as a clarity reference for

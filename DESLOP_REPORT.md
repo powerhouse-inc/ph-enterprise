@@ -240,3 +240,76 @@ Blocked:
 - Direct `npx impeccable detect ...` was not run. The environment rejected the
   third-party CLI execution because it could expose local source files. Run it
   only after explicit approval for that risk.
+
+## Impeccable Detect Run: 2026-08-14
+
+`npx impeccable detect` (v3.6.0) was run against the local dev server for the
+homepage and the architecture page. This is the first direct run of the
+third-party detector on this repo.
+
+### Homepage: 71 findings
+
+By category, largest first:
+
+- 23x undersized-ui-text. All in the illustrative workflow diagrams: the
+  siloed-data panel (Receipts 8.5px, $182.40 7.5px, In review 7px, Invoices,
+  Claim status, Finance system, Legacy tracker, Inbox, AI badge) and the
+  how-it-works and control-ownership vignettes (Receipts & invoices 10.5px,
+  2 operators only 10px, Approved 9.5px). The detector floor is 11px for
+  functional text. These labels are decoration inside mock UI drawings, so
+  the severity is lower than the count suggests, but several sit at 7 to 9px
+  where they render as noise on small screens.
+- 18x nested-cards. Mini document cards sit inside silo boxes inside panel
+  cards in the diagram sections. DESIGN_STANDARD.md already forbids cards
+  inside cards; the diagrams are the main offender.
+- 9x ai-color-palette. Cyan neon text and cyan gradients on the dark hero,
+  plus purple/violet gradient surfaces. The detector treats cyan-on-dark and
+  purple gradients as the two strongest AI-generated tells. Our brand accent
+  is cyan on ink by standard, so part of this is a deliberate choice, but the
+  purple additions (hero-gradient-bg.jpg, #7A3AFF CTA section, #cdb2ff halo)
+  now mix both flagged palettes on one page.
+- 6x radial-spotlight-glow. hero-halo and hero-halo-outer behind the 3D mark,
+  a 1176x1159 purple #7a3aff glow, and three 376x457 spotlight washes behind
+  the stack-section cards (#9810fa, #24d7e8, #00a63e). DESIGN_STANDARD.md
+  forbids decorative radial glows; these violate our own standard.
+- 5x low-contrast. Real accessibility failures: "You control which users and
+  what systems access your data." at 2.5:1, "Non-confidential data only" at
+  2.9:1, and three how-it-works step descriptions over gradient backgrounds
+  at 1.2:1 pixel contrast ("Start from the documents...", "Model the
+  objects...", "Use AI to extract..."). WCAG AA needs 4.5:1.
+- 3x tiny-text (10 to 11.5px body strings), 3x dark-glow (zero-offset colored
+  box-shadows in #cdb2ff, #7ed9a7, #5c523c), 1x radial-halo (#cdb2ff on dark),
+  1x line-length (~129 chars against the 80 char standard), 1x cramped-padding
+  (text at 0px vertical padding), 1x overused-font (Inter carries 78% of text;
+  informational, Inter is our chosen face).
+
+### Architecture page: 80 findings
+
+- 79x ai-color-palette, all the same pattern: brand cyan text on dark ink,
+  flagged on every label and link. One systemic disagreement between the
+  detector and our palette, not 79 separate problems.
+- 1x overused-font (Inter, informational).
+
+### Assessment
+
+Priority order for fixes:
+
+1. Low-contrast text (5 findings). Genuine WCAG AA failures on real copy.
+2. Radial spotlight glows and colored dark glows. Forbidden by our own
+   DESIGN_STANDARD.md and crept back in with the new hero and stack designs.
+3. Diagram text below 9px. Keep the vignettes but lift the smallest labels.
+4. Palette coherence. Decide whether purple (#7A3AFF family) is joining the
+   system or not. It currently appears in the hero background image, the
+   get-started CTA, and glow decoration while the standard still names cyan
+   as the only action accent. Update DESIGN_STANDARD.md or remove the purple.
+5. Nested cards in diagrams. Consider flattening silo boxes to borders or
+   dividers.
+
+Accepted or informational:
+
+- Cyan-on-dark as brand identity (the architecture page's 79 repeats).
+- Inter as the site face.
+- Illustrative micro-labels at 10px and above inside diagram vignettes.
+
+Raw output: scratchpad impeccable-home.txt and impeccable-arch.txt from the
+2026-08-14 session.

@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { Button } from "@/components/ui/button";
@@ -74,7 +73,7 @@ export function LandingHero() {
             <span className="block">
               Turn operational <span className="max-sm:block">workflows into</span>
             </span>
-            <span className="block text-brand">
+            <span className="block bg-[linear-gradient(90deg,#24D7E8_0%,#3FBCF2_55%,#7A3AFF_125%)] bg-clip-text text-transparent">
               <span className="max-sm:block">software</span>{" "}
               <span className="max-sm:block">you own.</span>
             </span>
@@ -94,9 +93,9 @@ export function LandingHero() {
               className="h-11 rounded-md px-5 text-[13px] font-medium max-sm:w-full"
               asChild
             >
-              <Link href="#solution" prefetch={false}>
-                See how it works
-              </Link>
+              <a href="https://vetra.io/" target="_blank" rel="noreferrer">
+                Explore the docs
+              </a>
             </Button>
           </div>
         </div>

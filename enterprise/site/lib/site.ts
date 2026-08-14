@@ -6,7 +6,7 @@ export const ASSESSMENT_EMAIL_URL =
 
 // Canonical CTA label. COPY_STANDARD.md's controlled-language rules require
 // one verb phrase per action; every assessment CTA renders this string.
-export const CTA_LABEL = "Request an assessment";
+export const CTA_LABEL = "Book a call";
 
 export const SITE_NAME = "Powerhouse Enterprise";
 export const SITE_TITLE =

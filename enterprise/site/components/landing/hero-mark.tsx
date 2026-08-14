@@ -86,7 +86,7 @@ export function HeroMark() {
   return (
     <div
       ref={sceneRef}
-      className="relative flex h-[300px] items-center justify-center lg:h-[380px]"
+      className="pointer-events-none relative flex h-[300px] items-center justify-center lg:h-[380px]"
       style={{ perspective: "900px" }}
       aria-hidden="true"
     >
