@@ -31,6 +31,11 @@ export type BlogBlock =
       height?: number;
     }
   | { type: "note"; spans: readonly BlogInline[] }
+  /**
+   * Opening primer: a quiet labelled block that defines the subject for
+   * readers who have not met it, set in smaller type than the body.
+   */
+  | { type: "primer"; label: string; spans: readonly BlogInline[] }
   | {
       type: "resources";
       title: string;
@@ -40,8 +45,11 @@ export type BlogBlock =
 export type BlogPost = {
   slug: string;
   title: string;
-  /** Deck under the H1 and the summary on the index card. */
-  summary: string;
+  /**
+   * Deck under the H1, also the summary on the index card. One entry per
+   * paragraph, so the lede reads as short blocks rather than one dense run.
+   */
+  summary: readonly string[];
   /** Search-result copy. Keep near 155 characters. */
   metaDescription: string;
   /** ISO date, used for display and for the article JSON-LD. */
@@ -58,8 +66,11 @@ const PAPERLESS_BILLING_REPO =
 const PAPERLESS_POST: BlogPost = {
   slug: "paperless-powered-by-powerhouse",
   title: "Paperless, powered by Powerhouse",
-  summary:
-    "Paperless-ngx is good at turning incoming files into an organized document archive. Powerhouse makes structured documents available through interfaces, APIs and AI tools. We combined them and followed one invoice through the result.",
+  summary: [
+    "Paperless-ngx is good at turning incoming files into an organized document archive.",
+    "Powerhouse makes structured documents available through interfaces, APIs and AI tools.",
+    "We combined them and followed one invoice through a workflow to see the result.",
+  ],
   metaDescription:
     "An invoice enters through Paperless-ngx and leaves as structured, queryable data in the Powerhouse stack. A local Docker example, walked through end to end.",
   date: "2026-09-02",
@@ -68,15 +79,17 @@ const PAPERLESS_POST: BlogPost = {
   readingMinutes: 7,
   body: [
     {
-      type: "paragraph",
+      type: "primer",
+      label: "What is Paperless-ngx?",
       spans: [
-        "We combined them to explore a simple workflow: an invoice enters through Paperless and emerges as structured, queryable data in the Powerhouse stack.",
+        { text: "Paperless-ngx", href: "https://docs.paperless-ngx.com" },
+        " is an open-source document manager that you host yourself. Send it a PDF by scan, email, or upload. It runs OCR on the text, assigns a document type and tags, and keeps the file searchable in one archive. The documents stay on infrastructure you control.",
       ],
     },
     {
       type: "paragraph",
       spans: [
-        "The application stack runs locally from a small Docker-based repository. A configured language model extracts the invoice fields, so you provide your own API key. The example uses ",
+        "The demo runs locally from a small Docker-based repository. A configured language model extracts the invoice fields, so you provide your own API key. The example uses ",
         { text: "OpenRouter", href: "https://openrouter.ai" },
         " by default, and other providers can be configured.",
       ],

@@ -251,6 +251,26 @@ export function BlogBody({ blocks }: { blocks: readonly BlogBlock[] }) {
               </aside>
             );
 
+          case "primer":
+            // A real heading for crawlers and screen readers ("what is X" is a
+            // search query), styled as the landing page's quiet micro-label.
+            return (
+              <section
+                key={index}
+                className="fade-up mb-11 border-b border-border-light pb-9"
+              >
+                <h2
+                  id={headingId(block.label)}
+                  className="scroll-mt-28 text-[12px] font-semibold tracking-[0.06em] text-copy-muted uppercase"
+                >
+                  {block.label}
+                </h2>
+                <p className="mt-3.5 text-[16px] leading-[1.7] text-pretty text-copy-muted">
+                  <Inlines spans={block.spans} />
+                </p>
+              </section>
+            );
+
           case "resources":
             return <Resources key={index} block={block} />;
         }

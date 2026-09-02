@@ -77,9 +77,11 @@ export default function BlogIndexPage() {
                       {post.title}
                     </h2>
 
-                    <p className="mt-4 max-w-[68ch] text-[17px] leading-[1.6] text-pretty text-copy-muted">
-                      {post.summary}
-                    </p>
+                    <div className="mt-4 max-w-[68ch] space-y-2.5 text-[17px] leading-[1.6] text-pretty text-copy-muted">
+                      {post.summary.map((para) => (
+                        <p key={para}>{para}</p>
+                      ))}
+                    </div>
 
                     <span className="mt-6 inline-flex items-center gap-1.5 text-[15px] font-semibold text-[#7A3AFF] group-hover:underline">
                       Read the post

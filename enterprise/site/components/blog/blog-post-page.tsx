@@ -84,9 +84,11 @@ export function BlogPostPage({ post }: { post: BlogPost }) {
               {post.title}
             </h1>
 
-            <p className="mt-7 max-w-[62ch] text-[18px] leading-[1.65] text-t2">
-              {post.summary}
-            </p>
+            <div className="mt-7 max-w-[58ch] space-y-4 text-[18px] leading-[1.6] text-t2">
+              {post.summary.map((para) => (
+                <p key={para}>{para}</p>
+              ))}
+            </div>
 
             <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px] text-t3">
               <time dateTime={post.date}>{formatBlogDate(post.date)}</time>
