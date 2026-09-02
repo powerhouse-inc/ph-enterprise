@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { TIMING, SCROLL_START } from "@/lib/constants";
 import { SectionContainer } from "./section-container";
-import { WorkflowSignupButton } from "./workflow-signup-button";
+import { BookCallButton } from "./book-call-button";
 
 export function ContactCta() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -68,10 +68,7 @@ export function ContactCta() {
               map the first workflow before a build starts.
             </p>
             <div className="flex items-center justify-center gap-4 max-sm:flex-col">
-              <WorkflowSignupButton
-                label="Map your first workflow"
-                className="h-12 rounded-lg border-[#7A3AFF] bg-[#7A3AFF] px-6 text-[15px] font-semibold text-white hover:bg-[#6B2DF2] max-sm:w-full"
-              />
+              <BookCallButton className="h-12 rounded-lg border-[#7A3AFF] bg-[#7A3AFF] px-6 text-[15px] font-semibold text-white hover:bg-[#6B2DF2] max-sm:w-full" />
               <a
                 href="https://vetra.io/"
                 target="_blank"

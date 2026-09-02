@@ -1,3 +1,5 @@
+import { CTA_LABEL, CTA_URL } from "@/lib/site";
+
 export type ProcurementParagraph = {
   body: string;
 };
@@ -73,8 +75,8 @@ export const PROCUREMENT_HERO = {
   subhead:
     "79% of supplier teams use AI to draft RFPs. Only 4% of procurement teams have meaningful AI on the evaluation side. The volume is up. The quality is harder to read. Your negotiation positions are too sensitive to send to commercial AI services. Powerhouse is the workflow layer that closes the asymmetry — locally, defensibly, on your data.",
   primaryCta: {
-    label: "Map workflow with Powerhouse",
-    href: "https://bai.powerhouse.io/#contact",
+    label: CTA_LABEL,
+    href: CTA_URL,
     external: true,
   },
   secondaryCta: {
@@ -323,8 +325,8 @@ export const PROCUREMENT_CTAS: readonly ProcurementCta[] = [
     title: "Request a demo",
     body:
       "See the procurement workspace with a real RFP evaluation flow running on local AI.",
-    href: "https://bai.powerhouse.io/#contact",
-    label: "Map workflow",
+    href: CTA_URL,
+    label: CTA_LABEL,
     external: true,
   },
 ] as const;

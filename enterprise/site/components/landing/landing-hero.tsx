@@ -6,7 +6,7 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { Button } from "@/components/ui/button";
 import { HeroMark } from "./hero-mark";
 import { SectionContainer } from "./section-container";
-import { WorkflowSignupButton } from "./workflow-signup-button";
+import { BookCallButton } from "./book-call-button";
 
 export function LandingHero() {
   const rootRef = useRef<HTMLElement>(null);
@@ -68,41 +68,42 @@ export function LandingHero() {
 
       <div ref={contentRef} className="relative z-10 will-change-transform">
         <SectionContainer>
-        <div className="mx-auto max-w-[880px] text-center">
-          <h1 className="font-heading mb-7 text-[clamp(44px,5.4vw,74px)] font-[660] leading-[1.02] tracking-[-0.02em] text-t1 max-md:text-[44px] max-sm:text-[41px]">
-            <span className="block">
-              Turn operational <span className="max-sm:block">workflows into</span>
-            </span>
-            <span className="block bg-[linear-gradient(90deg,#24D7E8_0%,#3FBCF2_55%,#7A3AFF_125%)] bg-clip-text text-transparent">
-              <span className="max-sm:block">software</span>{" "}
-              <span className="max-sm:block">you own.</span>
-            </span>
-          </h1>
+          <div className="mx-auto max-w-[880px] text-center">
+            <h1 className="font-heading mb-7 text-[clamp(44px,5.4vw,74px)] font-[660] leading-[1.08] tracking-[-0.02em] text-t1 max-md:text-[44px] max-sm:text-[41px]">
+              <span className="block">
+                Turn operational{" "}
+                <span className="max-sm:block">workflows into</span>
+              </span>
+              <span className="block bg-[linear-gradient(90deg,#24D7E8_0%,#3FBCF2_55%,#7A3AFF_125%)] bg-clip-text text-transparent">
+                <span className="max-sm:block">software</span>{" "}
+                <span className="max-sm:block">you own.</span>
+              </span>
+            </h1>
 
-          <p className="mx-auto mb-9 max-w-[640px] text-[18px] leading-[1.65] text-t2">
-            Powerhouse transforms sensitive, document-heavy processes into
-            structured applications. With permissions, approvals, and
-            attributable history built in. Your teams and AI can work together
-            without giving up control of your data.
-          </p>
+            <p className="mx-auto mb-9 max-w-[640px] text-[18px] leading-[1.65] text-t2">
+              Powerhouse transforms sensitive, document-heavy processes into
+              structured applications. With permissions, approvals, and
+              attributable history built in. Your teams and AI can work together
+              without giving up control of your data.
+            </p>
 
-          <div className="flex items-center justify-center gap-3 max-sm:flex-col">
-            <WorkflowSignupButton className="h-11 px-5 text-[13px] font-semibold max-sm:w-full" />
-            <Button
-              variant="outline"
-              className="h-11 rounded-md px-5 text-[13px] font-medium max-sm:w-full"
-              asChild
-            >
-              <a href="https://vetra.io/" target="_blank" rel="noreferrer">
-                Explore the docs
-              </a>
-            </Button>
+            <div className="flex items-center justify-center gap-3 max-sm:flex-col">
+              <BookCallButton className="h-11 px-5 text-[13px] font-semibold max-sm:w-full" />
+              <Button
+                variant="outline"
+                className="h-11 rounded-md px-5 text-[13px] font-medium max-sm:w-full"
+                asChild
+              >
+                <a href="https://vetra.io/" target="_blank" rel="noreferrer">
+                  Explore the docs
+                </a>
+              </Button>
+            </div>
           </div>
-        </div>
 
-        <div className="relative hidden sm:block">
-          <HeroMark />
-        </div>
+          <div className="relative hidden sm:block">
+            <HeroMark />
+          </div>
         </SectionContainer>
       </div>
 

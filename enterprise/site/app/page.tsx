@@ -8,6 +8,7 @@ import { AppAnatomySection } from "@/components/landing/app-anatomy-section";
 import { ControlOwnershipSection } from "@/components/landing/control-ownership-section";
 import { WhySection } from "@/components/landing/why-section";
 import { StackSection } from "@/components/landing/stack-section";
+import { IntegrationSection } from "@/components/landing/integration-section";
 import { ContactCta } from "@/components/landing/contact-cta";
 import { LandingFooter } from "@/components/landing/landing-footer";
 
@@ -26,6 +27,7 @@ export default function Home() {
         <AppAnatomySection />
         <ControlOwnershipSection />
         <WhySection />
+        <IntegrationSection />
         <StackSection />
         <ContactCta />
         <LandingFooter />

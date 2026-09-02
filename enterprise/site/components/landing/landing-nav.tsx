@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { PowerhouseMark } from "@/components/powerhouse-mark";
 import { ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { SectionContainer } from "./section-container";
-import { WorkflowSignupButton } from "./workflow-signup-button";
+import { BookCallButton } from "./book-call-button";
 
 export function LandingNav() {
   const headerRef = useRef<HTMLElement>(null);
@@ -37,7 +37,15 @@ export function LandingNav() {
           <div className="hidden w-px h-3.5 bg-border-md sm:block" aria-hidden="true" />
           <span className="hidden text-[11px] font-medium text-t3 sm:inline">Enterprise</span>
         </Link>
-        <WorkflowSignupButton className="h-8 px-3 text-[12px] sm:text-[13px]" />
+        <div className="ml-auto flex items-center gap-5 sm:ml-0">
+          <Link
+            href="/blog"
+            className="hidden text-[13px] font-medium text-t2 transition-colors hover:text-t1 sm:inline"
+          >
+            Blog
+          </Link>
+          <BookCallButton className="h-8 px-3 text-[12px] sm:text-[13px]" />
+        </div>
       </SectionContainer>
     </header>
   );

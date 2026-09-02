@@ -86,7 +86,9 @@ export function ProcurementPage() {
               className="h-10 rounded-md px-5 text-[13px] font-medium"
               asChild
             >
-              <a href={primaryCta.href}>{primaryCta.label}</a>
+              <a href={primaryCta.href} target="_blank" rel="noreferrer">
+                {primaryCta.label}
+              </a>
             </Button>
             <Button
               variant="outline"

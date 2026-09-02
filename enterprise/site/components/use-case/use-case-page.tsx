@@ -7,7 +7,7 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingLenis } from "@/components/landing/landing-lenis";
 import { GrainOverlay } from "@/components/landing/grain-overlay";
 import type { UseCaseDetail, UseCaseScreenshot } from "@/data/use-cases-detail";
-import { BAI_ENGAGEMENT_URL, CTA_LABEL } from "@/lib/site";
+import { CTA_LABEL, CTA_URL } from "@/lib/site";
 import type { CSSWithVars } from "@/lib/utils";
 
 function UseCaseNav() {
@@ -32,7 +32,7 @@ function UseCaseNav() {
             <Link href="/use-cases">All examples</Link>
           </Button>
           <Button variant="cta" className="h-8 rounded-md px-4 text-[13px]" asChild>
-            <a href={BAI_ENGAGEMENT_URL}>{CTA_LABEL}</a>
+            <a href={CTA_URL} target="_blank" rel="noreferrer">{CTA_LABEL}</a>
           </Button>
         </div>
       </SectionContainer>
@@ -300,7 +300,7 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
 
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <Button variant="cta" className="h-10 rounded-md px-5 text-[13px] font-medium" asChild>
-                <a href={BAI_ENGAGEMENT_URL}>{CTA_LABEL}</a>
+                <a href={CTA_URL} target="_blank" rel="noreferrer">{CTA_LABEL}</a>
               </Button>
               {useCase.liveUrl ? (
                 <Button variant="outline" className="h-10 rounded-md px-5 text-[13px] font-medium" asChild>
@@ -353,7 +353,7 @@ export function UseCasePage({ useCase }: { useCase: UseCaseDetail }) {
               </p>
               <div className="mt-7 flex flex-wrap items-center gap-3">
                 <Button variant="cta" className="h-10 rounded-md px-5 text-[13px] font-medium" asChild>
-                  <a href={BAI_ENGAGEMENT_URL}>{CTA_LABEL}</a>
+                  <a href={CTA_URL} target="_blank" rel="noreferrer">{CTA_LABEL}</a>
                 </Button>
                 <Link
                   href="/use-cases"

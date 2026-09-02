@@ -5,8 +5,12 @@ export const ASSESSMENT_EMAIL_URL =
   "mailto:hello@powerhouse.inc?subject=5-Day%20Assessment%20Request";
 
 // Canonical CTA label. COPY_STANDARD.md's controlled-language rules require
-// one verb phrase per action; every assessment CTA renders this string.
+// one verb phrase per action; every CTA renders this string.
 export const CTA_LABEL = "Book a call";
+
+// Canonical CTA destination. Every primary CTA on the site points here, so the
+// booking link is changed in one place rather than per page.
+export const CTA_URL = "https://calendly.com/d/dv55-pcy-mbs/powerhouse-demo";
 
 export const SITE_NAME = "Powerhouse Enterprise";
 export const SITE_TITLE =

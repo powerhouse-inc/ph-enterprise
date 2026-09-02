@@ -7,7 +7,7 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingLenis } from "@/components/landing/landing-lenis";
 import { GrainOverlay } from "@/components/landing/grain-overlay";
 import { USE_CASE_DETAILS, USE_CASE_ORDER } from "@/data/use-cases-detail";
-import { BAI_ENGAGEMENT_URL, CTA_LABEL } from "@/lib/site";
+import { CTA_LABEL, CTA_URL } from "@/lib/site";
 import type { CSSWithVars } from "@/lib/utils";
 
 function IndexNav() {
@@ -23,7 +23,7 @@ function IndexNav() {
           <span className="text-[11px] font-medium tracking-normal text-t3">Examples</span>
         </Link>
         <Button variant="cta" className="h-8 rounded-md px-4 text-[13px]" asChild>
-          <a href={BAI_ENGAGEMENT_URL}>{CTA_LABEL}</a>
+          <a href={CTA_URL} target="_blank" rel="noreferrer">{CTA_LABEL}</a>
         </Button>
       </SectionContainer>
     </header>
