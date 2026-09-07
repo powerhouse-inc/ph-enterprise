@@ -218,18 +218,38 @@ PAPERLESS_AI_API_KEY=your_openrouter_key_here`,
       ],
     },
     {
+      type: "media",
+      kind: "image",
+      src: "/blog/paperless/drop-into-paperless.png",
+      width: 1440,
+      height: 810,
+      alt: "A PDF named PT-2026-2041.pdf dragged over the Paperless document list, which has dimmed to show its \u201cDrop files to begin upload\u201d overlay.",
+      caption:
+        "Step 1. PT-2026-2041.pdf is dropped onto the Paperless document list at localhost:8000.",
+    },
+    {
+      type: "media",
+      kind: "image",
+      src: "/blog/paperless/invoice-in-paperless.png",
+      width: 1440,
+      height: 810,
+      alt: "The archived document open in Paperless: a details form titled PT-2026-2041 with document type Invoice, beside a preview of the original scan showing three line items and a total due of \u20ac13,500.00.",
+      caption:
+        "Step 2. Paperless archives it as PT-2026-2041 and classifies it as an Invoice. The scan itself is still a scan: three line items, \u20ac13,500.00 due.",
+    },
+    {
       type: "paragraph",
       spans: ["Shortly afterwards, a corresponding invoice appears in Connect."],
     },
     {
       type: "media",
       kind: "image",
-      src: "/blog/paperless/upload-to-connect.png",
+      src: "/blog/paperless/invoice-in-connect.png",
       width: 1440,
-      height: 1163,
-      alt: "The line items and totals printed on the uploaded PDF, above the same three line items and the same total rendered as structured fields in the Powerhouse Connect invoice.",
+      height: 944,
+      alt: "The same invoice open in Powerhouse Connect, under a September 2026 month in the Billing drive: issuer, payer, issue and due dates, currency, and the same three line items with a total of 13,500.00 EUR.",
       caption:
-        "The uploaded PDF in Paperless, and the invoice it becomes in Connect: same three line items, same \u20ac13,500.00.",
+        "Step 3. The same invoice in Connect, filed under September 2026: issuer, payer, dates, currency and the same three line items, now fields rather than pixels.",
     },
     {
       type: "paragraph",
