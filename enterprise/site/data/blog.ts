@@ -404,24 +404,92 @@ PAPERLESS_AI_API_KEY=your_openrouter_key_here`,
     {
       type: "paragraph",
       spans: [
-        "Under Paperless's mail settings, add an email account and create a rule that matches PDF attachments. Paperless checks the inbox periodically, consumes matching attachments and passes them through the same document-processing pipeline.",
-      ],
-    },
-    {
-      type: "paragraph",
-      spans: [
-        "Send a PDF invoice to the monitored address. On the next mail check, it appears in Paperless and then as a structured invoice in the Billing drive.",
+        "Paperless can watch a mailbox itself. Two things need to exist for that: an account that says where the mailbox is, and a rule that says which messages to take from it. Both live under ",
+        { code: "Mail" },
+        " in the left sidebar, at ",
+        { code: "localhost:8000/mail" },
+        ".",
       ],
     },
     {
       type: "media",
       kind: "image",
-      src: "/blog/paperless/email-to-connect.png",
+      src: "/blog/paperless/mail-settings.png",
       width: 1440,
-      height: 1009,
-      alt: "A supplier invoice arriving as a PDF attachment in a mail client, above the same invoice rendered as structured line items in the Powerhouse Connect Billing drive.",
+      height: 704,
+      alt: "The Mail Settings page in Paperless, reached from the Mail item in the left sidebar, showing a Mail accounts table with one account and a Mail rules table with one rule.",
       caption:
-        "The invoice arrives as an email attachment, and lands in the Billing drive as structured data.",
+        "Step 1. Mail in the sidebar opens Mail Settings: accounts on top, rules underneath. Add Account and Add Rule open the same forms shown below.",
+    },
+    {
+      type: "paragraph",
+      spans: [
+        "The account is the IMAP connection. Give it a name, the mail host and port, the security setting the host expects, and the login. In this example the mailbox is a throwaway ",
+        { code: "greenmail" },
+        " container on the compose network, so the host is a service name rather than a public domain and the port is plain IMAP with no encryption. Against a real provider this is where TLS and the provider's own hostname go.",
+      ],
+    },
+    {
+      type: "media",
+      kind: "image",
+      src: "/blog/paperless/mail-account.png",
+      width: 1440,
+      height: 664,
+      alt: "The Edit mail account dialog in Paperless, with fields for name, IMAP server, IMAP port, IMAP security, username, password and character set filled in for a local greenmail server.",
+      caption:
+        "Step 2. The connection. Test checks the credentials against the server before you save.",
+    },
+    {
+      type: "paragraph",
+      spans: [
+        "The rule decides what Paperless does with the mail it finds. Point it at the account, set the folder to ",
+        { code: "INBOX" },
+        ", set the consumption scope to attachments only, and filter filenames with ",
+        { code: "*.pdf" },
+        " so nothing but invoices gets consumed. Assigning the Invoice document type here is what hands the result to the Powerhouse workflow.",
+      ],
+    },
+    {
+      type: "media",
+      kind: "image",
+      src: "/blog/paperless/mail-rule.png",
+      width: 1440,
+      height: 1064,
+      alt: "The Edit mail rule dialog in Paperless: folder INBOX, consumption scope set to only process attachments, a *.pdf filename filter, an action of flagging the mail, and Invoice set as the assigned document type.",
+      caption:
+        "Step 3. The rule. Note the action: flag the mail rather than mark it read, so opening a message in a mail client does not make Paperless skip it.",
+    },
+    {
+      type: "paragraph",
+      spans: [
+        "With both saved, send a PDF invoice to the monitored address. Paperless checks the mailbox on a schedule, and the Process Mail button on the account runs the check immediately.",
+      ],
+    },
+    {
+      type: "media",
+      kind: "image",
+      src: "/blog/paperless/email-inbox.png",
+      width: 1440,
+      height: 520,
+      alt: "A webmail inbox holding one message from billing@atlasfreight.example, titled Invoice DE-2026-3077, with a PDF attachment named DE-2026-3077.pdf.",
+      caption:
+        "Step 4. The invoice arrives the way invoices usually do: a message with a PDF attached.",
+    },
+    {
+      type: "paragraph",
+      spans: [
+        "On the next mail check the attachment is consumed, archived in Paperless, and passed through the same pipeline as the manual upload. It lands in the Billing drive as a structured invoice, filed under the month it belongs to.",
+      ],
+    },
+    {
+      type: "media",
+      kind: "image",
+      src: "/blog/paperless/email-invoice-in-connect.png",
+      width: 1440,
+      height: 512,
+      alt: "The October 2026 month in the Powerhouse Connect Billing drive, listing invoice DE-2026-3077 from Atlas Freight Forwarding with its issue date, due date, EUR currency and an amount of 6,783.00.",
+      caption:
+        "Step 5. The emailed attachment as a draft invoice under October 2026: DE-2026-3077, 6,783.00 EUR.",
     },
     {
       type: "paragraph",
