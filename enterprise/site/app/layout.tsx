@@ -73,6 +73,14 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${poppins.variable} antialiased`}
     >
+      <head>
+        {/* Umami analytics (cloud.umami.is), privacy-friendly page analytics. */}
+        <script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="76949acc-bca5-471c-a2b2-9a2d7b5534d6"
+        />
+      </head>
       <body className="min-h-full flex flex-col overflow-x-hidden">
         <script
           type="application/ld+json"
