@@ -32,7 +32,7 @@ function ReportNav({ report }: { report: IndustryReport }) {
             <Link href="/architecture">Architecture</Link>
           </Button>
           <Button variant="cta" className="h-8 rounded-md px-4 text-[13px]" asChild>
-            <a href={CTA_URL} target="_blank" rel="noreferrer">{CTA_LABEL}</a>
+            <a href={CTA_URL} target="_blank" rel="noreferrer" data-umami-event="book-demo-industry-report-nav">{CTA_LABEL}</a>
           </Button>
         </div>
       </SectionContainer>

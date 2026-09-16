@@ -19,7 +19,7 @@ export function MidCtaBar() {
           </p>
           <div className="flex items-center gap-4 flex-wrap">
             <Button variant="cta" className="h-8 px-4 rounded-md text-[13px]" asChild>
-              <a href={CTA_URL} target="_blank" rel="noreferrer">{CTA_LABEL}</a>
+              <a href={CTA_URL} target="_blank" rel="noreferrer" data-umami-event="book-demo-mid-page">{CTA_LABEL}</a>
             </Button>
           </div>
         </div>

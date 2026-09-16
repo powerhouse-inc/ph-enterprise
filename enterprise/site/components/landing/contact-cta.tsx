@@ -68,7 +68,10 @@ export function ContactCta() {
               map the first workflow before a build starts.
             </p>
             <div className="flex items-center justify-center gap-4 max-sm:flex-col">
-              <BookCallButton className="h-12 rounded-lg border-[#7A3AFF] bg-[#7A3AFF] px-6 text-[15px] font-semibold text-white hover:bg-[#6B2DF2] max-sm:w-full" />
+              <BookCallButton
+                className="h-12 rounded-lg border-[#7A3AFF] bg-[#7A3AFF] px-6 text-[15px] font-semibold text-white hover:bg-[#6B2DF2] max-sm:w-full"
+                event="book-demo-footer"
+              />
               <a
                 href="https://vetra.io/"
                 target="_blank"

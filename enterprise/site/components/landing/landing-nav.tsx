@@ -44,7 +44,7 @@ export function LandingNav() {
           >
             Blog
           </Link>
-          <BookCallButton className="h-8 px-3 text-[12px] sm:text-[13px]" />
+          <BookCallButton className="h-8 px-3 text-[12px] sm:text-[13px]" event="book-demo-nav" />
         </div>
       </SectionContainer>
     </header>

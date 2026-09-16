@@ -88,7 +88,7 @@ export function LandingHero() {
             </p>
 
             <div className="flex items-center justify-center gap-3 max-sm:flex-col">
-              <BookCallButton className="h-11 px-5 text-[13px] font-semibold max-sm:w-full" />
+              <BookCallButton className="h-11 px-5 text-[13px] font-semibold max-sm:w-full" event="book-demo-hero" />
               <Button
                 variant="outline"
                 className="h-11 rounded-md px-5 text-[13px] font-medium max-sm:w-full"

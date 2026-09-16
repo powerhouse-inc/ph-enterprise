@@ -86,7 +86,12 @@ export function ProcurementPage() {
               className="h-10 rounded-md px-5 text-[13px] font-medium"
               asChild
             >
-              <a href={primaryCta.href} target="_blank" rel="noreferrer">
+              <a
+                href={primaryCta.href}
+                target="_blank"
+                rel="noreferrer"
+                data-umami-event={primaryCta.event}
+              >
                 {primaryCta.label}
               </a>
             </Button>
@@ -301,6 +306,7 @@ export function ProcurementPage() {
                       href={cta.href}
                       target="_blank"
                       rel="noreferrer"
+                      data-umami-event={cta.event}
                       className="inline-flex items-center gap-2 text-[13px] font-medium text-t1 transition-colors hover:text-[#F5D45B]"
                     >
                       {cta.label}

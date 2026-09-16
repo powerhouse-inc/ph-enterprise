@@ -182,7 +182,7 @@ export default function ArchitecturePage() {
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 <Button variant="cta" className="h-11 rounded-md px-5 text-[14px]" asChild>
-                  <a href={CTA_URL} target="_blank" rel="noreferrer">{CTA_LABEL}</a>
+                  <a href={CTA_URL} target="_blank" rel="noreferrer" data-umami-event="book-demo-architecture-hero">{CTA_LABEL}</a>
                 </Button>
                 <Button variant="outline" className="h-11 rounded-md px-5 text-[14px]" asChild>
                   <Link href="/#how-it-works">Back to overview</Link>
@@ -325,7 +325,7 @@ export default function ArchitecturePage() {
                   </p>
                 </div>
                 <Button variant="cta" className="h-11 rounded-md px-5 text-[14px]" asChild>
-                  <a href={CTA_URL} target="_blank" rel="noreferrer">{CTA_LABEL}</a>
+                  <a href={CTA_URL} target="_blank" rel="noreferrer" data-umami-event="book-demo-architecture-footer">{CTA_LABEL}</a>
                 </Button>
               </div>
             </div>

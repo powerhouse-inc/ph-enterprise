@@ -52,6 +52,7 @@ export type ProcurementCta = {
   href: string;
   label: string;
   external?: boolean;
+  event?: string;
 };
 
 export const PROCUREMENT_BREADCRUMBS = [
@@ -78,6 +79,7 @@ export const PROCUREMENT_HERO = {
     label: CTA_LABEL,
     href: CTA_URL,
     external: true,
+    event: "book-demo-procurement-hero",
   },
   secondaryCta: {
     label: "See the architecture",
@@ -328,6 +330,7 @@ export const PROCUREMENT_CTAS: readonly ProcurementCta[] = [
     href: CTA_URL,
     label: CTA_LABEL,
     external: true,
+    event: "book-demo-procurement-footer",
   },
 ] as const;
 
