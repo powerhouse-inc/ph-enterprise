@@ -65,14 +65,15 @@ const PAPERLESS_BILLING_REPO =
 
 const PAPERLESS_POST: BlogPost = {
   slug: "paperless-powered-by-powerhouse",
-  title: "Paperless, powered by Powerhouse",
+  title: "Paperless-ngx - Automated PDF processing with Powerhouse",
   summary: [
-    "Paperless-ngx is good at turning incoming files into an organized document archive.",
-    "Powerhouse makes structured documents available through interfaces, APIs and AI tools.",
+    "This blog will show you how you can convert unstructured PDFs into structured, queryable data, thus eliminating tedious manual entry and accelerating accounting and operational workflows.",
+    "We will use Paperless-ngx, which is good at turning incoming files into an organized document archive, saving finance and operations teams from manual data entry.",
+    "And Powerhouse, which makes structured documents available through interfaces, APIs and AI tools.",
     "We combined them and followed one invoice through a workflow to see the result.",
   ],
   metaDescription:
-    "An invoice enters through Paperless-ngx and leaves as structured, queryable data in the Powerhouse stack. A local Docker example, walked through end to end.",
+    "Convert unstructured PDFs into structured, queryable data with Paperless-ngx and Powerhouse. A local Docker example that follows one invoice end to end.",
   date: "2026-09-02",
   author: "Powerhouse",
   category: "Integrations",
