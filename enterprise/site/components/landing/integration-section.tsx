@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { ArrowRight } from "lucide-react";
-import { PAPERLESS_POST_SLUG } from "@/data/blog";
 import { INTEGRATIONS } from "@/data/integrations";
 import { useFadeUpInScope } from "@/hooks/use-fade-up-scope";
 import { SectionContainer } from "./section-container";
@@ -87,12 +86,12 @@ export function IntegrationSection() {
               ))}
             </dl>
 
-            {/* The integration's write-up lives in the blog post. */}
+            {/* The integration's full record lives on the Integrations pillar. */}
             <Link
-              href={`/blog/${PAPERLESS_POST_SLUG}`}
+              href={`/integrations/${integration.slug}`}
               className="mt-6 inline-flex items-center gap-1.5 text-[15px] font-semibold text-[#7A3AFF] hover:underline"
             >
-              Read the walkthrough
+              Open the record
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>

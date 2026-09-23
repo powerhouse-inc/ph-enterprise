@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/data/blog";
+import { INTEGRATION_ORDER } from "@/data/integrations";
 import { siteUrl } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -11,6 +12,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/architecture",
     "/blog",
     ...BLOG_POSTS.map((post) => `/blog/${post.slug}`),
+    "/integrations",
+    ...INTEGRATION_ORDER.map((slug) => `/integrations/${slug}`),
     "/use-cases",
   ];
 
