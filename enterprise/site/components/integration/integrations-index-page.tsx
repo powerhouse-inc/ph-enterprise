@@ -1,3 +1,4 @@
+import { ArrowDown } from "lucide-react";
 import { BlogHeroBand } from "@/components/blog/blog-hero-band";
 import { BookCallButton } from "@/components/landing/book-call-button";
 import { GrainOverlay } from "@/components/landing/grain-overlay";
@@ -6,6 +7,7 @@ import { LandingLenis } from "@/components/landing/landing-lenis";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { SectionContainer } from "@/components/landing/section-container";
 import { INTEGRATIONS } from "@/data/integrations";
+import { BoundaryDiagram } from "./boundary-diagram";
 import { IntegrationRecordCard } from "./integration-record-card";
 
 /**
@@ -44,7 +46,7 @@ const PARTS = [
 const QUESTIONS = [
   {
     q: "Does anything leave my infrastructure?",
-    a: "Both examples run in Docker on machines you control. The one external call is to the language model that reads a document, and you choose the provider and the model.",
+    a: "The Paperless and UMH examples run in Docker on machines you control. The one external call is to the language model that reads a document, and you choose the provider and the model.",
   },
   {
     q: "What is the model actually allowed to do?",
@@ -61,8 +63,8 @@ const QUESTIONS = [
 ] as const;
 
 export function IntegrationsIndexPage() {
-  // One integration reads as a record, not a grid. The grid engages on its own
-  // once a second entry exists, so a sparse two-column layout never ships.
+  // Records stack as full-width rows. Alternating the evidence side only makes
+  // sense once there is more than one record to alternate between.
   const isCatalogue = INTEGRATIONS.length > 1;
 
   return (
@@ -73,12 +75,12 @@ export function IntegrationsIndexPage() {
 
       <main className="relative">
         <BlogHeroBand>
-          <div className="max-w-[880px]">
-            <h1 className="font-heading text-[clamp(38px,4.6vw,62px)] leading-[1.06] font-[660] tracking-[-0.02em] text-t1">
-              Every integration is a data boundary.
-            </h1>
-            <div className="mt-7 max-w-[62ch] space-y-4 text-[17px] leading-[1.7] text-pretty text-t2">
-              <p>
+          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-14">
+            <div>
+              <h1 className="font-heading text-[clamp(40px,4.6vw,62px)] leading-[1.06] font-[660] tracking-[-0.02em] text-t1">
+                Every integration is a data boundary.
+              </h1>
+              <p className="mt-7 max-w-[54ch] text-[17px] leading-[1.7] text-pretty text-t2">
                 Powerhouse runs alongside the systems you already operate. An
                 integration connects one of them to a structured workflow
                 layer: what enters, how it is structured, who can read it.
@@ -86,7 +88,29 @@ export function IntegrationsIndexPage() {
                 The result is operational software your team and scoped AI
                 assistance can both work in.
               </p>
+              <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
+                <BookCallButton
+                  className="h-11 rounded-md px-5 text-[14px]"
+                  event="book-demo-integrations-index-hero"
+                />
+                <a
+                  href="#records"
+                  className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-t2 transition-colors hover:text-t1"
+                >
+                  See the {INTEGRATIONS.length} records
+                  <ArrowDown className="h-4 w-4" aria-hidden="true" />
+                </a>
+              </div>
             </div>
+
+            {/* The pattern every integration shares, rather than one use case. */}
+            <figure className="hidden lg:block">
+              <BoundaryDiagram />
+              <figcaption className="mt-4 text-[13px] leading-[1.55] text-t3">
+                The same shape for every system: what enters, the document it
+                becomes, and every place it can be read.
+              </figcaption>
+            </figure>
           </div>
         </BlogHeroBand>
 
@@ -124,7 +148,10 @@ export function IntegrationsIndexPage() {
         </section>
 
         {/* The catalogue */}
-        <section className="border-t border-border-light bg-paper py-20 text-copy md:py-24">
+        <section
+          id="records"
+          className="scroll-mt-20 border-t border-border-light bg-paper py-20 text-copy md:py-24"
+        >
           <SectionContainer>
             <h2 className="font-heading text-[clamp(30px,3.2vw,42px)] leading-[1.12] font-[680] tracking-[-0.02em] text-copy">
               The integrations
@@ -134,17 +161,12 @@ export function IntegrationsIndexPage() {
               the model it writes into, the surfaces it reaches, and its limits.
             </p>
 
-            <div
-              className={
-                isCatalogue
-                  ? "mt-10 grid gap-5 md:grid-cols-2"
-                  : "mt-10 max-w-[640px]"
-              }
-            >
-              {INTEGRATIONS.map((integration) => (
+            <div className="mt-12 flex flex-col gap-6">
+              {INTEGRATIONS.map((integration, i) => (
                 <IntegrationRecordCard
                   key={integration.slug}
                   integration={integration}
+                  flip={isCatalogue && i % 2 === 1}
                 />
               ))}
             </div>
@@ -189,7 +211,7 @@ export function IntegrationsIndexPage() {
               </p>
               <div className="mt-8 flex items-center justify-center">
                 <BookCallButton
-                  className="h-12 rounded-lg px-6 text-[15px]"
+                  className="h-11 rounded-md px-5 text-[14px]"
                   event="book-demo-integrations-index-footer"
                 />
               </div>

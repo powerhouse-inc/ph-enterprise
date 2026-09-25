@@ -9,6 +9,58 @@ import { LandingLenis } from "@/components/landing/landing-lenis";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { SectionContainer } from "@/components/landing/section-container";
 import type { IntegrationEntry } from "@/data/integrations";
+import { RecordVideo } from "./record-video";
+
+/**
+ * Sub-labels inside a section. Sentence case at body weight: DESLOP lists
+ * uppercase tracked labels as a tell, and these carry information the heading
+ * does not, so they stay as plain text rather than being styled up.
+ */
+function Label({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <p className={`text-[14px] font-semibold text-copy ${className}`}>{children}</p>
+  );
+}
+
+/** The hero's actions, shared by both hero layouts so they cannot drift. */
+function HeroActions({
+  repoUrl,
+  walkthroughSlug,
+  className = "",
+}: {
+  repoUrl?: string;
+  walkthroughSlug?: string;
+  className?: string;
+}) {
+  return (
+    <div className={`flex flex-wrap items-center gap-x-5 gap-y-4 ${className}`}>
+      <BookCallButton
+        className="h-11 rounded-md px-5 text-[14px]"
+        event="book-demo-integration-detail-hero"
+      />
+      {repoUrl ? (
+        <a
+          href={repoUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex h-11 items-center gap-1.5 rounded-md border border-border-md bg-white/5 px-5 text-[14px] font-semibold text-t1 transition-colors hover:bg-white/10"
+        >
+          Run it yourself
+          <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+        </a>
+      ) : null}
+      {walkthroughSlug ? (
+        <Link
+          href={`/blog/${walkthroughSlug}`}
+          className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-t2 transition-colors hover:text-t1"
+        >
+          Read the walkthrough
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </Link>
+      ) : null}
+    </div>
+  );
+}
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
@@ -25,7 +77,6 @@ export function IntegrationPage({
 }) {
   const {
     name,
-    slug,
     category,
     status,
     claim,
@@ -45,7 +96,15 @@ export function IntegrationPage({
     repoUrl,
     walkthroughSlug,
     shots,
+    video,
   } = integration;
+
+  // The hero carries one piece of first-viewport evidence. A walkthrough video
+  // wins when there is one, since it shows the whole flow; the lead shot then
+  // joins the gallery. Without a video the lead shot opens the page, and on
+  // mobile, where that hero figure is hidden, it drops into the gallery.
+  const lead = video ? undefined : shots?.[0];
+  const rest = video ? (shots ?? []) : (shots?.slice(1) ?? []);
 
   return (
     <>
@@ -56,64 +115,115 @@ export function IntegrationPage({
       <main className="relative">
         {/* Identity */}
         <BlogHeroBand>
-          <div className="max-w-[880px]">
-            <Link
-              href="/integrations"
-              className="mb-8 inline-flex items-center gap-2 text-[13px] font-medium text-t3 transition-colors hover:text-t1"
+          <Link
+            href="/integrations"
+            className="mb-10 inline-flex items-center gap-2 text-[13px] font-medium text-t3 transition-colors hover:text-t1"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+            All integrations
+          </Link>
+
+          {video ? (
+            // A walkthrough is the page's strongest evidence, and its type was
+            // set for 1920px. It gets the full container width below the
+            // promise rather than half a split, where its labels are too
+            // small to read.
+            <>
+              <div className="grid grid-cols-1 items-end gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-14">
+                {/* Set a step smaller than the split hero: here the video, not
+                    the headline, has to reach the first viewport. */}
+                <h1 className="font-heading text-[clamp(36px,3.7vw,50px)] leading-[1.06] font-[660] tracking-[-0.02em] text-t1">
+                  {name}
+                  <span className="mt-1 block text-t2">{claim}</span>
+                </h1>
+
+                <div>
+                  <p className="max-w-[48ch] text-[17px] leading-[1.7] text-pretty text-t2">
+                    {oneLiner}
+                  </p>
+                  <p className="mt-4 text-[14px] text-t3">
+                    {category}
+                    <span className="px-2 text-t3/50" aria-hidden="true">
+                      ·
+                    </span>
+                    <span className="font-medium text-proof">{status}</span>
+                  </p>
+                  <HeroActions
+                    repoUrl={repoUrl}
+                    walkthroughSlug={walkthroughSlug}
+                    className="mt-7"
+                  />
+                </div>
+              </div>
+
+              <figure className="mt-10 lg:mt-12">
+                <div className="overflow-hidden rounded-[14px] border border-border-md bg-ink shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
+                  <RecordVideo
+                    src={video.src}
+                    poster={video.poster}
+                    width={video.width}
+                    height={video.height}
+                    label={video.label}
+                  />
+                </div>
+                <figcaption className="mt-4 max-w-[80ch] text-[13px] leading-[1.55] text-t3">
+                  {video.caption}
+                </figcaption>
+              </figure>
+            </>
+          ) : (
+            <div
+              className={
+                lead
+                  ? "grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:gap-14"
+                  : "max-w-[880px]"
+              }
             >
-              <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-              All integrations
-            </Link>
+              <div>
+                <h1 className="font-heading text-[clamp(38px,4.4vw,58px)] leading-[1.06] font-[660] tracking-[-0.02em] text-t1">
+                  {name}
+                  <span className="mt-1 block text-t2">{claim}</span>
+                </h1>
 
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <span className="font-mono text-[12.5px] text-t3">{slug}</span>
-              <span className="text-t3/50" aria-hidden="true">
-                /
-              </span>
-              <span className="text-[12px] font-semibold tracking-[0.06em] text-t2 uppercase">
-                {category}
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-[11px] font-semibold text-t1">
-                <span
-                  className="h-[5px] w-[5px] rounded-full bg-proof"
-                  aria-hidden="true"
+                <p className="mt-6 max-w-[54ch] text-[17px] leading-[1.7] text-pretty text-t2">
+                  {oneLiner}
+                </p>
+
+                <p className="mt-5 text-[14px] text-t3">
+                  {category}
+                  <span className="px-2 text-t3/50" aria-hidden="true">
+                    ·
+                  </span>
+                  <span className="font-medium text-proof">{status}</span>
+                </p>
+
+                <HeroActions
+                  repoUrl={repoUrl}
+                  walkthroughSlug={walkthroughSlug}
+                  className="mt-9"
                 />
-                {status}
-              </span>
-            </div>
+              </div>
 
-            <h1 className="mt-6 font-heading text-[clamp(36px,4.4vw,58px)] leading-[1.06] font-[660] tracking-[-0.02em] text-t1">
-              {name}
-              <span className="mt-1 block text-t2">{claim}</span>
-            </h1>
-
-            <p className="mt-6 max-w-[58ch] text-[17px] leading-[1.7] text-pretty text-t2">
-              {oneLiner}
-            </p>
-
-            <div className="mt-9 flex flex-wrap items-center gap-4">
-              {repoUrl ? (
-                <a
-                  href={repoUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex h-11 items-center gap-1.5 rounded-lg border border-border-md bg-white/5 px-5 text-[14px] font-semibold text-t1 transition-colors hover:bg-white/10"
-                >
-                  Run it yourself
-                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                </a>
-              ) : null}
-              {walkthroughSlug ? (
-                <Link
-                  href={`/blog/${walkthroughSlug}`}
-                  className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-t2 transition-colors hover:text-t1"
-                >
-                  Read the walkthrough
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
+              {lead ? (
+                <figure className="hidden lg:block">
+                  <div className="overflow-hidden rounded-[12px] border border-border-md shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
+                    <Image
+                      src={lead.src}
+                      alt={lead.alt}
+                      width={lead.width}
+                      height={lead.height}
+                      priority
+                      sizes="(min-width: 1024px) 46vw, 0px"
+                      className="h-auto w-full"
+                    />
+                  </div>
+                  <figcaption className="mt-4 text-[13px] leading-[1.55] text-t3">
+                    {lead.caption}
+                  </figcaption>
+                </figure>
               ) : null}
             </div>
-          </div>
+          )}
         </BlogHeroBand>
 
         {/* The boundary */}
@@ -130,9 +240,7 @@ export function IntegrationPage({
 
                 {primer ? (
                 <div className="mt-8 rounded-[14px] border border-border-light bg-white/60 p-6">
-                  <p className="text-[12px] font-semibold tracking-[0.06em] text-copy-muted uppercase">
-                    {primer.label}
-                  </p>
+                  <Label>{primer.label}</Label>
                   <p className="mt-3 text-[15px] leading-[1.65] text-pretty text-copy-muted">
                     {primer.body}
                   </p>
@@ -167,9 +275,7 @@ export function IntegrationPage({
 
                 {inputs ? (
                   <>
-                <p className="mt-8 text-[12px] font-semibold tracking-[0.06em] text-copy-muted uppercase">
-                  How material gets in
-                </p>
+                <Label className="mt-8">How material gets in</Label>
                 <ul className="mt-4 space-y-2.5">
                   {inputs.map((item) => (
                     <li
@@ -197,7 +303,7 @@ export function IntegrationPage({
           <SectionContainer>
             <SectionTitle>The document model</SectionTitle>
             <p className="mt-5 max-w-[62ch] text-[16px] leading-[1.7] text-pretty text-copy-muted">
-              This is the structure a captured document becomes. The fields are
+              This is the structure the integration writes into. The fields are
               the same whether a person opens the record, an application queries
               it, or a scoped agent reads it.
             </p>
@@ -232,9 +338,7 @@ export function IntegrationPage({
               </dl>
             </div>
 
-            <p className="mt-10 text-[12px] font-semibold tracking-[0.06em] text-copy-muted uppercase">
-              Lifecycle
-            </p>
+            <Label className="mt-10">Lifecycle</Label>
             <ol className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-2.5">
               {model.lifecycle.map((state, i) => (
                 <li key={state} className="flex items-center gap-2">
@@ -322,17 +426,39 @@ export function IntegrationPage({
 
             {sample ? (
               <div className="mt-10">
-                <p className="text-[12px] font-semibold tracking-[0.06em] text-copy-muted uppercase">
-                  {sample.label}
-                </p>
+                <Label>{sample.label}</Label>
                 <pre className="mt-4 overflow-x-auto rounded-[14px] border border-border-light bg-ink p-6 text-[13px] leading-[1.6] text-t2">
                   <code>{sample.code}</code>
                 </pre>
               </div>
             ) : null}
 
-            {shots?.map((shot) => (
-              <figure key={shot.src} className="mt-12">
+            {lead ? (
+              <figure className="mt-12 lg:hidden">
+                <Image
+                  src={lead.src}
+                  alt={lead.alt}
+                  width={lead.width}
+                  height={lead.height}
+                  className="w-full rounded-[14px] border border-border-light shadow-[0_8px_28px_rgba(17,22,20,0.16)]"
+                />
+                <figcaption className="mt-3 text-[13.5px] leading-[1.55] text-copy-muted">
+                  {lead.caption}
+                </figcaption>
+              </figure>
+            ) : null}
+
+            {rest.map((shot) => (
+              // A portrait capture such as a workflow canvas would run to twice
+              // the viewport height at full width, so it gets a centred column.
+              <figure
+                key={shot.src}
+                className={
+                  shot.height > shot.width
+                    ? "mx-auto mt-12 max-w-[560px]"
+                    : "mt-12"
+                }
+              >
                 <Image
                   src={shot.src}
                   alt={shot.alt}
@@ -357,15 +483,14 @@ export function IntegrationPage({
                   <SectionTitle>Run it yourself</SectionTitle>
                   {repoUrl ? (
                     <p className="mt-5 max-w-[46ch] text-[16px] leading-[1.7] text-pretty text-copy-muted">
-                      The example runs locally from a Docker-based repository.
+                      The example is published as a repository you can clone
+                      and run against your own reactor.
                     </p>
                   ) : null}
 
                   {requirements ? (
                     <>
-                      <p className="mt-8 text-[12px] font-semibold tracking-[0.06em] text-copy-muted uppercase">
-                        What you need
-                      </p>
+                      <Label className="mt-8">What you need</Label>
                       <ul className="mt-4 space-y-2.5">
                         {requirements.map((item) => (
                           <li
@@ -452,7 +577,7 @@ export function IntegrationPage({
               </p>
               <div className="mt-8 flex items-center justify-center">
                 <BookCallButton
-                  className="h-12 rounded-lg px-6 text-[15px]"
+                  className="h-11 rounded-md px-5 text-[14px]"
                   event="book-demo-integration-detail-footer"
                 />
               </div>
