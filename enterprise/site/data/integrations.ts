@@ -129,6 +129,23 @@ export type IntegrationEntry = {
   walkthroughSlug?: string;
   /** Product evidence. */
   shots?: readonly IntegrationShot[];
+  /**
+   * A short silent walkthrough. When present it opens the record in place of
+   * the lead shot, which then joins the gallery. Every figure in it must come
+   * from the demo, the same rule the shots follow.
+   */
+  video?: IntegrationVideo;
+};
+
+export type IntegrationVideo = {
+  src: string;
+  /** A real frame, shown at rest, while loading, and under reduced motion. */
+  poster: string;
+  width: number;
+  height: number;
+  /** What the video shows, for assistive technology. */
+  label: string;
+  caption: string;
 };
 
 /**
@@ -354,7 +371,7 @@ const UMH: IntegrationEntry = {
 
   primer: {
     label: "What is the United Manufacturing Hub?",
-    body: "The United Manufacturing Hub is an open-source stack for manufacturing data. It collects machine signals over protocols such as OPC-UA and Modbus, keeps them in a time-series database, and makes the shop floor queryable. This example vendors a fixed deployment of its factory simulator, so the floor runs locally.",
+    body: "The United Manufacturing Hub is an open-source stack for manufacturing data. It collects machine signals over protocols such as OPC-UA and Modbus, keeps them in a time-series database, and makes the shop floor queryable. This example vendors a fixed v1.4.0 deployment of its factory simulator, with umh-core pinned at v0.44.8. The floor runs on your own machines, and no installer has to run.",
   },
 
   direction:
@@ -397,7 +414,8 @@ const UMH: IntegrationEntry = {
   },
 
   boundary: [
-    "The integration is three workflows rather than custom code, and each write step carries its own list of permitted actions. The step that applies an extracted commitment is allowed SET_COMMITMENT and nothing else, so the rule holds even when the actions were written by a model.",
+    "The work that used to sit in a custom processor is now three workflows, and each write step carries its own list of permitted actions. The step that applies an extracted commitment is allowed SET_COMMITMENT and nothing else, so the rule holds even when the actions were written by a model.",
+    "Both halves are open source, and both run on your own machines. UMH keeps the floor data at the edge. The ledger is a local-first document in Connect: browser-based, backed by an operation log, and readable by the operator who approves it as well as the developer who owns it.",
     "Nothing in the workflows approves, opens, starts or signs a ledger. A person does that in the editor, and their approval is the event the next workflow reacts to.",
     "The production line and part are never taken from the model's answer directly. Its reply is used as a search key against the floor's own list of lines and recipes, so an invented line matches nothing and the write is skipped. What reaches the ledger came from the floor.",
     "Piece code runs under an egress policy that denies private address space, because a connection's configuration is otherwise a request-forgery surface. The reactor holds the floor credentials, so the browser never needs the factory's address.",
@@ -431,7 +449,7 @@ const UMH: IntegrationEntry = {
   surfaces: [
     {
       name: "Workflow Studio",
-      role: "The three workflows as editable graphs, with every run, its steps and its duration.",
+      role: "The three workflows as editable graphs, with every run, its steps and its duration. A reviewer can read what a step did without reading code, and a developer can change it.",
     },
     {
       name: "Connect",
@@ -484,23 +502,33 @@ const UMH: IntegrationEntry = {
 
   repoUrl:
     "https://github.com/powerhouse-inc/umh-production-ledger/tree/demo/umh-workflow-stack/demo",
+  video: {
+    src: "/integrations/umh-ledger.mp4",
+    poster: "/integrations/umh-ledger-poster.jpg",
+    width: 1280,
+    height: 720,
+    label:
+      "A fifteen-second walkthrough: a purchase order is extracted into a typed production ledger, three workflows move it through human approval to the factory floor, the floor reports good parts and scrap, and the ledger is checked against the contract and put on hold.",
+    caption:
+      "Fifteen seconds, end to end: a purchase order becomes a ledger, the floor reports against it, and the contract decides ship or hold. Figures are from the demo run.",
+  },
   walkthroughSlug: "united-manufacturing-hub-powered-by-powerhouse",
   shots: [
     {
-      src: "/blog/umh/ledger-draft-review.png",
-      alt: "The draft production ledger in Connect: the review panel on the left, the original purchase-order scan open on the right.",
+      src: "/blog/umh/ledger-order-pdf.png",
+      alt: "A production ledger in Connect: the commitment and its record on the left, the original purchase-order scan open on the right.",
       caption:
-        "The draft ledger beside the scan it came from, so each extracted field can be checked against the source.",
-      width: 2880,
-      height: 1800,
+        "The ledger beside the scan it was extracted from, so each committed figure can be checked against the clause that set it.",
+      width: 1648,
+      height: 1270,
     },
     {
-      src: "/blog/umh-workflows/wf-draft-ledger.png",
-      alt: "The Workflow Studio showing the twelve-step workflow that drafts a ledger from a purchase order, with two succeeded runs beneath it.",
+      src: "/integrations/umh-workflow-canvas.png",
+      alt: "The Workflow Studio canvas for the workflow that drafts a ledger from a purchase order: a Paperless trigger, a purchase-order branch, then twelve blocks down to applying the resolved line and part.",
       caption:
         "The integration, as a workflow: twelve blocks from a new document in Paperless to a draft ledger with its line and part resolved.",
-      width: 3200,
-      height: 1182,
+      width: 1680,
+      height: 2794,
     },
     {
       src: "/blog/umh-workflows/wf-append-evidence.png",
@@ -663,10 +691,181 @@ const ACTIVEPIECES: IntegrationEntry = {
   ],
 };
 
+/**
+ * Ars Contexta is the system being integrated: an open-source methodology and
+ * plugin that derives a markdown knowledge vault, backed by a corpus of 249
+ * research claims. This entry covers what changes when those claims become
+ * Powerhouse documents. Every field is evidenced by the installed corpus and by
+ * github.com/liberuum/powerhouse-knowledge, which is the write path.
+ */
+const ARS_CONTEXTA: IntegrationEntry = {
+  slug: "ars-contexta",
+  name: "Ars Contexta",
+  category: "Knowledge management",
+  status: "Available",
+  summary:
+    "Claims written as linked markdown become Powerhouse notes with typed relationships, provenance and a lifecycle where approval comes from a different actor than the author.",
+  claim: "Claims, typed and queryable.",
+  flow: "Ars Contexta \u2192 Knowledge note",
+  scope: [
+    { label: "Data in", value: "Research claims, sources and working sessions" },
+    { label: "Structure", value: "Atomic notes with typed links and provenance" },
+    { label: "Access", value: "The agent may write, and may not approve its own note" },
+  ],
+
+  oneLiner:
+    "A vault of linked markdown claims becomes a graph the reactor indexes and a person approves into.",
+  metaDescription:
+    "Ars Contexta claims become Powerhouse notes with typed relationships, provenance, and approval that requires a different actor than the author.",
+
+  primer: {
+    label: "What is Ars Contexta?",
+    body: "Ars Contexta is an open-source methodology for agent-operated knowledge systems, published as a plugin under MIT. It derives a vault from conversation: atomic claims, maps of content and a processing pipeline, backed by a corpus of 249 research claims that cite one another. What it produces is markdown on disk.",
+  },
+
+  direction:
+    "One way in. Claims and sources become documents in the vault, while the methodology corpus stays on disk as reference the agent reads.",
+
+  inputs: [
+    "The 249 research claims that ship with the plugin, read from disk as the methodology a note is grounded against.",
+    "Articles, papers, transcripts and sessions, filed as a source document before anything is extracted from them.",
+  ],
+
+  model: {
+    name: "bai/knowledge-note",
+    fields: [
+      { name: "title", type: "String", note: "One claim, written as a sentence." },
+      { name: "description", type: "String", note: "A summary, capped at 200 characters." },
+      { name: "content", type: "String", note: "The markdown body, with the argument and its references." },
+      { name: "noteType", type: "Enum", note: "concept, decision, pattern, architecture, bug-pattern and five more." },
+      { name: "status", type: "Enum", note: "Position in the lifecycle below." },
+      { name: "topics", type: "Array", note: "Tags the graph clusters and navigates by." },
+      { name: "provenance", type: "Object", note: "Author, source origin and the time it was written." },
+    ],
+    lifecycle: ["draft", "in review", "canonical", "archived"],
+  },
+
+  boundary: [
+    "A wiki link is text inside a file. The corpus holds 7,684 of them, and nothing outside the file that contains one can say what it means. In the vault a relationship is a typed row in the reactor's own table, so orphan detection, semantic search and map-of-content navigation all read the same edge.",
+    "Approval comes from a different actor than the author, and the model enforces it. An agent that drafts a note cannot move it to canonical, so nothing becomes settled knowledge because the thing that wrote it also blessed it.",
+    "The agent writes through typed operations and has no free-form path into the graph. A note is assembled from SET_TITLE, SET_DESCRIPTION, SET_CONTENT and ADD_TOPIC, so what it can do to a document is the list of actions the model defines.",
+    "The 249 claims stay on disk. They are the methodology a note is checked against rather than documents in your vault, so grounding a note against them writes nothing into the graph.",
+  ],
+
+  pipeline: [
+    {
+      label: "Record",
+      body: "A source lands in the vault with its origin, its type and a status, before any claim is taken out of it.",
+    },
+    {
+      label: "Reduce",
+      body: "One note per claim, each carrying an edge back to the source it came from. The skip rate is reported rather than hidden.",
+    },
+    {
+      label: "Reflect",
+      body: "Typed links are proposed between the new notes and what the vault already holds, and every link has to state its reason.",
+    },
+    {
+      label: "Reweave",
+      body: "Older notes are revisited where a new claim changes what they should say, so the graph stays current in both directions.",
+    },
+    {
+      label: "Verify",
+      body: "A quality gate checks description length, connection count and whether each link survives being read back.",
+    },
+  ],
+
+  surfaces: [
+    {
+      name: "Knowledge Vault app",
+      role: "Read the graph, browse notes by map of content, and ask questions of the same index the agent writes into.",
+    },
+    {
+      name: "Connect",
+      role: "Review a draft and approve it, which is the step the agent is not allowed to take.",
+      href: "/architecture#connect",
+    },
+    {
+      name: "Switchboard",
+      role: "Query notes, topics, backlinks and semantic neighbours over GraphQL.",
+      href: "/architecture#switchboard",
+    },
+    {
+      name: "Agent host",
+      role: "Claude Code, Codex, Cursor, Zed and others read one generated instruction set.",
+    },
+  ],
+
+  packages: [
+    {
+      name: "arscontexta",
+      role: "The methodology and its 249 claims, published under MIT at agenticnotetaking/arscontexta.",
+    },
+    {
+      name: "powerhouse-knowledge",
+      role: "The instruction set and eighteen skills. This is the vault's write path.",
+    },
+    {
+      name: "bai-knowledge-note",
+      role: "The Vetra package holding the document models the vault writes into.",
+    },
+    {
+      name: "switchboard-cli",
+      role: "Dispatches the actions, and injects the timestamp and action id each one needs.",
+    },
+  ],
+
+  requirements: [
+    "A Powerhouse reactor with the bai-knowledge-note Vetra package deployed.",
+    "The Switchboard CLI, pointed at that reactor by profile. There is no default vault, so the target is chosen rather than assumed.",
+    "An agent host. Claude Code reads its own frontmatter file, and the rest read the AGENTS.md convention.",
+  ],
+
+  limits: [
+    "Semantic search needs the Switchboard package at 1.0.50 or newer, which embeds notes and queries on the server. Older deployments fall back to keyword search without saying so.",
+    "Batched actions are applied in reverse, so pipeline steps that depend on each other are dispatched one at a time rather than together.",
+    "A description over 200 characters fails silently and takes the rest of its batch with it.",
+    "An enum value outside the model's set reports success and writes nothing, which is why every write is read back before it is reported.",
+  ],
+
+  sample: {
+    label: "Ask the graph a question in plain language",
+    language: "graphql",
+    code: `{
+  knowledgeGraphSemanticSearch(
+    driveId: "<DRIVE-UUID>"
+    query: "how does the reactor store operations?"
+    mode: HYBRID
+    limit: 5
+  ) {
+    similarity
+    node {
+      title
+      noteType
+      status
+    }
+  }
+}`,
+  },
+
+  repoUrl: "https://github.com/liberuum/powerhouse-knowledge",
+  shots: [
+    {
+      src: "/integrations/ars-contexta-graph.png",
+      alt: "The 249 Ars Contexta claims drawn as a graph, with the 2,456 links between them and the most connected maps of content labelled.",
+      caption:
+        "Rendered from the corpus itself: 249 claims and the 2,456 distinct links between them. In the vault each of those lines is a typed edge rather than text inside a file.",
+      width: 2880,
+      height: 1800,
+    },
+  ],
+};
+
 export const INTEGRATIONS: readonly IntegrationEntry[] = [
   PAPERLESS,
   UMH,
   ACTIVEPIECES,
+  ARS_CONTEXTA,
 ] as const;
 
 /** Index and sitemap both read this order. */
