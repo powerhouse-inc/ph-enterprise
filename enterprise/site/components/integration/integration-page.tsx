@@ -448,29 +448,81 @@ export function IntegrationPage({
               </figure>
             ) : null}
 
-            {rest.map((shot) => (
-              // A portrait capture such as a workflow canvas would run to twice
-              // the viewport height at full width, so it gets a centred column.
-              <figure
-                key={shot.src}
-                className={
-                  shot.height > shot.width
-                    ? "mx-auto mt-12 max-w-[560px]"
-                    : "mt-12"
-                }
-              >
-                <Image
-                  src={shot.src}
-                  alt={shot.alt}
-                  width={shot.width}
-                  height={shot.height}
-                  className="w-full rounded-[14px] border border-border-light shadow-[0_8px_28px_rgba(17,22,20,0.16)]"
-                />
-                <figcaption className="mt-3 text-[13.5px] leading-[1.55] text-copy-muted">
-                  {shot.caption}
-                </figcaption>
-              </figure>
-            ))}
+            {rest.map((shot) =>
+              shot.stages && shot.height > shot.width ? (
+                // A tall capture with a reading guide: the guide runs the
+                // height of the image beside it, stage by stage, so the eye can
+                // track each group of blocks against its description.
+                <figure
+                  key={shot.src}
+                  className="mt-16 grid grid-cols-1 items-stretch gap-10 lg:grid-cols-[600px_minmax(0,1fr)] lg:gap-16"
+                >
+                  <Image
+                    src={shot.src}
+                    alt={shot.alt}
+                    width={shot.width}
+                    height={shot.height}
+                    sizes="(min-width: 1024px) 600px, 92vw"
+                    // self-start keeps the grid from stretching it off its
+                    // aspect ratio; the guide column sets the row height.
+                    className="mx-auto h-auto w-full max-w-[600px] self-start rounded-[14px] border border-border-light shadow-[0_8px_28px_rgba(17,22,20,0.16)]"
+                  />
+                  <div className="flex flex-col lg:py-2">
+                    <figcaption className="max-w-[46ch] text-[17px] leading-[1.6] text-pretty text-copy">
+                      {shot.caption}
+                    </figcaption>
+                    <ol className="mt-8 flex flex-1 flex-col justify-between gap-6">
+                      {shot.stages.map((stage) => (
+                        <li
+                          key={stage.heading}
+                          className="border-t border-border-light pt-4"
+                        >
+                          <h3 className="font-heading text-[17px] font-semibold text-copy">
+                            {stage.heading}
+                          </h3>
+                          <p className="mt-2 max-w-[52ch] text-[15px] leading-[1.6] text-pretty text-copy-muted">
+                            {stage.body}
+                          </p>
+                          <ul className="mt-2.5 space-y-1.5">
+                            {stage.steps.map((step) => (
+                              <li
+                                key={step.label}
+                                className="flex flex-wrap items-baseline gap-x-2 text-[14px]"
+                              >
+                                <span className="text-copy">{step.label}</span>
+                                <span className="font-mono text-[12.5px] text-copy-muted">
+                                  {step.piece}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                </figure>
+              ) : (
+                <figure
+                  key={shot.src}
+                  className={
+                    shot.height > shot.width
+                      ? "mx-auto mt-12 max-w-[560px]"
+                      : "mt-12"
+                  }
+                >
+                  <Image
+                    src={shot.src}
+                    alt={shot.alt}
+                    width={shot.width}
+                    height={shot.height}
+                    className="w-full rounded-[14px] border border-border-light shadow-[0_8px_28px_rgba(17,22,20,0.16)]"
+                  />
+                  <figcaption className="mt-3 text-[13.5px] leading-[1.55] text-copy-muted">
+                    {shot.caption}
+                  </figcaption>
+                </figure>
+              ),
+            )}
           </SectionContainer>
         </section>
 

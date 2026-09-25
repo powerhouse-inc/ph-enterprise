@@ -56,6 +56,19 @@ export type IntegrationShot = {
   caption: string;
   width: number;
   height: number;
+  /**
+   * A reading guide set beside a tall capture, one stage per group of blocks
+   * in the order they appear. Only for portrait shots, where the text can run
+   * the height of the image instead of sitting under it.
+   */
+  stages?: readonly ShotStage[];
+};
+
+export type ShotStage = {
+  heading: string;
+  body: string;
+  /** The blocks in this stage, each with the piece that runs it. */
+  steps: readonly { label: string; piece: string }[];
 };
 
 export type IntegrationEntry = {
@@ -529,6 +542,43 @@ const UMH: IntegrationEntry = {
         "The integration, as a workflow: twelve blocks from a new document in Paperless to a draft ledger with its line and part resolved.",
       width: 1680,
       height: 2794,
+      stages: [
+        {
+          heading: "Trigger and guard",
+          body: "Paperless fires on a new document, and a branch stops anything that is not a purchase order.",
+          steps: [
+            { label: "New document", piece: "Paperless-ngx" },
+            { label: "Is it a purchase order?", piece: "Branch" },
+          ],
+        },
+        {
+          heading: "Draft the ledger",
+          body: "The extractor reads the ledger's own schema at run time. The apply step may dispatch SET_COMMITMENT and nothing else.",
+          steps: [
+            { label: "Read the ledger's own schema", piece: "Reactor" },
+            { label: "Extract the commitment", piece: "OpenRouter" },
+            { label: "Create the draft ledger", piece: "Reactor" },
+            { label: "Apply the extracted commitment", piece: "Reactor" },
+            { label: "Fetch the original scan", piece: "Paperless-ngx" },
+            { label: "Attach the scan to the ledger", piece: "Reactor" },
+          ],
+        },
+        {
+          heading: "Resolve the line and part",
+          body: "The model's answer is only a search key. It is resolved against the floor's own catalogue, so an invented line matches nothing.",
+          steps: [
+            { label: "List the floor's lines", piece: "UMH" },
+            { label: "Ask which line and part", piece: "OpenRouter" },
+            { label: "Resolve it against the floor", piece: "JSON query" },
+            { label: "Did it resolve to a real line?", piece: "Branch" },
+          ],
+        },
+        {
+          heading: "Apply, or leave it for review",
+          body: "Only a resolved line and part are written. Anything else leaves the reviewer's blocker in place.",
+          steps: [{ label: "Apply the line and part", piece: "Reactor" }],
+        },
+      ],
     },
     {
       src: "/blog/umh-workflows/wf-append-evidence.png",
