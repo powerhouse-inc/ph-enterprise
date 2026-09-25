@@ -71,6 +71,19 @@ export type ShotStage = {
   steps: readonly { label: string; piece: string }[];
 };
 
+/**
+ * A real editor capture of the model, with the box each field occupies, in
+ * the image's own pixels. Lets the record show the model on the UI a person
+ * actually uses instead of as a bare table.
+ */
+export type ModelAnatomy = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  spots: readonly { field: string; x: number; y: number; w: number; h: number }[];
+};
+
 export type IntegrationEntry = {
   slug: string;
   name: string;
@@ -121,6 +134,8 @@ export type IntegrationEntry = {
     name: string;
     fields: readonly ModelField[];
     lifecycle: readonly string[];
+    /** Optional: the fields shown on an editor capture, interactively. */
+    anatomy?: ModelAnatomy;
   };
   /** The boundary narrative. One idea per paragraph. */
   boundary: readonly string[];
@@ -159,6 +174,20 @@ export type IntegrationVideo = {
   /** What the video shows, for assistive technology. */
   label: string;
   caption: string;
+  /**
+   * Scenes of the film, in seconds. When present the film is scroll-driven:
+   * the stage pins and scroll position becomes the playhead. The file must
+   * then be encoded with dense keyframes, or the scrub stutters.
+   */
+  chapters?: readonly VideoChapter[];
+};
+
+export type VideoChapter = {
+  /** Where the scene starts in the film, in seconds. */
+  start: number;
+  title: string;
+  /** One sentence the scene itself shows; no figure the film does not. */
+  body: string;
 };
 
 /**
@@ -382,10 +411,6 @@ const UMH: IntegrationEntry = {
   metaDescription:
     "Purchase-order PDFs become Production Ledgers a person approves, then measured against the factory floor on an append-only log with idempotent evidence.",
 
-  primer: {
-    label: "What is the United Manufacturing Hub?",
-    body: "The United Manufacturing Hub is an open-source stack for manufacturing data. It collects machine signals over protocols such as OPC-UA and Modbus, keeps them in a time-series database, and makes the shop floor queryable. This example vendors a fixed v1.4.0 deployment of its factory simulator, with umh-core pinned at v0.44.8. The floor runs on your own machines, and no installer has to run.",
-  },
 
   direction:
     "Both ways. Approved commitments create orders on the floor, and the floor's own numbers return as evidence.",
@@ -424,27 +449,41 @@ const UMH: IntegrationEntry = {
       "CLOSE_OUT",
       "ACKNOWLEDGE",
     ],
+    // Boxes are measured on the crop, 654 x 646.
+    anatomy: {
+      src: "/integrations/umh-ledger-commitment.png",
+      alt: "The Commitment card of a closed-out production ledger in Connect: manufacturer, customer, order id, line, part, quantities, quality and OEE floors, requested delivery, and the agreement terms below.",
+      width: 654,
+      height: 646,
+      spots: [
+        { field: "manufacturer", x: 14, y: 64, w: 312, h: 60 },
+        { field: "customer", x: 327, y: 64, w: 312, h: 60 },
+        { field: "orderId", x: 14, y: 134, w: 312, h: 60 },
+        { field: "line", x: 327, y: 134, w: 312, h: 60 },
+        { field: "partNumber", x: 14, y: 204, w: 312, h: 60 },
+        { field: "committedQuantity", x: 327, y: 274, w: 312, h: 60 },
+        { field: "committedQualityPct", x: 14, y: 344, w: 312, h: 60 },
+        { field: "committedOeeFloorPct", x: 327, y: 344, w: 312, h: 60 },
+        { field: "requestedDeliveryAt", x: 14, y: 414, w: 312, h: 60 },
+        { field: "agreementRef", x: 14, y: 500, w: 200, h: 42 },
+        { field: "scrapLiabilityPerUnit", x: 226, y: 500, w: 200, h: 42 },
+        { field: "latePenaltyPerHour", x: 437, y: 500, w: 200, h: 42 },
+        { field: "oeeMeasurementBasis", x: 14, y: 588, w: 200, h: 42 },
+        { field: "yieldComparison", x: 226, y: 588, w: 200, h: 42 },
+        { field: "requiredAcknowledgements", x: 437, y: 588, w: 200, h: 42 },
+      ],
+    },
   },
 
   boundary: [
-    "The work that used to sit in a custom processor is now three workflows, and each write step carries its own list of permitted actions. The step that applies an extracted commitment is allowed SET_COMMITMENT and nothing else, so the rule holds even when the actions were written by a model.",
-    "Both halves are open source, and both run on your own machines. UMH keeps the floor data at the edge. The ledger is a local-first document in Connect: browser-based, backed by an operation log, and readable by the operator who approves it as well as the developer who owns it.",
+    "Three workflows do the work a custom processor used to, and each write step carries its own allow-list. The step that applies an extracted commitment may dispatch SET_COMMITMENT and nothing else, so the rule holds even when a model wrote the actions.",
     "Nothing in the workflows approves, opens, starts or signs a ledger. A person does that in the editor, and their approval is the event the next workflow reacts to.",
-    "The production line and part are never taken from the model's answer directly. Its reply is used as a search key against the floor's own list of lines and recipes, so an invented line matches nothing and the write is skipped. What reaches the ledger came from the floor.",
-    "Piece code runs under an egress policy that denies private address space, because a connection's configuration is otherwise a request-forgery surface. The reactor holds the floor credentials, so the browser never needs the factory's address.",
-    "The ledger's log accepts appends only. Change a rate table next quarter and this close-out still reproduces the same figures, because a replay reads the rates it actually used.",
-    "A snapshot id is derived from the order and the moment it was captured. A delivery that arrives twice carries an id the reducer already holds, so it is refused rather than appended again.",
+    "The line and part never come from the model's answer. Its reply is a search key against the floor's own list of lines and recipes, so an invented line matches nothing and the write is skipped. What reaches the ledger came from the floor.",
   ],
 
   pipeline: [
-    {
-      label: "Draft a ledger from a purchase order",
-      body: "Twelve blocks. Paperless fires on a new document, a branch confirms it is a purchase order, the extractor reads the ledger's own schema at run time, and the commitment is dispatched into a fresh draft with the scan attached.",
-    },
-    {
-      label: "Resolve the line and part",
-      body: "The same workflow lists the floor's live lines, asks the model which fit, then resolves that answer against the floor's own catalogue before writing anything.",
-    },
+    // Drafting and line resolution are shown block by block on the workflow
+    // capture, so the list starts where that capture ends.
     {
       label: "Create the floor order on approval",
       body: "Seven blocks, triggered by the reviewer's APPROVE_ORDER. It asserts there is a line to run on, creates the order, then binds the returned id and opens the ledger. Both failure paths write the reason onto the document instead of failing silently.",
@@ -466,7 +505,7 @@ const UMH: IntegrationEntry = {
     },
     {
       name: "Connect",
-      role: "Review the extracted commitment beside the original scan, approve the order, and watch the evidence trail fill.",
+      role: "Review the extracted commitment beside the original scan, approve the order, and watch the evidence trail fill. The ledger is a local-first document, kept in the browser and backed by its operation log.",
       href: "/architecture#connect",
     },
     {
@@ -506,35 +545,51 @@ const UMH: IntegrationEntry = {
     "Free host ports 18000 and 18081. The demo deliberately avoids the canonical 8000 and 8081 so it cannot talk to another factory by accident.",
   ],
 
-  limits: [
-    "Close-out is not in a workflow. It needs a calculation over the ledger's state that a workflow cannot call, so it stays a human action in the editor.",
-    "A failed binding does not retry. The trigger was the approval, which has already happened, so re-run it from Studio or dispatch the binding by hand.",
-    "The floor is tuned for demo pace, and the purchase orders, customers and rates are fictional.",
-    "Twenty-one of the Activepieces catalogue's pieces declare a runtime dependency and cannot be loaded, because the reactor imports a piece bundle and installs nothing.",
-  ],
 
   repoUrl:
     "https://github.com/powerhouse-inc/umh-production-ledger/tree/demo/umh-workflow-stack/demo",
   video: {
-    src: "/integrations/umh-ledger.mp4",
-    poster: "/integrations/umh-ledger-poster.jpg",
+    // Keyframe every 5 frames so scroll-scrubbing seeks cheaply.
+    src: "/integrations/umh-ledger-scrub.mp4",
+    // The intake frame, so the film at rest matches the rail's first chapter.
+    poster: "/integrations/umh-ledger-poster-intake.jpg",
     width: 1280,
     height: 720,
     label:
       "A fifteen-second walkthrough: a purchase order is extracted into a typed production ledger, three workflows move it through human approval to the factory floor, the floor reports good parts and scrap, and the ledger is checked against the contract and put on hold.",
     caption:
       "Fifteen seconds, end to end: a purchase order becomes a ledger, the floor reports against it, and the contract decides ship or hold. Figures are from the demo run.",
+    // Scene starts and titles match umh-video/scene.html.
+    chapters: [
+      {
+        start: 0,
+        title: "01 · Intake",
+        body: "A purchase order arrives in Paperless, and a workflow extracts its commitment.",
+      },
+      {
+        start: 2.85,
+        title: "02 · Document model",
+        body: "It becomes a typed production ledger through SET_COMMITMENT, an operation the workflow is allow-listed to dispatch.",
+      },
+      {
+        start: 5.6,
+        title: "03 · Workflows",
+        body: "Three workflows built from pieces, and editable in Connect, carry the order through human approval to the factory floor.",
+      },
+      {
+        start: 8.7,
+        title: "04 · Evidence",
+        body: "The UMH floor reports good parts and scrap, and each reading is appended to the ledger as a snapshot.",
+      },
+      {
+        start: 12.2,
+        title: "05 · Verdict",
+        body: "In the demo run, 320 good and 6 scrap is 98.2% against a contracted 98.5%, so the ledger is marked non-conforming and held.",
+      },
+    ],
   },
   walkthroughSlug: "united-manufacturing-hub-powered-by-powerhouse",
   shots: [
-    {
-      src: "/blog/umh/ledger-order-pdf.png",
-      alt: "A production ledger in Connect: the commitment and its record on the left, the original purchase-order scan open on the right.",
-      caption:
-        "The ledger beside the scan it was extracted from, so each committed figure can be checked against the clause that set it.",
-      width: 1648,
-      height: 1270,
-    },
     {
       src: "/integrations/umh-workflow-canvas.png",
       alt: "The Workflow Studio canvas for the workflow that drafts a ledger from a purchase order: a Paperless trigger, a purchase-order branch, then twelve blocks down to applying the resolved line and part.",
@@ -579,14 +634,6 @@ const UMH: IntegrationEntry = {
           steps: [{ label: "Apply the line and part", piece: "Reactor" }],
         },
       ],
-    },
-    {
-      src: "/blog/umh-workflows/wf-append-evidence.png",
-      alt: "The four-step workflow that appends floor progress to the evidence trail, with its trigger, two branches and a dispatch.",
-      caption:
-        "Evidence collection is four blocks. Two of them are guards that decide to write nothing.",
-      width: 3200,
-      height: 836,
     },
   ],
 };

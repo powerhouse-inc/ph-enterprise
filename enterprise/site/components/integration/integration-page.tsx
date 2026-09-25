@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { BlogHeroBand } from "@/components/blog/blog-hero-band";
 import { BookCallButton } from "@/components/landing/book-call-button";
 import { GrainOverlay } from "@/components/landing/grain-overlay";
@@ -8,8 +8,10 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingLenis } from "@/components/landing/landing-lenis";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { SectionContainer } from "@/components/landing/section-container";
-import type { IntegrationEntry } from "@/data/integrations";
+import type { IntegrationEntry, IntegrationShot } from "@/data/integrations";
+import { ModelAnatomy } from "./model-anatomy";
 import { RecordVideo } from "./record-video";
+import { ScrollVideo } from "./scroll-video";
 
 /**
  * Sub-labels inside a section. Sentence case at body weight: DESLOP lists
@@ -52,13 +54,150 @@ function HeroActions({
       {walkthroughSlug ? (
         <Link
           href={`/blog/${walkthroughSlug}`}
-          className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-t2 transition-colors hover:text-t1"
+          className="text-[14px] font-semibold text-t2 underline-offset-4 transition-colors hover:text-t1 hover:underline"
         >
           Read the walkthrough
-          <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
       ) : null}
     </div>
+  );
+}
+
+/**
+ * A tall workflow capture with its reading guide: the guide runs the height of
+ * the image beside it, stage by stage, so the eye can track each group of
+ * blocks against its description.
+ */
+function SpineFigure({ shot }: { shot: IntegrationShot }) {
+  if (!shot.stages) return null;
+  return (
+    <figure
+      className="mt-10 grid grid-cols-1 items-stretch gap-10 lg:grid-cols-[600px_minmax(0,1fr)] lg:gap-16"
+    >
+      <Image
+        src={shot.src}
+        alt={shot.alt}
+        width={shot.width}
+        height={shot.height}
+        sizes="(min-width: 1024px) 600px, 92vw"
+        // self-start keeps the grid from stretching it off its
+        // aspect ratio; the guide column sets the row height.
+        className="mx-auto h-auto w-full max-w-[600px] self-start rounded-[14px] border border-border-light"
+      />
+      <div className="flex flex-col lg:py-2">
+        <figcaption className="max-w-[46ch] text-[17px] leading-[1.6] text-pretty text-copy">
+          {shot.caption}
+        </figcaption>
+        <ol className="mt-8 flex flex-1 flex-col justify-between gap-6">
+          {shot.stages.map((stage) => (
+            <li
+              key={stage.heading}
+              className="border-t border-border-light pt-4"
+            >
+              <h3 className="font-heading text-[17px] font-semibold text-copy">
+                {stage.heading}
+              </h3>
+              <p className="mt-2 max-w-[52ch] text-[15px] leading-[1.6] text-pretty text-copy-muted">
+                {stage.body}
+              </p>
+              <ul className="mt-2.5 space-y-1.5">
+                {stage.steps.map((step) => (
+                  <li
+                    key={step.label}
+                    className="flex flex-wrap items-baseline gap-x-2 text-[14px]"
+                  >
+                    <span className="text-copy">{step.label}</span>
+                    <span className="font-mono text-[12.5px] text-copy-muted">
+                      {step.piece}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </figure>
+  );
+}
+
+/**
+ * The model's intro, its fields (on an editor capture when there is one, as a
+ * table otherwise) and its lifecycle. Rendered in its own section, or under
+ * the boundary when a capture shows what the boundary guards.
+ */
+function ModelBody({
+  model,
+  headed = false,
+}: {
+  model: NonNullable<IntegrationEntry["model"]>;
+  /** Under its own heading, which already says what the structure is. */
+  headed?: boolean;
+}) {
+  return (
+    <>
+    <p className="mt-5 max-w-[62ch] text-[16px] leading-[1.7] text-pretty text-copy-muted">
+      {headed ? "" : "This is the structure the integration writes into. "}
+      The fields are the same whether a person opens the record, an
+      application queries it, or a scoped agent reads it.
+    </p>
+
+    {model.anatomy ? (
+      <div className="mt-10">
+        <ModelAnatomy name={model.name} fields={model.fields} anatomy={model.anatomy} />
+      </div>
+    ) : (
+    <div className="mt-10 overflow-hidden rounded-[16px] border border-border-light bg-white">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border-light px-6 py-4">
+        <span className="font-mono text-[13.5px] font-semibold text-copy">
+          {model.name}
+        </span>
+        <span className="text-[12px] text-copy-muted">
+          {model.fields.length} fields
+        </span>
+      </div>
+
+      <dl className="divide-y divide-border-light">
+        {model.fields.map((field) => (
+          <div
+            key={field.name}
+            className="grid grid-cols-1 gap-x-6 gap-y-1 px-6 py-3.5 sm:grid-cols-[190px_84px_minmax(0,1fr)] sm:items-baseline"
+          >
+            <dt className="font-mono text-[13px] text-copy">
+              {field.name}
+            </dt>
+            <dd className="font-mono text-[12px] text-copy-muted">
+              {field.type}
+            </dd>
+            <dd className="text-[14px] leading-[1.5] text-pretty text-copy-muted">
+              {field.note}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+    )}
+
+    <Label className="mt-10">Lifecycle</Label>
+    <ol className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-2.5">
+      {model.lifecycle.map((state, i) => (
+        <li key={state} className="flex items-center gap-2">
+          <span className="rounded-md border border-border-light bg-white px-2.5 py-1 font-mono text-[12.5px] text-copy">
+            {state}
+          </span>
+          {i < model.lifecycle.length - 1 ? (
+            <span className="text-copy-muted/45" aria-hidden="true">
+              &rarr;
+            </span>
+          ) : null}
+        </li>
+      ))}
+    </ol>
+    <p className="mt-4 max-w-[62ch] text-[14px] leading-[1.6] text-pretty text-copy-muted">
+      Every transition is a signed operation on the record, so the
+      history of the document is the audit trail.
+    </p>
+    </>
   );
 }
 
@@ -105,6 +244,10 @@ export function IntegrationPage({
   // mobile, where that hero figure is hidden, it drops into the gallery.
   const lead = video ? undefined : shots?.[0];
   const rest = video ? (shots ?? []) : (shots?.slice(1) ?? []);
+  // A tall workflow capture with a reading guide leads the surfaces section:
+  // the workflow is how the result is made, the surfaces are where it lands.
+  const spine = rest.find((shot) => shot.stages && shot.height > shot.width);
+  const others = rest.filter((shot) => shot !== spine);
 
   return (
     <>
@@ -156,6 +299,9 @@ export function IntegrationPage({
                 </div>
               </div>
 
+              {/* A chaptered film leaves the band: sticky cannot pin inside
+                  the band's overflow-hidden, so ScrollVideo follows it. */}
+              {video.chapters ? null : (
               <figure className="mt-10 lg:mt-12">
                 <div className="overflow-hidden rounded-[14px] border border-border-md bg-ink shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
                   <RecordVideo
@@ -170,6 +316,7 @@ export function IntegrationPage({
                   {video.caption}
                 </figcaption>
               </figure>
+              )}
             </>
           ) : (
             <div
@@ -226,8 +373,17 @@ export function IntegrationPage({
           )}
         </BlogHeroBand>
 
-        {/* The boundary */}
-        <section className="border-t border-border-light bg-paper-soft py-20 text-copy md:py-24">
+        {video?.chapters ? <ScrollVideo video={video} chapters={video.chapters} /> : null}
+        <div id="after-film" />
+
+        {/* The boundary. After a scroll film the stage has already landed on
+            this ground, so a top rule would only draw a seam. */}
+        <section
+          className={`${
+            // The landed stage already leaves room below its caption.
+            video?.chapters ? "pt-0 pb-20 md:pb-24" : "border-t border-border-light py-20 md:py-24"
+          } bg-paper-soft text-copy`}
+        >
           <SectionContainer>
             <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:gap-16">
               <div>
@@ -294,76 +450,33 @@ export function IntegrationPage({
                 ) : null}
               </div>
             </div>
+
+            {model?.anatomy ? (
+              <div className="mt-20">
+                <h3 className="font-heading text-[clamp(22px,2vw,28px)] leading-[1.2] font-[660] tracking-[-0.015em] text-copy">
+                  The record it writes into
+                </h3>
+                <ModelBody model={model} headed />
+              </div>
+            ) : null}
           </SectionContainer>
         </section>
 
-        {/* The document model */}
-        {model ? (
+        {/* The document model. With an editor capture it sits under the
+            boundary instead: the model is what the boundary guards. */}
+        {model && !model.anatomy ? (
         <section className="border-t border-border-light bg-paper py-20 text-copy md:py-24">
           <SectionContainer>
             <SectionTitle>The document model</SectionTitle>
-            <p className="mt-5 max-w-[62ch] text-[16px] leading-[1.7] text-pretty text-copy-muted">
-              This is the structure the integration writes into. The fields are
-              the same whether a person opens the record, an application queries
-              it, or a scoped agent reads it.
-            </p>
-
-            <div className="mt-10 overflow-hidden rounded-[16px] border border-border-light bg-white">
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border-light px-6 py-4">
-                <span className="font-mono text-[13.5px] font-semibold text-copy">
-                  {model.name}
-                </span>
-                <span className="text-[12px] text-copy-muted">
-                  {model.fields.length} fields
-                </span>
-              </div>
-
-              <dl className="divide-y divide-border-light">
-                {model.fields.map((field) => (
-                  <div
-                    key={field.name}
-                    className="grid grid-cols-1 gap-x-6 gap-y-1 px-6 py-3.5 sm:grid-cols-[190px_84px_minmax(0,1fr)] sm:items-baseline"
-                  >
-                    <dt className="font-mono text-[13px] text-copy">
-                      {field.name}
-                    </dt>
-                    <dd className="font-mono text-[12px] text-copy-muted">
-                      {field.type}
-                    </dd>
-                    <dd className="text-[14px] leading-[1.5] text-pretty text-copy-muted">
-                      {field.note}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-
-            <Label className="mt-10">Lifecycle</Label>
-            <ol className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-2.5">
-              {model.lifecycle.map((state, i) => (
-                <li key={state} className="flex items-center gap-2">
-                  <span className="rounded-md border border-border-light bg-white px-2.5 py-1 font-mono text-[12.5px] text-copy">
-                    {state}
-                  </span>
-                  {i < model.lifecycle.length - 1 ? (
-                    <span className="text-copy-muted/45" aria-hidden="true">
-                      &rarr;
-                    </span>
-                  ) : null}
-                </li>
-              ))}
-            </ol>
-            <p className="mt-4 max-w-[62ch] text-[14px] leading-[1.6] text-pretty text-copy-muted">
-              Every transition is a signed operation on the record, so the
-              history of the document is the audit trail.
-            </p>
+            <ModelBody model={model} />
           </SectionContainer>
         </section>
 
         ) : null}
 
-        {/* How it runs */}
-        {pipeline ? (
+        {/* How it runs. With a workflow capture the steps join that section
+            instead, after the capture has shown the first workflow block by block. */}
+        {pipeline && !spine ? (
         <section className="border-t border-border-light bg-paper-soft py-20 text-copy md:py-24">
           <SectionContainer>
             <SectionTitle>How it runs</SectionTitle>
@@ -392,13 +505,63 @@ export function IntegrationPage({
         {/* Surfaces */}
         <section className="border-t border-border-light bg-paper py-20 text-copy md:py-24">
           <SectionContainer>
-            <SectionTitle>Where the result shows up</SectionTitle>
+            <SectionTitle>
+              {spine ? "The workflow, and where its record lands" : "Where the result shows up"}
+            </SectionTitle>
             <p className="mt-5 max-w-[62ch] text-[16px] leading-[1.7] text-pretty text-copy-muted">
-              One record, reachable from several places. The archive keeps the
-              original document, and the structured state is available wherever
-              the work happens.
+              {spine
+                ? "One record, made by workflows you can open and change, and reachable wherever the work happens."
+                : "One record, reachable from several places. The archive keeps the original document, and the structured state is available wherever the work happens."}
             </p>
 
+            {spine ? <SpineFigure shot={spine} /> : null}
+
+            {spine && pipeline ? (
+              <div className="mt-16">
+                <Label>After approval</Label>
+                <ol className="mt-4 divide-y divide-border-light border-y border-border-light">
+                  {pipeline.map((step) => (
+                    <li
+                      key={step.label}
+                      className="grid grid-cols-1 gap-x-8 gap-y-1.5 py-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]"
+                    >
+                      <span className="font-heading text-[16px] font-semibold text-copy">
+                        {step.label}
+                      </span>
+                      <span className="max-w-[72ch] text-[15px] leading-[1.65] text-pretty text-copy-muted">
+                        {step.body}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ) : null}
+
+            {spine ? (
+              <dl
+                // Under the steps list its bottom rule already separates them.
+                className={`grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4 ${
+                  pipeline ? "mt-10" : "mt-14 border-t border-border-light pt-8"
+                }`}
+              >
+                {surfaces.map((surface) => (
+                  <div key={surface.name}>
+                    <dt className="font-heading text-[16px] font-semibold text-copy">
+                      {surface.href ? (
+                        <Link href={surface.href} className="underline-offset-4 hover:underline">
+                          {surface.name}
+                        </Link>
+                      ) : (
+                        surface.name
+                      )}
+                    </dt>
+                    <dd className="mt-2 text-[14.5px] leading-[1.6] text-pretty text-copy-muted">
+                      {surface.role}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            ) : (
             <dl className="mt-10 divide-y divide-border-light border-y border-border-light">
               {surfaces.map((surface) => (
                 <div
@@ -423,6 +586,7 @@ export function IntegrationPage({
                 </div>
               ))}
             </dl>
+            )}
 
             {sample ? (
               <div className="mt-10">
@@ -440,7 +604,7 @@ export function IntegrationPage({
                   alt={lead.alt}
                   width={lead.width}
                   height={lead.height}
-                  className="w-full rounded-[14px] border border-border-light shadow-[0_8px_28px_rgba(17,22,20,0.16)]"
+                  className="w-full rounded-[14px] border border-border-light"
                 />
                 <figcaption className="mt-3 text-[13.5px] leading-[1.55] text-copy-muted">
                   {lead.caption}
@@ -448,60 +612,7 @@ export function IntegrationPage({
               </figure>
             ) : null}
 
-            {rest.map((shot) =>
-              shot.stages && shot.height > shot.width ? (
-                // A tall capture with a reading guide: the guide runs the
-                // height of the image beside it, stage by stage, so the eye can
-                // track each group of blocks against its description.
-                <figure
-                  key={shot.src}
-                  className="mt-16 grid grid-cols-1 items-stretch gap-10 lg:grid-cols-[600px_minmax(0,1fr)] lg:gap-16"
-                >
-                  <Image
-                    src={shot.src}
-                    alt={shot.alt}
-                    width={shot.width}
-                    height={shot.height}
-                    sizes="(min-width: 1024px) 600px, 92vw"
-                    // self-start keeps the grid from stretching it off its
-                    // aspect ratio; the guide column sets the row height.
-                    className="mx-auto h-auto w-full max-w-[600px] self-start rounded-[14px] border border-border-light shadow-[0_8px_28px_rgba(17,22,20,0.16)]"
-                  />
-                  <div className="flex flex-col lg:py-2">
-                    <figcaption className="max-w-[46ch] text-[17px] leading-[1.6] text-pretty text-copy">
-                      {shot.caption}
-                    </figcaption>
-                    <ol className="mt-8 flex flex-1 flex-col justify-between gap-6">
-                      {shot.stages.map((stage) => (
-                        <li
-                          key={stage.heading}
-                          className="border-t border-border-light pt-4"
-                        >
-                          <h3 className="font-heading text-[17px] font-semibold text-copy">
-                            {stage.heading}
-                          </h3>
-                          <p className="mt-2 max-w-[52ch] text-[15px] leading-[1.6] text-pretty text-copy-muted">
-                            {stage.body}
-                          </p>
-                          <ul className="mt-2.5 space-y-1.5">
-                            {stage.steps.map((step) => (
-                              <li
-                                key={step.label}
-                                className="flex flex-wrap items-baseline gap-x-2 text-[14px]"
-                              >
-                                <span className="text-copy">{step.label}</span>
-                                <span className="font-mono text-[12.5px] text-copy-muted">
-                                  {step.piece}
-                                </span>
-                              </li>
-                            ))}
-                          </ul>
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
-                </figure>
-              ) : (
+            {others.map((shot) => (
                 <figure
                   key={shot.src}
                   className={
@@ -515,14 +626,13 @@ export function IntegrationPage({
                     alt={shot.alt}
                     width={shot.width}
                     height={shot.height}
-                    className="w-full rounded-[14px] border border-border-light shadow-[0_8px_28px_rgba(17,22,20,0.16)]"
+                    className="w-full rounded-[14px] border border-border-light"
                   />
                   <figcaption className="mt-3 text-[13.5px] leading-[1.55] text-copy-muted">
                     {shot.caption}
                   </figcaption>
                 </figure>
-              ),
-            )}
+            ))}
           </SectionContainer>
         </section>
 
