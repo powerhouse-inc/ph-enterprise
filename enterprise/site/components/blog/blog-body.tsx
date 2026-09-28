@@ -9,6 +9,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { BlogFigure } from "@/components/blog/blog-figure";
 import type { BlogBlock, BlogInline } from "@/data/blog";
+import { cn } from "@/lib/utils";
 
 /** Anchor id for a heading, so sections stay linkable from elsewhere. */
 function headingId(text: string): string {
@@ -144,7 +145,12 @@ function Resources({
   block: Extract<BlogBlock, { type: "resources" }>;
 }) {
   return (
-    <section className="fade-up mt-16 rounded-[16px] border border-border-light bg-white p-7 shadow-[0_2px_12px_rgba(17,22,20,0.1)] md:p-8">
+    <section
+      className={cn(
+        "fade-up rounded-[16px] border border-border-light bg-white shadow-[0_2px_12px_rgba(17,22,20,0.1)]",
+        block.compact ? "my-9 p-6" : "mt-16 p-7 md:p-8",
+      )}
+    >
       <p className="text-[12px] font-semibold tracking-[0.06em] text-copy-muted uppercase">
         {block.title}
       </p>

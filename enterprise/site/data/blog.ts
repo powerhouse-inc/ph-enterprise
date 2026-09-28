@@ -39,6 +39,8 @@ export type BlogBlock =
   | {
       type: "resources";
       title: string;
+      /** Sits inline between paragraphs rather than closing the post. */
+      compact?: boolean;
       items: readonly { label: string; href: string; note: string }[];
     };
 
@@ -93,6 +95,18 @@ const PAPERLESS_POST: BlogPost = {
         "The demo runs locally from a small Docker-based repository. A configured language model extracts the invoice fields, so you provide your own API key. The example uses ",
         { text: "OpenRouter", href: "https://openrouter.ai" },
         " by default, and other providers can be configured.",
+      ],
+    },
+    {
+      type: "resources",
+      title: "Explore and clone the repo",
+      compact: true,
+      items: [
+        {
+          label: "powerhouse-inc/paperless-billing",
+          href: PAPERLESS_BILLING_REPO,
+          note: "Everything this walkthrough runs on: the Docker Compose stack, the bootstrap script and the start commands.",
+        },
       ],
     },
 
