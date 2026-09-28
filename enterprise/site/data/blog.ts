@@ -654,7 +654,7 @@ const UMH_POST: BlogPost = {
         "The Docker Compose file starts with the same slim Paperless-ngx setup as the ",
         {
           text: "Paperless Billing example",
-          href: "/blog/paperless-powered-by-powerhouse",
+          href: "/blog/paperless-ngx-pdf-to-structured-data",
         },
         ": Redis as task broker, SQLite for application data, PDF input only. Tika and Gotenberg stay off.",
       ],

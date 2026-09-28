@@ -378,7 +378,7 @@ const PAPERLESS: IntegrationEntry = {
   },
 
   repoUrl: "https://github.com/powerhouse-inc/paperless-billing",
-  walkthroughSlug: "paperless-powered-by-powerhouse",
+  walkthroughSlug: "paperless-ngx-pdf-to-structured-data",
 
   shots: [
     {
