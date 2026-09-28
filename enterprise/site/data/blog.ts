@@ -66,7 +66,7 @@ const PAPERLESS_BILLING_REPO =
   "https://github.com/powerhouse-inc/paperless-billing";
 
 const PAPERLESS_POST: BlogPost = {
-  slug: "paperless-powered-by-powerhouse",
+  slug: "paperless-ngx-pdf-to-structured-data",
   title: "Paperless-ngx - Automated PDF processing with Powerhouse",
   summary: [
     "This blog will show you how you can convert unstructured PDFs into structured, queryable data, thus eliminating tedious manual entry and accelerating accounting and operational workflows.",

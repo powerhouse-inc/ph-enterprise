@@ -4,6 +4,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/blog/paperless-powered-by-powerhouse",
+        destination: "/blog/paperless-ngx-pdf-to-structured-data",
+        permanent: true,
+      },
+      {
         source: "/clint",
         destination: "/architecture#clint",
         permanent: true,
