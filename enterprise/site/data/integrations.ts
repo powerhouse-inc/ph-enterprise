@@ -108,6 +108,19 @@ export type IntegrationEntry = {
   };
   /** What the integration is allowed to touch, in the order shown on the site. */
   scope: readonly IntegrationScopeRow[];
+  /**
+   * The events that start work and the things it then does, in the reading
+   * order of the Activepieces piece pages the index is modelled on. Only what
+   * the record already evidences below; leave empty rather than guess.
+   */
+  triggers?: readonly string[];
+  actions?: readonly string[];
+  /**
+   * How the integration uses the Activepieces catalogue, where it does. Shown
+   * on the card with a link to the catalogue record. Absent when it does not
+   * run as pieces.
+   */
+  activepieces?: string;
 
   /* ---- detail page ---- */
 
@@ -234,6 +247,13 @@ const PAPERLESS: IntegrationEntry = {
     { label: "Structure", value: "Invoice records with line items" },
     { label: "Access", value: "Scoped to approval and payment workflows" },
   ],
+  triggers: ["Paperless classifies a document as an invoice"],
+  actions: [
+    "Read the invoice fields with a language model",
+    "File an invoice record for review",
+  ],
+  activepieces:
+    "Its Paperless trigger is also an Activepieces piece, which the UMH workflows use.",
 
   claim: "Invoices, structured on arrival.",
   flow: "Paperless-ngx \u2192 Invoice",
@@ -405,6 +425,18 @@ const UMH: IntegrationEntry = {
     { label: "Structure", value: "Production Ledgers with an evidence trail" },
     { label: "Access", value: "Each step carries its own action allow-list" },
   ],
+  triggers: [
+    "A new purchase order in Paperless",
+    "A person approves the order",
+    "The floor reports progress",
+  ],
+  actions: [
+    "Draft a Production Ledger from the order",
+    "Create the order on the floor",
+    "Add floor progress to the evidence trail",
+  ],
+  activepieces:
+    "Runs as three Activepieces workflows, using the UMH, Paperless and document pieces.",
 
   oneLiner:
     "A purchase order becomes a commitment a person approves, and the factory floor reports back against it until the run closes out.",
@@ -958,14 +990,194 @@ const ARS_CONTEXTA: IntegrationEntry = {
   ],
 };
 
+/**
+ * Docling. Evidenced by powerhouse-inc/docling (README, README.service.md,
+ * src/*.mjs) and by the vault side on apeiron-M/bai-knowledge-note, branch
+ * remote-first-vault: subgraphs/convert (sections, authorize, schema) and
+ * editors/knowledge-vault/lib/intake-service.ts (what a published source
+ * carries). The service has no document model of its own; the model below is
+ * the vault source it feeds, with the fields intake-service sets.
+ */
+const DOCLING: IntegrationEntry = {
+  slug: "docling",
+  name: "Docling",
+  category: "Document conversion",
+  status: "Available",
+  // The project's own mark, from docling.ai/img/logo.svg.
+  logo: {
+    src: "/logos/integrations/docling.svg",
+    width: 1024,
+    height: 1024,
+    kind: "mark",
+  },
+  summary:
+    "PDFs, scans and Office files become markdown split at their own headings, and each section a person keeps is filed as a Knowledge Vault source.",
+  claim: "Whole documents, split where the author split them.",
+  flow: "Docling → Source",
+  scope: [
+    { label: "Data in", value: "PDFs, scans, Office files and HTML, 29 formats in all" },
+    { label: "Structure", value: "One source per section, cut at the document's own headings" },
+    { label: "Access", value: "Converts and proposes. Nothing is filed until a person confirms" },
+  ],
+  triggers: ["A file is dropped on the vault's Intake view"],
+  actions: [
+    "Convert it and split it at its own headings",
+    "File each section a person keeps as a source",
+  ],
+
+  oneLiner:
+    "A document is converted to markdown, split along its own headings, and each section a person keeps becomes a source queued for extraction.",
+  metaDescription:
+    "Docling converts PDFs, scans and Office files to markdown, splits them at their own headings, and files the sections you keep as Knowledge Vault sources.",
+
+  direction:
+    "One way in. Files are converted and filed as sources; nothing is written back to the file or to the service.",
+
+  inputs: [
+    "Files dropped on the vault's Intake view: PDF, scans, Word, PowerPoint, Excel, HTML, EPUB and the rest of the 29 formats, up to 30 MB each.",
+    "Anything else that can send bytes to the vault's convert route with a signed-in bearer, which reaches the same service the app does.",
+  ],
+
+  model: {
+    name: "bai/source",
+    fields: [
+      { name: "title", type: "String", note: "The section's own heading, taken from the document." },
+      { name: "content", type: "String", note: "The section's markdown, with its figures attached." },
+      { name: "sourceType", type: "Enum", note: "ARTICLE, PAPER, BOOK_CHAPTER and five more, chosen per file at review." },
+      { name: "provenance.method", type: "String", note: "Always converted, so a converted source is never mistaken for a hand paste." },
+      { name: "provenance.tool", type: "String", note: "docling.rs, the engine that read the file." },
+      { name: "status", type: "Enum", note: "Position in the lifecycle below. A published source arrives queued." },
+      { name: "extractedClaims", type: "Array", note: "The notes later extracted from this source." },
+    ],
+    lifecycle: ["inbox", "extracting", "extracted", "archived"],
+  },
+
+  boundary: [
+    "The service knows formats and the vault knows sources. Docling returns markdown and chunks and has never heard of a source; the vault decides what one is. That keeps the converter replaceable, and keeps vault rules out of a process that only reads files.",
+    "Converting writes nothing. The vault cuts the document at the shallowest heading level that actually divides it, shows the proposed sections, and files only the ones a person keeps. A 400-page book becomes its parts, not the thousands of chunks the converter emits.",
+    "Conversion runs in its own container, apart from the Switchboard, and only a signed-in caller can start one. A long book takes minutes of compute, so an anonymous request is refused even on a vault with authentication switched off.",
+  ],
+
+  pipeline: [
+    {
+      label: "Convert",
+      body: "The file goes to the vault's convert route, which passes it to the service. Its extension picks the parser. Office files, HTML and text need no models and convert at once.",
+    },
+    {
+      label: "Read a PDF, cheapest first",
+      body: "Docling's own pass reads born-digital pages and plain scans. A garbled text layer falls back to pdf.js, then to Tesseract or Docling's bundled OCR, and the response names the step that produced the text.",
+    },
+    {
+      label: "Measure what survived",
+      body: "The service counts how much of the PDF's own text reached the markdown, and lists the formulas and pictures it saw but could not transcribe.",
+    },
+    {
+      label: "Review the sections",
+      body: "The vault proposes one section per heading group and folds very small ones into their neighbours. A person unticks what they do not need and picks the source type.",
+    },
+    {
+      label: "File and queue",
+      body: "Each kept section becomes a source in a folder named after the file, with its figures attached, queued for extraction into notes.",
+    },
+  ],
+
+  surfaces: [
+    {
+      name: "Knowledge Vault app",
+      role: "Drop files, read each proposed section, untick the ones to leave out, and file the rest.",
+    },
+    {
+      name: "Switchboard",
+      role: "The convert subgraph reports whether a service is configured, whether PDFs are ready, and which formats it reads.",
+      href: "/architecture#switchboard",
+    },
+    {
+      name: "Service health",
+      role: "GET /health tells a broken service apart from one still waiting for its PDF models, and the vault shows both states.",
+    },
+  ],
+
+  packages: [
+    {
+      name: "@powerhousedao/docling-service",
+      role: "The conversion service, published as a container image to cr.vetra.io and GHCR rather than to npm.",
+    },
+    {
+      name: "docling.rs",
+      role: "The native conversion engine the service runs, built for glibc on x64 and arm64.",
+    },
+    {
+      name: "pdfjs-dist",
+      role: "Reads a PDF's text layer for the fallback step and for the coverage check.",
+    },
+    {
+      name: "bai-knowledge-note",
+      role: "The vault package: its convert subgraph, the Intake view and the source model.",
+    },
+  ],
+
+  requirements: [
+    "Docker, or Bun to run the service without a container.",
+    "About 700 MB of models on a volume for PDFs and images, fetched once with npm run fetch-models. Every other format converts without them.",
+    "A Knowledge Vault whose Switchboard points at the service through CONVERT_SERVICE_URL.",
+    "Memory sized to the largest document rather than to traffic. A 238-page book peaked at 9.6 GB, so allow about 12 GB.",
+    "A reverse proxy that allows long requests and large bodies. nginx defaults to 60 seconds and 1 MB; deploy/nginx.conf in the repository has working settings.",
+  ],
+
+  limits: [
+    "One conversion runs at a time per instance, because the models are mutable sessions. A second caller is told to retry, so throughput comes from more replicas.",
+    "A long document holds one HTTP connection for minutes. The service writes a keep-alive byte so proxies do not cut it, which means an error after that first byte arrives as a 200 with the real status in the body.",
+    "Chunking converts the file a second time, chosen because the cheaper path paired table cells wrongly. On a 238-page book that is 155 seconds converting and 178 seconds chunking.",
+    "Display formulas are located and kept as pictures rather than decoded. Decoding 79 formulas on a CPU did not finish in ten minutes.",
+  ],
+
+  sample: {
+    label: "Convert a file against the service directly",
+    language: "bash",
+    code: `curl -s -X POST "http://localhost:5011/convert?filename=report.pdf" \\
+  --data-binary @report.pdf`,
+  },
+
+  repoUrl: "https://github.com/powerhouse-inc/docling",
+  shots: [
+    {
+      // Rendered from src/fixtures/paper.docling.json in the service repo:
+      // real block positions, labels and page numbers. The fixture trims text
+      // to ~60 characters, so no text or character counts are shown.
+      src: "/integrations/docling-cover.png",
+      alt: "Docling's layout reading of a 23-page arXiv paper: every page drawn as its text blocks, headings, tables and figures, beside the 17 headings it found with their page numbers.",
+      caption:
+        "Rendered from the service's own test fixture: Docling's reading of a 23-page paper, page by page, and the 17 headings it found. One of them, Lemma 5.1, is a misread, shown as Docling returned it.",
+      width: 2880,
+      height: 1800,
+    },
+  ],
+};
+
 export const INTEGRATIONS: readonly IntegrationEntry[] = [
   PAPERLESS,
   UMH,
   ACTIVEPIECES,
   ARS_CONTEXTA,
+  DOCLING,
 ] as const;
 
-/** Index and sitemap both read this order. */
+/**
+ * The records listed on the integrations index. Activepieces is the catalogue
+ * the others are built in, so the index shows it as its own band rather than
+ * as one integration among several. Ars Contexta is a methodology, not a
+ * system you connect. Both keep their detail pages.
+ */
+export const LISTED_INTEGRATIONS: readonly IntegrationEntry[] = [
+  PAPERLESS,
+  UMH,
+  DOCLING,
+] as const;
+
+/** The catalogue record the index links to from its catalogue band. */
+export const CATALOGUE = ACTIVEPIECES;
+
+/** Detail pages and sitemap both read this order. */
 export const INTEGRATION_ORDER: readonly string[] = INTEGRATIONS.map(
   (entry) => entry.slug,
 );
