@@ -1154,12 +1154,219 @@ const DOCLING: IntegrationEntry = {
   ],
 };
 
+/**
+ * Speckle. Evidenced by powerhouse-inc/speckle-package at 1.0.1: README,
+ * docs/SETUP.md, both v1 schemas, processors/speckle-sync-runner and the
+ * speckle-hotspots subgraph. 1.0.1 is on registry.vetra.io. The Vetra Cloud
+ * "3D Models" add-on that installs it is vetra-cloud-package#92 and
+ * powerhouse-k8s-hosting#216, both merged 2026-09-26. Screenshots are the
+ * repository's own, from docs/images.
+ */
+const SPECKLE: IntegrationEntry = {
+  slug: "speckle",
+  name: "Speckle",
+  category: "Building models",
+  status: "Available",
+  // Speckle's own wordmark, from speckle.systems/assets/images/logo-full.svg.
+  logo: {
+    src: "/logos/integrations/speckle.svg",
+    width: 100,
+    height: 24,
+  },
+  summary:
+    "Each revision of a Speckle building model becomes a record of its quantities and of what changed, while the 3D model itself stays in Speckle.",
+  claim: "Every revision, measured and compared.",
+  flow: "Speckle → Speckle Project",
+  scope: [
+    { label: "Data in", value: "Models, revisions and element quantities" },
+    { label: "Structure", value: "Per-category totals and a change entry per revision" },
+    { label: "Access", value: "Reads Speckle. Nothing is written back" },
+  ],
+  triggers: ["A person runs a sync from the Sync Console"],
+  actions: [
+    "Mirror each model and revision",
+    "Total volume, area and length per category",
+    "Record what changed between revisions",
+  ],
+
+  oneLiner:
+    "A building model's revisions become a record of its quantities and of what changed, element by element, while the geometry stays in Speckle.",
+  metaDescription:
+    "Speckle revisions become Powerhouse records: volume, area and length per category, and every element added, modified or removed between versions.",
+
+  primer: {
+    label: "What is Speckle?",
+    body: "Speckle is an open-source data platform for building and construction models. Design tools such as Revit and Rhino, and IFC files, publish into it, and each publish is a new version of the model. Speckle stores the geometry and draws it in the browser.",
+  },
+
+  direction:
+    "Speckle to Powerhouse, one way. The geometry stays in Speckle and is drawn from there.",
+
+  inputs: [
+    "A Speckle project on your own server or a hosted one, named by server address and project id in the Sync Console.",
+    "Models from Speckle's connectors and from IFC imports. Both ways of recording quantities are read, so an IFC building is totalled as well as a native model.",
+  ],
+
+  model: {
+    name: "speckle/project",
+    fields: [
+      { name: "serverUrl", type: "URL", note: "The Speckle server the project lives on." },
+      { name: "projectId", type: "String", note: "The Speckle project this record mirrors." },
+      { name: "models", type: "Array", note: "Each model in the project, with its latest version and version count." },
+      { name: "revisions", type: "Array", note: "One per version: its message, author, source tool and object count." },
+      { name: "revisions.categories", type: "Array", note: "Volume, area, length and count per category, for that revision." },
+      { name: "revisions.truncated", type: "Boolean", note: "Set when a revision hit the object cap, so a partial total is never shown as complete." },
+      { name: "changes", type: "Array", note: "One per pair of revisions: counts added, modified and removed, and the category deltas." },
+      { name: "changes.touchedElements", type: "Array", note: "Each element touched, keyed on the design tool's own id so it can be followed across edits." },
+    ],
+    lifecycle: ["SET_PROJECT_IDENTITY", "UPSERT_MODEL", "UPSERT_REVISION", "RECORD_CHANGE"],
+  },
+
+  boundary: [
+    "The geometry never leaves Speckle. Speckle already stores the model and draws it well, so the record holds only what Speckle does not keep: what each revision meant for the numbers, and when it happened.",
+    "A change is keyed on the element's id in the design tool, not on Speckle's object id, which is a hash of the content. An edited wall therefore reads as one modification rather than a deletion and an addition, and its history follows it across revisions.",
+    "Rooms, storeys and display meshes are kept out of the totals. They carry quantities of their own, and adding the air in a room to the concrete in its walls gives a number that means nothing.",
+    "The sync runs with a service credential held on the Switchboard. A collaborator's own Speckle token stays private to them, is never shared with others on the drive, and is used only for checks in their editor.",
+  ],
+
+  pipeline: [
+    {
+      label: "Connect",
+      body: "In the Sync Console, name the Speckle server and project, check that both resolve, and pick the record to mirror into.",
+    },
+    {
+      label: "Request a sync",
+      body: "Run sync records a request on the sync document. The sync runner on the Switchboard reacts to that request, not to a timer.",
+    },
+    {
+      label: "Read Speckle",
+      body: "The runner walks each model's recent versions and the objects in them, up to the caps set in the console. Versions it has already pulled are skipped.",
+    },
+    {
+      label: "Total and compare",
+      body: "Each revision gets its totals per category, and each pair of revisions gets the elements added, modified and removed.",
+    },
+    {
+      label: "Write the record",
+      body: "The results land on the Speckle Project record as operations. Writing the same revision again changes nothing, so a repeated sync is safe.",
+    },
+  ],
+
+  surfaces: [
+    {
+      name: "Model Explorer",
+      role: "The 3D model with its changes painted in, a revision timeline, quantities with deltas, and trends across the history.",
+    },
+    {
+      name: "Sync Console",
+      role: "The connection, a live check against Speckle, the caps, the run button and every run with its outcome.",
+    },
+    {
+      name: "Speckle Workspace",
+      role: "Every mirrored project on the drive, drive-wide totals, and one feed of every model change.",
+    },
+    {
+      name: "Switchboard",
+      role: "Runs the sync, serves the records and the analytics over GraphQL, and ranks the elements that change most often.",
+      href: "/architecture#switchboard",
+    },
+  ],
+
+  packages: [
+    {
+      name: "speckle-package",
+      role: "Both document models, the sync runner, the analytics, the editors and the drive app, in one package on the Vetra registry.",
+    },
+    {
+      name: "@speckle/viewer",
+      role: "Draws the model inside the Model Explorer, so each element can be painted by what happened to it.",
+    },
+  ],
+
+  requirements: [
+    "A Switchboard with speckle-package installed. On Vetra Cloud, the 3D Models add-on installs it for the environment.",
+    "A Speckle server: your own, or a hosted one such as app.speckle.systems. Speckle ships only as container images, so a local server needs Docker.",
+    "A Speckle access token on the Switchboard for private projects. Without one, only public projects sync.",
+    "For the full local demo: Docker with Compose v2, Node 24 or newer, and about 6 GB of disk.",
+  ],
+
+  limits: [
+    "A sync starts when someone asks for one. The console has an auto-sync switch, but it needs a webhook from Speckle into the Switchboard, which the package does not ship yet.",
+    "Each sync reads a capped number of versions per model and objects per version. A revision that hits the cap is marked partial rather than shown as complete.",
+    "Removed elements are fetched one at a time to show them, so that view is capped and says when it has truncated.",
+    "A collaborator's token is kept in the document's private local scope, which suits a trusted internal drive. A production deployment should move it to sign-in with Speckle or a dedicated secret store.",
+  ],
+
+  sample: {
+    label: "Ask Switchboard for the elements that change most",
+    language: "graphql",
+    code: `{
+  speckleHotspots {
+    hotspots(projectDocumentId: "<mirror-id>", minTouches: 2, limit: 10) {
+      identity
+      speckleType
+      touches
+      added
+      modified
+      removed
+      lastDetectedAt
+    }
+  }
+}`,
+  },
+
+  repoUrl: "https://github.com/powerhouse-inc/speckle-package",
+  shots: [
+    {
+      src: "/integrations/speckle/model-explorer.png",
+      alt: "The Model Explorer: a list of mirrored revisions, the building model with its changed elements coloured, and the revision timeline below.",
+      caption:
+        "The Model Explorer. Added elements are green, modified amber and removed red, and the timeline steps through every mirrored revision.",
+      width: 1420,
+      height: 940,
+    },
+    {
+      src: "/integrations/speckle/drive-app.png",
+      alt: "The Speckle Workspace drive app: every mirrored project as a card with its Speckle preview, and portfolio totals across projects.",
+      caption:
+        "The drive app: every mirrored project on the drive, with totals across all of them.",
+      width: 1420,
+      height: 900,
+    },
+    {
+      src: "/integrations/speckle/element-panel.png",
+      alt: "An element selected in the Model Explorer, with its properties and the list of revisions that touched it.",
+      caption:
+        "Selecting an element shows what the design tool recorded about it, and every revision that touched it.",
+      width: 893,
+      height: 502,
+    },
+    {
+      src: "/integrations/speckle/analytics-over-time.png",
+      alt: "Charts of quantities and revisions over calendar time, with a hover readout.",
+      caption:
+        "Quantities and revisions over calendar time, read from the records rather than recomputed in the browser.",
+      width: 1390,
+      height: 602,
+    },
+    {
+      src: "/integrations/speckle/churn-and-hotspots.png",
+      alt: "A heatmap of changes by category and period, beside a ranked list of the elements changed most often.",
+      caption:
+        "Where the model keeps changing: churn by category and period, and the elements touched most often.",
+      width: 1390,
+      height: 519,
+    },
+  ],
+};
+
 export const INTEGRATIONS: readonly IntegrationEntry[] = [
   PAPERLESS,
   UMH,
   ACTIVEPIECES,
   ARS_CONTEXTA,
   DOCLING,
+  SPECKLE,
 ] as const;
 
 /**
@@ -1172,6 +1379,7 @@ export const LISTED_INTEGRATIONS: readonly IntegrationEntry[] = [
   PAPERLESS,
   UMH,
   DOCLING,
+  SPECKLE,
 ] as const;
 
 /** The catalogue record the index links to from its catalogue band. */
