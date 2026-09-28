@@ -161,13 +161,13 @@ cp .env.example .env`,
       language: "bash",
       label: ".env",
       code: `PAPERLESS_AI_BASE_URL=https://openrouter.ai/api/v1
-PAPERLESS_AI_MODEL=openai/gpt-oss-120b
+PAPERLESS_AI_MODEL=google/gemini-2.5-flash
 PAPERLESS_AI_API_KEY=your_openrouter_key_here`,
     },
     {
       type: "paragraph",
       spans: [
-        "Those first two lines ship filled in, so the key is the only edit. Any OpenAI-compatible endpoint works if you point ",
+        "Those first two lines are already filled in for you, so the key is the only edit you need to make. Any OpenAI-compatible endpoint works if you point ",
         { code: "PAPERLESS_AI_BASE_URL" },
         " elsewhere and set a matching ",
         { code: "PAPERLESS_AI_MODEL" },
@@ -177,9 +177,9 @@ PAPERLESS_AI_API_KEY=your_openrouter_key_here`,
     {
       type: "note",
       spans: [
-        "Extraction quality is the model's, not the pipeline's. The screenshots below were produced with ",
+        "Extraction quality is the model's, not the pipeline's. The default above, ",
         { code: "google/gemini-2.5-flash" },
-        ", which read every field of this invoice set correctly. Smaller models are noticeably less reliable at the arithmetic on a line-item table, so if totals come out wrong, change the model before suspecting the integration.",
+        ", produced the screenshots below and read every field of this invoice set correctly. Smaller models are noticeably less reliable at the arithmetic on a line-item table, so if totals come out wrong, change the model before suspecting the integration.",
       ],
     },
     { type: "paragraph", spans: ["Then start the stack:"] },
@@ -219,7 +219,7 @@ PAPERLESS_AI_API_KEY=your_openrouter_key_here`,
       ],
     },
 
-    { type: "heading", text: "One invoice, multiple interfaces" },
+    { type: "heading", text: "One invoice across multiple interfaces" },
     {
       type: "paragraph",
       spans: [
