@@ -39,6 +39,12 @@ export function LandingNav() {
         </Link>
         <div className="ml-auto flex items-center gap-5 sm:ml-0">
           <Link
+            href="/integrations"
+            className="hidden text-[13px] font-medium text-t2 transition-colors hover:text-t1 sm:inline"
+          >
+            Integrations
+          </Link>
+          <Link
             href="/blog"
             className="hidden text-[13px] font-medium text-t2 transition-colors hover:text-t1 sm:inline"
           >

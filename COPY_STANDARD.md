@@ -158,7 +158,7 @@ Cut these patterns unless there is a clear reason:
 - "Imagine a world where"
 - "Unlock the power of"
 - "Seamlessly integrate"
-- "Robust and scalable"
+- "Robust and scalable", or any property word used as a bare boast
 - "Designed to empower"
 - "Game-changing"
 - "Revolutionize"
@@ -166,6 +166,31 @@ Cut these patterns unless there is a clear reason:
 - vague three-part lists with equal weight
 - dramatic one-line fragments
 - claims that make software sound like a person
+
+## Property Vocabulary
+
+Technical property words are allowed, and wanted, when each one is attached to
+the mechanism that makes it true. The slop is the bare adjective, not the term.
+
+These are approved on technical pages when the mechanism appears beside them:
+
+| Property | The mechanism that earns it |
+| --- | --- |
+| deterministic, reproducible | state is the result of replaying an append-only operation log |
+| auditable | each log entry names the operation, the time, and the actor |
+| idempotent | a duplicate delivery carries an id the reducer already holds, and is refused |
+| typed | fields are defined by a document model every consumer reads |
+| enforceable | each write step declares the operations it may dispatch |
+| observable | every run records its steps, its outcome and its duration |
+| interoperable, portable | the same state is served over GraphQL or plain HTTP |
+| composable, extensible | an integration is a workflow built from pieces, not custom code |
+| scalable | another integration is another workflow rather than another rewrite |
+| self-hosted, open-source | the stack runs on your infrastructure and can be read |
+
+Write "auditable, because each entry names the operation, the time and the
+actor", not "auditable and enterprise-grade". A property word with no
+mechanism next to it is still slop and should be cut.
+
 
 ## Section-Level Rules
 
@@ -176,7 +201,7 @@ Cut these patterns unless there is a clear reason:
 - Do not use "sandbox" in the main proposition. Reserve it for assessment or
   exploration environments.
 - CTA copy must be an action the prospect can actually take.
-- The canonical CTA label is "Request an assessment". It is defined once as
+- The canonical CTA label is "Book a call". It is defined once as
   `CTA_LABEL` in `enterprise/site/lib/site.ts`; render that constant instead
   of retyping the label, and do not introduce variants.
 
