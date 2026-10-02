@@ -77,17 +77,23 @@ export function BlogFigure({
   width,
   height,
   caption,
+  displayWidth,
 }: {
   src: string;
   alt: string;
   width: number;
   height: number;
   caption?: string;
+  /** CSS width cap, for a UI crop that should show near its real size. */
+  displayWidth?: number;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <figure className="fade-up my-10">
+    <figure
+      className="fade-up my-10"
+      style={displayWidth ? { maxWidth: displayWidth } : undefined}
+    >
       <button
         type="button"
         onClick={() => setIsOpen(true)}
@@ -101,7 +107,11 @@ export function BlogFigure({
             width={width}
             height={height}
             className="block h-auto w-full"
-            sizes="(min-width: 1024px) 900px, 100vw"
+            sizes={
+              displayWidth
+                ? `(min-width: 1024px) ${displayWidth}px, 100vw`
+                : "(min-width: 1024px) 900px, 100vw"
+            }
           />
         </span>
         <span className="absolute right-3.5 bottom-3.5 flex h-7 w-7 items-center justify-center rounded-md bg-black/50 text-white/85 opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover/zoom:opacity-100">

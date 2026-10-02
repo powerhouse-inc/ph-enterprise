@@ -24,6 +24,16 @@ export type IntegrationScopeRow = {
 /** Shown as a chip on the record header. Keep the set small and honest. */
 export type IntegrationStatus = "Available" | "In development";
 
+/**
+ * How a status reads on the page. Every integration is a runnable demo on demo
+ * data (PRODUCT.md), so "Available" must never read as production-ready: it is
+ * shown as what it is, in neutral text, not in proof green.
+ */
+export const STATUS_LABEL: Record<IntegrationStatus, string> = {
+  Available: "Runnable demo",
+  "In development": "In development",
+};
+
 /** One field of the document model the integration writes into. */
 export type ModelField = {
   name: string;
@@ -84,6 +94,18 @@ export type ModelAnatomy = {
   spots: readonly { field: string; x: number; y: number; w: number; h: number }[];
 };
 
+/**
+ * One part of the recipe a case study is built from: the professional system,
+ * what connects it (Activepieces pieces or a dedicated connector), the
+ * document model it writes into, and the app people work in.
+ */
+export type RecipePart = {
+  kind: "system" | "pieces" | "connector" | "model" | "app";
+  label: string;
+};
+
+export type VetraLink = { url: string; label?: string };
+
 export type IntegrationEntry = {
   slug: string;
   name: string;
@@ -122,6 +144,24 @@ export type IntegrationEntry = {
    */
   activepieces?: string;
 
+  /* ---- index case study ---- */
+
+  /** The industry the case study serves; the card's headline. */
+  industry?: string;
+  /**
+   * What happens, in order: the trigger, the actions and the access rule,
+   * written as one list of plain steps.
+   */
+  steps?: readonly string[];
+  /** The case study's recipe, in reading order. */
+  recipe?: readonly RecipePart[];
+  /**
+   * The package page on Vetra that lists the modules the integration ships.
+   * Only set where a page exists today; the label says what the page holds
+   * when it is not the integration's own package.
+   */
+  vetra?: VetraLink;
+
   /* ---- detail page ---- */
 
   /** Short benefit line set under the name in the detail H1. */
@@ -147,6 +187,8 @@ export type IntegrationEntry = {
     name: string;
     fields: readonly ModelField[];
     lifecycle: readonly string[];
+    /** Label over the lifecycle row, when it lists operations rather than states. */
+    lifecycleLabel?: string;
     /** Optional: the fields shown on an editor capture, interactively. */
     anatomy?: ModelAnatomy;
   };
@@ -176,6 +218,74 @@ export type IntegrationEntry = {
    * from the demo, the same rule the shots follow.
    */
   video?: IntegrationVideo;
+  /** The demo scenario, drawn in the hero. */
+  scenario?: IntegrationScenario;
+  /** The name behind an acronym, shown beside it in the hero. */
+  fullName?: string;
+  /** The vendor's own site, linked from the hero's meta line. */
+  site?: { url: string; label: string };
+  /** A close that follows from this record's case; the generic one otherwise. */
+  close?: { title: string; body?: string };
+  /**
+   * "simple": the hero, then How it works, and nothing else. The default is
+   * the older seven-section page, kept until every record moves.
+   */
+  layout?: "simple";
+  /** Hero copy for the simple layout. */
+  hero?: {
+    /** One or two sentences under the title; replaces the one-liner. */
+    subtitle: string;
+  };
+  /** The simple layout's only section: what happens, step by step. */
+  howItWorks?: {
+    /** Plain text, with optional links. */
+    intro: readonly (string | { text: string; href: string })[];
+    steps: readonly { title: string; body: string }[];
+    /** What the demo is and where it stops. */
+    note?: string;
+    /** Caption for the workflow capture shown beside the steps. */
+    shotCaption?: string;
+    /** A short film of the flow, shown above the steps. */
+    video?: {
+      src: string;
+      poster: string;
+      width: number;
+      height: number;
+      /** What the film shows, for assistive technology. */
+      label: string;
+      caption?: string;
+    };
+  };
+};
+
+/**
+ * The scenario a record's demo runs, drawn in the hero: the system material
+ * arrives from, the Powerhouse document it becomes, and the system that
+ * document drives and hears back from. Every value must come from the demo
+ * run, the same rule the shots follow.
+ */
+export type IntegrationScenario = {
+  source: ScenarioSystem;
+  target: ScenarioSystem;
+  record: {
+    title: string;
+    model: string;
+    fields: readonly { name: string; value: string }[];
+    approval: string;
+    evidence: string;
+    /** Omitted when the demo stops before a verdict exists. */
+    verdict?: string;
+  };
+  /** Edge labels, in the order the scenario runs. */
+  flows: { capture: string; dispatch: string; report: string };
+  caption: string;
+};
+
+export type ScenarioSystem = {
+  name: string;
+  role: string;
+  logo: { src: string; width: number; height: number; kind: "mark" | "wordmark" };
+  items: readonly string[];
 };
 
 export type IntegrationVideo = {
@@ -235,6 +345,19 @@ const PAPERLESS: IntegrationEntry = {
   name: "Paperless-ngx",
   category: "Document capture",
   status: "Available",
+  industry: "Operations",
+  steps: [
+    "Paperless classifies a document as an invoice",
+    "A language model reads the invoice fields",
+    "An invoice record is filed for review",
+    "Approval and payment stay with their own workflows",
+  ],
+  recipe: [
+    { kind: "system", label: "Paperless-ngx" },
+    { kind: "connector", label: "paperless-sync" },
+    { kind: "model", label: "Invoice" },
+    { kind: "app", label: "Billing dashboard" },
+  ],
   summary:
     "Invoices and receipts captured in Paperless-ngx become structured invoice records with line items, human approval, and payment workflows.",
   logo: {
@@ -402,14 +525,32 @@ const PAPERLESS: IntegrationEntry = {
 /**
  * Sourced from powerhouse-inc/umh-powerhouse: the README walk, the bootstrap
  * script's mapping instructions (which is where the field list and the human
- * gate come from), and .env.example. No walkthrough post exists yet, so
- * `walkthroughSlug` stays unset.
+ * gate come from), and .env.example. The walkthrough post carries the long
+ * form, including the film.
  */
 const UMH: IntegrationEntry = {
   slug: "umh",
-  name: "United Manufacturing Hub",
+  // The acronym is the name people use; the hero spells it out beside it.
+  name: "UMH",
+  // Always "UMH" on the site; link the vendor rather than spell it out.
+  site: { url: "https://www.umh.app", label: "umh.app" },
   category: "Manufacturing operations",
   status: "Available",
+  industry: "Manufacturing",
+  steps: [
+    "A purchase order arrives in Paperless",
+    "A Production Ledger is drafted from it",
+    "A person approves the order",
+    "The order is created on the factory floor",
+    "Floor progress lands in the evidence trail",
+  ],
+  recipe: [
+    { kind: "system", label: "UMH factory floor" },
+    { kind: "pieces", label: "UMH \u00b7 Paperless \u00b7 OpenRouter" },
+    { kind: "model", label: "Production Ledger" },
+    { kind: "app", label: "Connect" },
+  ],
+  vetra: { url: "https://vetra.io/packages/umh-production-ledger" },
   logo: {
     src: "/logos/integrations/umh.svg",
     width: 48,
@@ -417,8 +558,57 @@ const UMH: IntegrationEntry = {
     kind: "mark",
   },
   summary:
-    "Purchase-order PDFs become Production Ledgers that a person approves, then the factory floor reports back against the commitment until the run closes out.",
-  claim: "Commitments, measured against the floor.",
+    "Purchase-order PDFs become Production Ledgers that a person approves, then the factory floor reports back against the commitment.",
+  claim: "Purchase orders tracked against the UMH factory floor",
+  layout: "simple",
+  hero: {
+    subtitle:
+      "Paperless receives a purchase order and a workflow turns it into a Production Ledger. You approve it, the order goes to the UMH floor, and the floor's production counts are added to the ledger.",
+  },
+  howItWorks: {
+    intro: [
+      "Three workflows built from ",
+      { text: "Activepieces", href: "https://www.activepieces.com/pieces" },
+      " pieces connect Paperless, the Production Ledger and the UMH floor. Each one runs inside Powerhouse, and you can open and edit it in Workflow Studio. You make one decision: approve the order.",
+    ],
+    steps: [
+      {
+        title: "Paperless receives the purchase order",
+        body: "Upload the PDF or drop it in the consume folder. Paperless reads the text and tags the document as a purchase order.",
+      },
+      {
+        title: "A workflow drafts the ledger",
+        body: "A model reads the order into a Production Ledger: customer, part, quantity, quality floor and delivery date. The production line comes from the UMH floor's own list.",
+      },
+      {
+        title: "You approve it in Connect",
+        body: "Check each field against the original scan, correct what the model got wrong, then approve.",
+      },
+      {
+        title: "The order goes to the UMH floor",
+        body: "A second workflow creates the order on the floor, stores the order id on the ledger and opens it.",
+      },
+      {
+        title: "The floor reports back",
+        body: "Every 15 seconds a third workflow adds the floor's good parts and scrap to the ledger.",
+      },
+    ],
+    note: "The UMH floor here is a simulator and the orders are fictional. The demo ends when the run completes: the ledger stays open with close-out pending.",
+    shotCaption:
+      "The first workflow in Workflow Studio: a Paperless trigger, then Activepieces and Powerhouse pieces down to the draft ledger.",
+    // Rendered from umh/umh-video/scene.html, cut at 12 s so it ends on the
+    // evidence trail: the verdict scene shows a close-out this demo stops before.
+    video: {
+      src: "/integrations/umh-ledger-12s.mp4",
+      poster: "/integrations/umh-ledger-12s-poster.jpg",
+      width: 1920,
+      height: 1080,
+      label:
+        "A twelve-second film of the flow: purchase order BC-2026-0917 arrives in Paperless, becomes a Production Ledger, three workflows carry it through approval to the UMH floor, and the floor's good parts and scrap are added to the ledger.",
+      caption:
+        "Purchase order BC-2026-0917, from the scan to the floor's readings.",
+    },
+  },
   flow: "Purchase order \u2192 Production Ledger",
   scope: [
     { label: "Data in", value: "Purchase-order PDFs and machine actuals" },
@@ -439,7 +629,7 @@ const UMH: IntegrationEntry = {
     "Runs as three Activepieces workflows, using the UMH, Paperless and document pieces.",
 
   oneLiner:
-    "A purchase order becomes a commitment a person approves, and the factory floor reports back against it until the run closes out.",
+    "A purchase order becomes a commitment a person approves, and the factory floor reports back against it.",
   metaDescription:
     "Purchase-order PDFs become Production Ledgers a person approves, then measured against the factory floor on an append-only log with idempotent evidence.",
 
@@ -471,6 +661,7 @@ const UMH: IntegrationEntry = {
       { name: "orderId", type: "String", note: "The id the floor minted, bound once and never rewritten." },
       { name: "requiredAcknowledgements", type: "Array", note: "CONTROLLING, PRODUCTION, or both." },
     ],
+    lifecycleLabel: "Operations, in order",
     lifecycle: [
       "SET_COMMITMENT",
       "APPROVE_ORDER",
@@ -483,33 +674,35 @@ const UMH: IntegrationEntry = {
     ],
     // Boxes are measured on the crop, 654 x 646.
     anatomy: {
-      src: "/integrations/umh-ledger-commitment.png",
-      alt: "The Commitment card of a closed-out production ledger in Connect: manufacturer, customer, order id, line, part, quantities, quality and OEE floors, requested delivery, and the agreement terms below.",
-      width: 654,
-      height: 646,
+      src: "/integrations/umh-ledger-commitment-bc.png",
+      alt: "The Commitment card of ledger BC-2026-0917 in Connect, closed out: Meridian Metalwerke for BuildCorp AG, order id, window-frame-1, WIN-STD-A, 320 committed at a 98.5% quality floor, and the agreement terms below.",
+      // Captured from the BC-2026-0917 ledger (floor order 564971cc); boxes
+      // measured on the crop from the DOM.
+      width: 848,
+      height: 644,
       spots: [
-        { field: "manufacturer", x: 14, y: 64, w: 312, h: 60 },
-        { field: "customer", x: 327, y: 64, w: 312, h: 60 },
-        { field: "orderId", x: 14, y: 134, w: 312, h: 60 },
-        { field: "line", x: 327, y: 134, w: 312, h: 60 },
-        { field: "partNumber", x: 14, y: 204, w: 312, h: 60 },
-        { field: "committedQuantity", x: 327, y: 274, w: 312, h: 60 },
-        { field: "committedQualityPct", x: 14, y: 344, w: 312, h: 60 },
-        { field: "committedOeeFloorPct", x: 327, y: 344, w: 312, h: 60 },
-        { field: "requestedDeliveryAt", x: 14, y: 414, w: 312, h: 60 },
-        { field: "agreementRef", x: 14, y: 500, w: 200, h: 42 },
-        { field: "scrapLiabilityPerUnit", x: 226, y: 500, w: 200, h: 42 },
-        { field: "latePenaltyPerHour", x: 437, y: 500, w: 200, h: 42 },
-        { field: "oeeMeasurementBasis", x: 14, y: 588, w: 200, h: 42 },
-        { field: "yieldComparison", x: 226, y: 588, w: 200, h: 42 },
-        { field: "requiredAcknowledgements", x: 437, y: 588, w: 200, h: 42 },
+        { field: "manufacturer", x: 21, y: 65, w: 395, h: 54 },
+        { field: "customer", x: 432, y: 65, w: 395, h: 54 },
+        { field: "orderId", x: 21, y: 135, w: 395, h: 54 },
+        { field: "line", x: 432, y: 135, w: 395, h: 54 },
+        { field: "partNumber", x: 21, y: 205, w: 395, h: 54 },
+        { field: "committedQuantity", x: 432, y: 275, w: 395, h: 54 },
+        { field: "committedQualityPct", x: 21, y: 345, w: 395, h: 54 },
+        { field: "committedOeeFloorPct", x: 432, y: 345, w: 395, h: 54 },
+        { field: "requestedDeliveryAt", x: 21, y: 415, w: 395, h: 54 },
+        { field: "agreementRef", x: 21, y: 502, w: 253, h: 36 },
+        { field: "scrapLiabilityPerUnit", x: 298, y: 502, w: 253, h: 36 },
+        { field: "latePenaltyPerHour", x: 574, y: 502, w: 253, h: 36 },
+        { field: "oeeMeasurementBasis", x: 21, y: 590, w: 253, h: 36 },
+        { field: "yieldComparison", x: 298, y: 590, w: 253, h: 36 },
+        { field: "requiredAcknowledgements", x: 574, y: 590, w: 253, h: 36 },
       ],
     },
   },
 
   boundary: [
     "Three workflows do the work a custom processor used to, and each write step carries its own allow-list. The step that applies an extracted commitment may dispatch SET_COMMITMENT and nothing else, so the rule holds even when a model wrote the actions.",
-    "Nothing in the workflows approves, opens, starts or signs a ledger. A person does that in the editor, and their approval is the event the next workflow reacts to.",
+    "No workflow approves a ledger. A person approves it in Connect, and that approval is the event the next workflow reacts to: it creates the floor order, binds the id and opens the ledger.",
     "The line and part never come from the model's answer. Its reply is a search key against the floor's own list of lines and recipes, so an invented line matches nothing and the write is skipped. What reaches the ledger came from the floor.",
   ],
 
@@ -525,8 +718,8 @@ const UMH: IntegrationEntry = {
       body: "Four blocks on a polling trigger. It skips readings that counted nothing, finds the ledger bound to the order, checks the ledger is open, and appends one snapshot.",
     },
     {
-      label: "Close out",
-      body: "Still a human action in the editor. The verdict, conformance dimensions and costs come from a calculation the workflow cannot call.",
+      label: "Close-out: not in this demo",
+      body: "When the floor reports the run complete, the ledger stays open and the dashboard marks it Close-out pending. The ledger package computes close-out in its order poller, and this demo keeps the poller off so the floor workflow is the only writer on the evidence trail.",
     },
   ],
 
@@ -571,62 +764,75 @@ const UMH: IntegrationEntry = {
   ],
 
   requirements: [
-    "Docker, for the factory simulator and the Paperless archive.",
-    "Bun, to run the reactor, the seed and the verification script.",
-    "An OpenRouter key for extraction. Without one everything else still runs and the extraction step fails with a 401.",
-    "Free host ports 18000 and 18081. The demo deliberately avoids the canonical 8000 and 8081 so it cannot talk to another factory by accident.",
+    "Docker with Compose v2. The whole stack runs in it, and the first run pulls about 3 GB.",
+    "An OpenRouter key for the extraction step, set as PAPERLESS_AI_API_KEY in .env.",
+    "The ledger package version, set as UMH_LEDGER_VERSION in .env.",
+    "Free host ports: 8000 (Paperless), 3000 (Connect), 4001 (reactor), 8081 (the simulator), 80 (gateway), 502 (Modbus), 4840\u20134852 (OPC-UA) and 5432 (database).",
   ],
 
 
   repoUrl:
-    "https://github.com/powerhouse-inc/umh-production-ledger/tree/demo/umh-workflow-stack/demo",
-  video: {
-    // Keyframe every 5 frames so scroll-scrubbing seeks cheaply.
-    src: "/integrations/umh-ledger-scrub.mp4",
-    // The intake frame, so the film at rest matches the rail's first chapter.
-    poster: "/integrations/umh-ledger-poster-intake.jpg",
-    width: 1280,
-    height: 720,
-    label:
-      "A fifteen-second walkthrough: a purchase order is extracted into a typed production ledger, three workflows move it through human approval to the factory floor, the floor reports good parts and scrap, and the ledger is checked against the contract and put on hold.",
-    caption:
-      "Fifteen seconds, end to end: a purchase order becomes a ledger, the floor reports against it, and the contract decides ship or hold. Figures are from the demo run.",
-    // Scene starts and titles match umh-video/scene.html.
-    chapters: [
-      {
-        start: 0,
-        title: "01 · Intake",
-        body: "A purchase order arrives in Paperless, and a workflow extracts its commitment.",
-      },
-      {
-        start: 2.85,
-        title: "02 · Document model",
-        body: "It becomes a typed production ledger through SET_COMMITMENT, an operation the workflow is allow-listed to dispatch.",
-      },
-      {
-        start: 5.6,
-        title: "03 · Workflows",
-        body: "Three workflows built from pieces, and editable in Connect, carry the order through human approval to the factory floor.",
-      },
-      {
-        start: 8.7,
-        title: "04 · Evidence",
-        body: "The UMH floor reports good parts and scrap, and each reading is appended to the ledger as a snapshot.",
-      },
-      {
-        start: 12.2,
-        title: "05 · Verdict",
-        body: "In the demo run, 320 good and 6 scrap is 98.2% against a contracted 98.5%, so the ledger is marked non-conforming and held.",
-      },
-    ],
-  },
+    "https://github.com/powerhouse-inc/umh-powerhouse",
+  // The film lives in the walkthrough post, where it is read at the visitor's
+  // pace. On the record the hero diagram and the workflow canvas carry the
+  // flow, so the page tells it once.
   walkthroughSlug: "united-manufacturing-hub-powered-by-powerhouse",
+  primer: {
+    label: "What is UMH?",
+    body: "UMH is an open-source stack for manufacturing data. It reads machines over protocols such as OPC-UA and Modbus, keeps their history in a time-series database, and makes the shop floor queryable. This example vendors a fixed v1.4.0 deployment of its factory simulator, with umh-core pinned at v0.44.8, so the floor runs on your own machines.",
+  },
+  limits: [
+    "The factory floor is a simulator, and the purchase orders, customers and rates are fictional. Purchase order BC-2026-0917 is one of the four sample orders in the repo.",
+    "Available means there is something to run. This is a demo on demo data, not a production deployment.",
+    "Extraction sends the purchase order's text to OpenRouter, a hosted model API, so the document leaves your machines for that one step.",
+    "The demo stops before close-out. Ledgers reach Close-out pending and stay open, so there is no verdict, run cost or ship-or-hold recommendation yet.",
+  ],
+  close: {
+    title: "Put your own orders on a record like this.",
+  },
+  // Purchase order BC-2026-0917 on the workflow demo (powerhouse-inc/umh-powerhouse,
+  // main). That demo stops before close-out: the poller that computes it is off,
+  // and no workflow may dispatch CLOSE_OUT. Show no verdict until one exists.
+  // The anatomy capture predates this and shows a closed-out ledger; recapture it.
+  scenario: {
+    source: {
+      name: "Paperless-ngx",
+      role: "Document archive",
+      logo: { src: "/logos/integrations/paperless-ngx.svg", width: 2670, height: 860, kind: "wordmark" },
+      items: ["Purchase order BC-2026-0917", "Scanned PDF, OCR and classified"],
+    },
+    target: {
+      name: "UMH",
+      role: "Simulated factory floor",
+      logo: { src: "/logos/integrations/umh.svg", width: 48, height: 48, kind: "mark" },
+      items: ["Window-frame line", "Good parts, scrap and overall equipment effectiveness (OEE) per run"],
+    },
+    record: {
+      title: "Production Ledger",
+      model: "umh/production-ledger",
+      fields: [
+        { name: "customer", value: "BuildCorp AG" },
+        { name: "partNumber", value: "WIN-STD-A" },
+        { name: "committedQuantity", value: "320" },
+        { name: "committedQualityPct", value: "98.5" },
+      ],
+      approval: "Approved by a reviewer",
+      evidence: "Good parts and scrap, every 15 seconds",
+    },
+    flows: {
+      capture: "Extracted into a draft",
+      dispatch: "Order created on approval",
+      report: "Progress returns as evidence",
+    },
+    caption:
+      "The demo scenario: a purchase order arrives in Paperless, becomes a Production Ledger in Powerhouse, and the simulated UMH floor's counts are added to it.",
+  },
   shots: [
     {
       src: "/integrations/umh-workflow-canvas.png",
       alt: "The Workflow Studio canvas for the workflow that drafts a ledger from a purchase order: a Paperless trigger, a purchase-order branch, then twelve blocks down to applying the resolved line and part.",
       caption:
-        "The integration, as a workflow: twelve blocks from a new document in Paperless to a draft ledger with its line and part resolved.",
+        "The integration, as a workflow: a Paperless trigger, then twelve blocks to a draft ledger with its line and part resolved.",
       width: 1680,
       height: 2794,
       stages: [
@@ -1003,6 +1209,25 @@ const DOCLING: IntegrationEntry = {
   name: "Docling",
   category: "Document conversion",
   status: "Available",
+  industry: "Operations",
+  steps: [
+    "A file is dropped on the vault's Intake view",
+    "Docling converts it and splits it at its own headings",
+    "A person confirms which sections to keep",
+    "Each kept section is filed as a source",
+  ],
+  recipe: [
+    { kind: "system", label: "Docling" },
+    { kind: "connector", label: "docling-service" },
+    { kind: "model", label: "Knowledge source" },
+    { kind: "app", label: "Knowledge Vault" },
+  ],
+  // The service is not on Vetra; the vault package holds the Source model
+  // and the Knowledge Vault app it files into.
+  vetra: {
+    url: "https://vetra.io/packages/%40powerhousedao%2Fknowledge-note",
+    label: "The Knowledge Vault package on Vetra",
+  },
   // The project's own mark, from docling.ai/img/logo.svg.
   logo: {
     src: "/logos/integrations/docling.svg",
@@ -1167,6 +1392,20 @@ const SPECKLE: IntegrationEntry = {
   name: "Speckle",
   category: "Building models",
   status: "Available",
+  industry: "Construction",
+  steps: [
+    "A person runs a sync from the Sync Console",
+    "Each model and revision is mirrored",
+    "Volume, area and length are totalled per category",
+    "Changes between revisions are recorded; nothing is written back",
+  ],
+  recipe: [
+    { kind: "system", label: "Speckle" },
+    { kind: "connector", label: "Sync runner" },
+    { kind: "model", label: "Speckle Project" },
+    { kind: "app", label: "Model Explorer" },
+  ],
+  vetra: { url: "https://vetra.io/packages/speckle-package" },
   // Speckle's own wordmark, from speckle.systems/assets/images/logo-full.svg.
   logo: {
     src: "/logos/integrations/speckle.svg",
@@ -1370,17 +1609,96 @@ export const INTEGRATIONS: readonly IntegrationEntry[] = [
 ] as const;
 
 /**
- * The records listed on the integrations index. Activepieces is the catalogue
- * the others are built in, so the index shows it as its own band rather than
- * as one integration among several. Ars Contexta is a methodology, not a
- * system you connect. Both keep their detail pages.
+ * What an index case study needs. Narrower than a record, so an integration
+ * that is still being prepared can be listed before its detail page exists.
  */
-export const LISTED_INTEGRATIONS: readonly IntegrationEntry[] = [
-  PAPERLESS,
-  UMH,
-  DOCLING,
-  SPECKLE,
-] as const;
+export type IntegrationCard = {
+  slug: string;
+  name: string;
+  status: IntegrationStatus;
+  industry: string;
+  logo?: IntegrationEntry["logo"];
+  oneLiner: string;
+  steps: readonly string[];
+  recipe: readonly RecipePart[];
+  shot?: IntegrationShot;
+  /** Where the card leads: the detail page, or the vendor while there is none. */
+  href: string;
+  linkLabel: string;
+  walkthroughSlug?: string;
+  vetra?: VetraLink;
+};
+
+function toCard(entry: IntegrationEntry): IntegrationCard {
+  const { industry, steps, recipe } = entry;
+  if (!industry || !steps || !recipe) {
+    throw new Error(`Integration "${entry.slug}" is listed without industry, steps or recipe`);
+  }
+  return {
+    slug: entry.slug,
+    name: entry.name,
+    status: entry.status,
+    industry,
+    logo: entry.logo,
+    oneLiner: entry.oneLiner,
+    steps,
+    recipe,
+    // The frame is 16/10, so the first shot must be one that fits it.
+    shot: entry.shots?.[0],
+    href: `/integrations/${entry.slug}`,
+    linkLabel: `Open the ${entry.name} record`,
+    walkthroughSlug: entry.walkthroughSlug,
+    vetra: entry.vetra,
+  };
+}
+
+/**
+ * Distyra, in preparation. Only the card exists: it has no record, and so no
+ * detail page, until the integration is built. The steps describe Distyra's
+ * own Connect and Enrichment products (distyra.eu) and the record they will
+ * feed; confirm the model name when the integration lands.
+ */
+const DISTYRA: IntegrationCard = {
+  slug: "distyra",
+  name: "Distyra",
+  status: "In development",
+  industry: "Financial",
+  // Distyra's own mark, from distyra.eu/assets/brand/distyra-mark.svg.
+  logo: {
+    src: "/logos/integrations/distyra-mark.svg",
+    width: 280,
+    height: 210,
+    kind: "mark",
+  },
+  oneLiner:
+    "European bank statements and PSD2 streams become typed transaction records, with each counterparty recognised the way European formats write it.",
+  steps: [
+    "Distyra Connect reads a bank statement or a PSD2 stream",
+    "Distyra Enrichment names the counterparty and categorises each transaction",
+    "Each transaction is filed as a typed record for review",
+  ],
+  recipe: [
+    { kind: "system", label: "Distyra" },
+    { kind: "model", label: "Bank transaction" },
+    { kind: "app", label: "Connect" },
+  ],
+  href: "https://www.distyra.eu",
+  linkLabel: "Visit Distyra",
+};
+
+/**
+ * The case studies on the integrations index, in page order. Activepieces is
+ * the catalogue the others are built in, so the index shows it in the hero
+ * rather than as one integration among several. Ars Contexta is a
+ * methodology, not a connector, and is reached from its own record.
+ */
+export const LISTED_INTEGRATIONS: readonly IntegrationCard[] = [
+  toCard(PAPERLESS),
+  toCard(UMH),
+  toCard(DOCLING),
+  toCard(SPECKLE),
+  DISTYRA,
+];
 
 /** The catalogue record the index links to from its catalogue band. */
 export const CATALOGUE = ACTIVEPIECES;

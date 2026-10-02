@@ -74,6 +74,14 @@
   * {
     @apply border-border outline-ring/50;
   }
+  /* Keyboard focus in the text's own colour, so it holds contrast on the
+     dark bands and on paper alike (brand cyan on paper is about 1.6:1). */
+  /* The colour goes through a variable: written as plain currentColor, the
+     minifier drops it from the shorthand and the faint base colour wins. */
+  :focus-visible {
+    outline: 2px solid var(--focus-ring, currentColor);
+    outline-offset: 2px;
+  }
   body {
     @apply bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
@@ -90,7 +98,9 @@
   position: fixed;
   inset: -300px;
   pointer-events: none;
-  z-index: 999;
+  /* Above page content, below the nav (200) and modals (300), so a layer
+     that must stay grain-free (z-[160], e.g. product video) can sit above it. */
+  z-index: 150;
   opacity: 0.018;
   background-repeat: repeat;
   background-size: 128px 128px;
