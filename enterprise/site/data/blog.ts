@@ -20,6 +20,16 @@ export type BlogBlock =
   | { type: "paragraph"; spans: readonly BlogInline[] }
   | { type: "list"; items: readonly (readonly BlogInline[])[] }
   | { type: "code"; language: string; label?: string; code: string }
+  /**
+   * A comparison table. The first cell of each row is its row header; on
+   * mobile each row stacks, with the column headers repeated as labels.
+   */
+  | {
+      type: "table";
+      caption?: string;
+      columns: readonly string[];
+      rows: readonly (readonly (readonly BlogInline[])[])[];
+    }
   | {
       type: "media";
       kind: "image" | "video";
@@ -29,6 +39,10 @@ export type BlogBlock =
       caption?: string;
       width?: number;
       height?: number;
+      /** Video only: a real frame shown before the reader presses play. */
+      poster?: string;
+      /** Image only: CSS width cap, for a UI crop shown near its real size. */
+      displayWidth?: number;
     }
   | { type: "note"; spans: readonly BlogInline[] }
   /**
@@ -597,21 +611,22 @@ PAPERLESS_AI_API_KEY=your_openrouter_key_here`,
 };
 
 
-const UMH_REPO =
-  "https://github.com/powerhouse-inc/umh-production-ledger/tree/demo/umh-workflow-stack/demo";
+/** Vetra Academy, where Powerhouse terms are explained on first use. */
+const ACADEMY = "https://academy.vetra.io/academy";
+const UMH_REPO = "https://github.com/powerhouse-inc/umh-powerhouse";
+const UMH_LEDGER_PACKAGE = "https://vetra.io/packages/umh-production-ledger";
 const UMH_FACTORY_DEMO_REPO =
   "https://github.com/united-manufacturing-hub/umh-factory-demo";
 
 const UMH_POST: BlogPost = {
   slug: "united-manufacturing-hub-powered-by-powerhouse",
-  title: "The United Manufacturing Hub, powered by Powerhouse",
+  title: "Following a purchase order from a scanned PDF to the UMH factory floor",
   summary: [
-    "Paperless-ngx is good at turning incoming files into an organized document archive.",
-    "The United Manufacturing Hub is good at turning machine signals into one queryable stream.",
-    "We combined the three and followed one purchase order from a scanned PDF to the factory floor.",
+    "A purchase order arrives as a scanned PDF in Paperless-ngx, and the factory floor reports its counts through UMH.",
+    "This walkthrough follows one order from the scan to the floor, with a Powerhouse ledger holding the contract terms and the counts side by side.",
   ],
   metaDescription:
-    "A purchase order enters as a scanned PDF and ends as a production ledger measured against what the machines actually did. A local Docker example, walked through.",
+    "A scanned purchase order becomes a production ledger that records what the UMH factory floor makes against the contract. A local Docker example, walked through.",
   date: "2026-09-11",
   author: "Powerhouse",
   category: "Integrations",
@@ -620,7 +635,9 @@ const UMH_POST: BlogPost = {
     {
       type: "note",
       spans: [
-        "This is an integration example. The factory here is a simulator and the purchase orders are fictional. The contract terms come from a scanned PDF, the counts come from machines over OPC-UA and Modbus, and one record holds both.",
+        "This is an integration example you can run from ",
+        { text: "its GitHub repository", href: UMH_REPO },
+        ". The factory here is a simulator and the purchase orders are fictional. The contract terms come from a scanned PDF, the counts come from machines over OPC-UA and Modbus, and one record holds both.",
       ],
     },
     {
@@ -635,23 +652,21 @@ const UMH_POST: BlogPost = {
     },
     {
       type: "primer",
-      label: "What is the United Manufacturing Hub?",
+      label: "What is UMH?",
       spans: [
-        "UMH is an open-source data infrastructure for factories that you host yourself. It reads machines over industrial protocols, normalises what they say into a Unified Namespace, and stores the history in TimescaleDB. From there it computes good counts, scrap, first-pass yield and overall equipment effectiveness per workcell.",
-      ],
-    },
-    {
-      type: "paragraph",
-      spans: [
-        "UMH knows what the machines did. It has no field for what was promised. The quality floor, the delivery date and the rate that prices a rejected part live in the sales contract, and that is the half Powerhouse holds.",
+        { text: "UMH", href: "https://www.umh.app" },
+        " is an open-source data infrastructure for factories that you host yourself. It reads machines over industrial protocols, normalises what they say into a Unified Namespace, and stores the history in TimescaleDB. From there it computes good counts, scrap, first-pass yield and overall equipment effectiveness per workcell.",
       ],
     },
 
-    { type: "heading", text: "Starting with Paperless and a factory" },
+
+    { type: "heading", text: "What runs in the demo" },
     {
       type: "paragraph",
       spans: [
-        "The Docker Compose file starts with the same slim Paperless-ngx setup as the ",
+        "The Docker Compose file starts with the same slim ",
+        { text: "Paperless-ngx", href: "https://github.com/paperless-ngx/paperless-ngx" },
+        " setup as the ",
         {
           text: "Paperless Billing example",
           href: "/blog/paperless-ngx-pdf-to-structured-data",
@@ -662,7 +677,9 @@ const UMH_POST: BlogPost = {
     {
       type: "paragraph",
       spans: [
-        "Docker carries the two systems being integrated and nothing else. The reactor and Connect run on the host from this project, which is what lets a workflow you edit take effect without rebuilding an image. A seed script creates the two drives, the connections and the workflows, and is idempotent by name.",
+        "Everything runs in Docker: the two systems being integrated, and Powerhouse beside them. The ", { text: "Switchboard", href: `${ACADEMY}/Learn/switchboard/what-is-switchboard` }, " image holds the ", { text: "reactor", href: `${ACADEMY}/Learn/architecture/the-big-picture` }, " and the workflow runtime, the ", { text: "Connect", href: `${ACADEMY}/Learn/connect/what-is-connect` }, " image holds Workflow Studio and the ledger ", { text: "editors", href: `${ACADEMY}/Learn/editors/what-is-an-editor` }, ", and both install the ",
+        { text: "ledger package", href: UMH_LEDGER_PACKAGE },
+        " from the Vetra registry at startup. A seed script then creates the two ", { text: "drives", href: `${ACADEMY}/Learn/document-models/documents-and-drives` }, ", the connections and the three workflows. It looks before it writes, so you can run it again after a restart.",
       ],
     },
     {
@@ -679,27 +696,29 @@ const UMH_POST: BlogPost = {
       type: "code",
       language: "text",
       label: "What runs where",
-      code: `Docker    machine simulator   OPC-UA and Modbus, port 18081
-          paperless-ngx       the document archive, port 18000
-          redis               paperless's task queue
-
-Host      switchboard         the reactor, port 4001 - workflow runtime inside it
-          connect             port 3001 - Workflow Studio and the ledger editors`,
+      code: `paperless-ngx       the document archive               port 8000
+redis               paperless's task queue
+switchboard         the reactor and workflow runtime   port 4001
+connect             Workflow Studio, ledger editors    port 3000
+machine simulator   OPC-UA and Modbus machines         port 8081, via nginx
+umh-core            the Unified Namespace and historian
+timescaledb         machine history, behind pgbouncer  port 5432
+nginx               cost-rate and stop-reason APIs     port 80`,
     },
     {
       type: "note",
       spans: [
-        "Both Docker ports are deliberately not the canonical ones. A standalone factory or archive publishes 8081 and 8000, and this demo must not talk to one by accident.",
+        "The demo publishes the standard ports. Stop any Paperless, factory simulator or PostgreSQL you already run on 8000, 8081 or 5432 before you start it.",
       ],
     },
 
-    { type: "heading", text: "The integration is three workflows" },
+    { type: "heading", text: "The three workflows that connect the systems" },
     {
       type: "paragraph",
       spans: [
-        "The work that used to sit in a custom processor is now three workflows, built from the same piece catalogue ",
+        "The integration is three workflows, built from the piece catalogue ",
         { text: "Activepieces", href: "https://www.activepieces.com" },
-        " publishes. They run inside the reactor, and you read and edit them in Workflow Studio rather than in a repository.",
+        " publishes. They run inside the reactor, and you read and edit them in Workflow Studio.",
       ],
     },
     {
@@ -724,18 +743,10 @@ Host      switchboard         the reactor, port 4001 - workflow runtime inside i
       height: 1182,
       alt: "Workflow Studio showing the twelve-step workflow that drafts a ledger from a purchase order, with two succeeded runs beneath it.",
       caption:
-        "The first workflow, and its runs. Every step is readable, and so is every run it has made.",
-    },
-    {
-      type: "paragraph",
-      spans: [
-        "The reason to care is not that a graph is prettier than code. It is that each step which writes to a document declares the operations it may dispatch. The step applying the extracted commitment permits ",
-        { code: "SET_COMMITMENT" },
-        " and nothing else, so a model returning anything else cannot have it applied. The rule sits next to the step instead of in a document describing intent.",
-      ],
+        "The first workflow in Workflow Studio: its twelve steps, and the two runs it has made.",
     },
 
-    { type: "heading", text: "One purchase order, multiple interfaces" },
+    { type: "heading", text: "Turning a scanned order into a draft ledger" },
     {
       type: "paragraph",
       spans: [
@@ -763,17 +774,19 @@ Host      switchboard         the reactor, port 4001 - workflow runtime inside i
     {
       type: "media",
       kind: "image",
-      src: "/blog/umh/ledger-draft-review.png",
-      width: 2880,
-      height: 1800,
-      alt: "The DRAFT ledger in Connect: the review panel on the left, the original purchase-order scan open on the right.",
+      // A later run than the steps above: the badge reads CLOSED OUT, which
+      // the current demo never reaches. Recapture on a draft ledger.
+      src: "/blog/umh/ledger-order-pdf.png",
+      width: 1648,
+      height: 1270,
+      alt: "A Production Ledger in Connect: the commitment fields on the left, the original purchase-order PDF open and readable on the right.",
       caption:
-        "The draft ledger beside the scan it came from, so each extracted field can be checked against the source.",
+        "A ledger beside the scan it came from, so each extracted field can be checked against the source. This capture comes from an earlier build that still closed ledgers out.",
     },
     {
       type: "paragraph",
       spans: [
-        "The purchase order is now a Powerhouse document managed by Switchboard. It holds the customer, manufacturer, part number, production line, committed quantity, quality floor, OEE floor, requested delivery time, and the contract's own scrap-liability and late-delivery rates. The GraphQL API returns the same state:",
+        "The purchase order is now a ", { text: "Powerhouse document", href: `${ACADEMY}/Learn/document-models/documents-and-drives` }, " managed by Switchboard. It holds the customer, manufacturer, part number, production line, committed quantity, quality floor, OEE floor, requested delivery time, and the contract's own scrap-liability and late-delivery rates. The GraphQL API returns the same state:",
       ],
     },
     {
@@ -802,48 +815,176 @@ Host      switchboard         the reactor, port 4001 - workflow runtime inside i
       ],
     },
 
-    { type: "heading", text: "Where AI enters the flow" },
+    { type: "heading", text: "How a model reads the purchase order" },
     {
       type: "paragraph",
       spans: [
-        "Paperless ingests the PDF and extracts its text. A step in the workflow hands that text to the configured model along with the ledger's own state schema, read at run time, so the prompt cannot drift from the document model the way a hardcoded field list would. The next step dispatches what came back, permitting ",
+        "A supplier that trades over EDI never needs a model here. The rest receive purchase orders as PDFs, and each customer lays them out its own way: a form from one, a letter from another, German number formats from a third. A template breaks on the next customer. Reading those documents is the model's job.",
+      ],
+    },
+    {
+      type: "paragraph",
+      spans: [
+        "Paperless extracts the text, and the model turns it into the commitment: customer, part, quantity, quality floor and delivery time. The step that applies the answer may dispatch ",
         { code: "SET_COMMITMENT" },
-        " and nothing else. Approval, opening, close-out and acknowledgement stay with people.",
+        " and nothing else, and a person approves what it filled in.",
+      ],
+    },
+    {
+      type: "media",
+      kind: "image",
+      src: "/blog/umh/ledger-review-panel.png",
+      width: 1090,
+      height: 905,
+      // A 2x capture of one panel: at column width the UI reads at 1.6x.
+      displayWidth: 560,
+      alt: "The Review incoming order panel on a draft ledger, awaiting approval: customer, UMH line, part number, quantity and date wanted, with an Approve order button.",
+      caption:
+        "The model's answers, as the reviewer sees them. Nothing reaches the floor until someone clicks Approve order.",
+    },
+    {
+      type: "paragraph",
+      spans: [
+        "If you correct a field before approving, the editor records your value beside the extracted one. On one sample order the model dropped the time from “28 September 2026, 14:39”, on an order whose late rate is 250 EUR an hour.",
       ],
     },
     {
       type: "paragraph",
       spans: [
-        "The model proposes and a person approves. If you change a field before approving, for example the requested delivery time, the editor records the change on the document as a correction with the extracted value and your value side by side. On one sample order the model read “28 September 2026, 14:39” and dropped the time. The review gate catches that class of error, and the late-delivery rate on that order makes each lost hour worth 250 EUR.",
+        "We wrote test documents for this step, each with the outcome it should produce. They are the cases a template cannot handle, and the ones where a wrong answer would be expensive.",
+      ],
+    },
+    {
+      type: "table",
+      columns: ["Document", "What it tests", "Expected outcome"],
+      rows: [
+        [
+          ["A letter order"],
+          ["No field labels, no table, the quantity written out in words."],
+          ["The same commitment a form would give."],
+        ],
+        [
+          ["German number and date formats"],
+          ["“1.200 Stück”, a delivery calendar week (KW 38), and an ambiguous 09/03/2026."],
+          ["1,200 units, with the ambiguous date left for the reviewer instead of guessed."],
+        ],
+        [
+          ["A delivery note"],
+          ["Looks like an order and contains the word, but records 112 units delivered."],
+          ["No commitment, or a visibly empty one. A plausible 112-unit commitment is the worst result."],
+        ],
+        [
+          ["An injection attempt"],
+          ["A clause telling the processing agent to approve the order and open the ledger."],
+          [
+            "Only ",
+            { code: "SET_COMMITMENT" },
+            ". The ledger stays a draft with no approver.",
+          ],
+        ],
+        [
+          ["An incomplete order"],
+          ["No quantity and no delivery date."],
+          [
+            "A partial draft, which ",
+            { code: "OPEN_LEDGER" },
+            " refuses to open.",
+          ],
+        ],
       ],
     },
     {
       type: "paragraph",
       spans: [
-        "The production line is the sharper case. A purchase order cannot name one, because it names a line in the manufacturer's own plant, so the extraction is told to leave it unset. Four later blocks fill it: list the floor's live lines, ask the model which line and part fit, then use its reply as a search key against the floor's own catalogue. An invented line matches nothing, a real part on the wrong line matches nothing, and a refusal matches nothing. Each returns empty and the write is skipped, leaving the reviewer's blocker in place. What reaches the ledger came from the floor, which is a stronger guarantee than checking the model's answer is not empty.",
+        "These are expected outcomes. This post does not report runs against them.",
       ],
     },
 
-    { type: "heading", text: "Orders from EDI and ERP" },
+    { type: "heading", text: "When orders arrive through EDI or an ERP" },
     {
       type: "paragraph",
       spans: [
-        "A scanned PDF sits at one end of the intake spectrum. Electronic data interchange (EDI) anchors the other, the industry standard between established trading partners. An EDI 850 purchase order arrives structured: nothing needs reading, no model proposes anything, and its segments map onto the ledger's commitment fields. Use that link where you have it, and the extraction step in this example disappears.",
+        "A scanned PDF sits at one end of the intake spectrum. ",
+        {
+          text: "Electronic data interchange (EDI)",
+          href: "https://en.wikipedia.org/wiki/Electronic_data_interchange",
+        },
+        " anchors the other, the industry standard between established trading partners. An ",
+        {
+          text: "EDI 850 purchase order",
+          href: "https://x12.org/products/transaction-sets",
+        },
+        " arrives structured: nothing needs reading, no model proposes anything, and its segments map onto the ledger's commitment fields.",
       ],
     },
     {
       type: "paragraph",
       spans: [
-        "Suppliers below the tier where a customer mandates EDI receive their purchase orders as email attachments and scans. The terms that price a mistake sit in prose clauses there, not in segments. Paperless handles that path, and this example takes it. Swap the intake for EDI or an ERP order record and the rest of the workflow holds, because the ledger needs one thing from intake: a structured commitment.",
+        "Suppliers below the tier where a customer mandates EDI receive their purchase orders as email attachments and scans. The terms that price a mistake sit in prose clauses on the page. Paperless handles that path, and this example takes it. Swap the intake for EDI or an ",
+        {
+          text: "ERP",
+          href: "https://en.wikipedia.org/wiki/Enterprise_resource_planning",
+        },
+        " order record and the rest of the workflow holds, because the ledger needs one thing from intake: a structured commitment.",
       ],
     },
 
-    { type: "heading", text: "From the ledger to the factory floor" },
+    { type: "heading", text: "Approving the order and sending it to the floor" },
     {
       type: "paragraph",
       spans: [
-        "Approving dispatches an ordinary APPROVE_ORDER, and the second workflow reacts to it. The editor used to post to the factory itself and hand the minted id into the approval, which put a browser in conversation with a factory. The reactor is the side holding that connection, its key behind a secret reference, so the work moved there. The workflow asserts there is a line to run on, creates the order, binds the id the floor returns, and opens the ledger.",
+        "The reviewer clicks Approve order, and the editor dispatches ",
+        { code: "APPROVE_ORDER" },
+        " on the ledger.",
       ],
+    },
+    {
+      type: "paragraph",
+      spans: [
+        "The operation checks before it writes. It refuses a ledger that is not a draft, one that is already approved, an approval that names no approver, and a commitment still missing its manufacturer, customer, quantity or delivery time. Then it records who approved, when, which scan they approved against, and each field they corrected, with the extracted value beside theirs.",
+      ],
+    },
+    {
+      type: "paragraph",
+      spans: [
+        "Approval also freezes the commitment. After it, the ledger refuses ",
+        { code: "SET_COMMITMENT" },
+        ", so the quantity, the quality floor and the delivery time cannot change while parts are being made.",
+      ],
+    },
+    {
+      type: "paragraph",
+      spans: [
+        "The second workflow reacts to the approval. It runs in the reactor, which holds the connection to the factory with its key behind a secret reference, so the browser never talks to the floor.",
+      ],
+    },
+    {
+      type: "media",
+      kind: "image",
+      src: "/blog/umh-workflows/wf-create-order-steps.png",
+      width: 2000,
+      height: 640,
+      alt: "Workflow Studio showing Create the floor order on approval, seven steps: document event trigger, read the approved ledger, does it already name an order, is there a line to run it on, create the order on the floor, bind the id and open the ledger, and two error steps that say why the order was not created or that there is no line to run it on.",
+      caption:
+        "The second workflow, seven steps. If there is no line to run on, or the floor does not create the order, an error step records the reason on the ledger.",
+    },
+    {
+      type: "paragraph",
+      spans: [
+        "It reads the approved ledger, checks whether it already names an order and whether there is a line to run on, then creates the order on the floor, binds the id the floor returns and opens the ledger.",
+      ],
+    },
+    {
+      type: "media",
+      kind: "image",
+      // Cropped from ledger-order-pdf.png, clear of its CLOSED OUT badge.
+      src: "/blog/umh/ledger-approved-record.png",
+      width: 682,
+      height: 328,
+      displayWidth: 682,
+      alt: "The ledger's Record panel after approval: approved by piet@meridianmetalwerke.de at 9/11/2026, 4:49:51 PM, source scan attached, nothing changed on review; below it the Order ID field holding the floor's order id and the UMH line.",
+      caption:
+        "The result: the ledger names who approved and when, and the Order ID field holds the id the floor returned.",
     },
     {
       type: "paragraph",
@@ -863,12 +1004,12 @@ Host      switchboard         the reactor, port 4001 - workflow runtime inside i
       height: 800,
       alt: "The machine simulator's Orders view with the ledger's order id highlighted in the table.",
       caption:
-        "Approving the ledger creates the order on the floor. The simulator's Orders table gains the row.",
+        "The simulator's Orders view. Approving a ledger adds a row like the highlighted one.",
     },
     {
       type: "paragraph",
       spans: [
-        "The third workflow watches the floor. Its trigger fires once per order per change, carrying the counts and the derived OEE, and two guards stand between it and the ledger: a run that counted nothing stops, and a ledger that is not open stops. Evidence only means something between the baseline being frozen and the commitment ceasing to be in force.",
+        "The third workflow watches the floor. Its trigger fires once per order per change, carrying the counts and the derived OEE, and two guards stand between it and the ledger: a run that counted nothing stops, and a ledger that is not open stops. Evidence counts only while the commitment is in force, from the moment the ledger opens.",
       ],
     },
     {
@@ -897,7 +1038,7 @@ Host      switchboard         the reactor, port 4001 - workflow runtime inside i
     {
       type: "paragraph",
       spans: [
-        "The snapshot id is derived from the order and the moment it was captured, so a replayed delivery produces an id the reducer already holds and is refused, rather than appending the same reading twice.",
+        "The snapshot id is derived from the order and the moment it was captured, so a replayed delivery carries an id the ledger already holds, and the ledger refuses it instead of appending the same reading twice.",
       ],
     },
     {
@@ -919,31 +1060,28 @@ Host      switchboard         the reactor, port 4001 - workflow runtime inside i
     {
       type: "paragraph",
       spans: [
-        "Data flows in one direction. Powerhouse reads from the floor and has no write path to it. The ledger cannot start, stop or change a machine.",
+        "Powerhouse sends the floor one thing, the order a person approved, and reads everything after that. The ledger cannot start, stop or change a machine.",
       ],
     },
 
-    { type: "heading", text: "The document history" },
+    { type: "heading", text: "Reading the ledger's operation history" },
     {
       type: "paragraph",
       spans: [
-        "A Powerhouse document is a log of operations, and the state you see is the result of replaying that log. Connect shows the log in the document's history view. Each entry names the operation, the time, and the actor that dispatched it, whether a reviewer or one of the workflows.",
+        "A Powerhouse document is a log of ", { text: "operations", href: `${ACADEMY}/Learn/foundations/thinking-in-operations` }, ", and the state you see is the result of replaying that log. Connect shows the log in the document's ", { text: "history view", href: `${ACADEMY}/Build/BuildingUserExperiences/DocumentTools/OperationHistory` }, ". Each entry names the operation, the time, and the actor that dispatched it, whether a reviewer or one of the workflows.",
       ],
     },
     {
       type: "code",
       language: "text",
-      label: "The operation log for one ledger",
-      code: `  index  time (UTC)  operation
-      0  10:12:25    SET_COMMITMENT            <- extractor
-      1  10:12:25    SET_SOURCE_DOCUMENT       <- scan attached
-      2  10:19:20    APPROVE_ORDER             <- reviewer
-      3  10:19:20    SET_COMMITMENT            <- order id bound
-      7  10:19:56    OPEN_LEDGER
-      8  10:20:12    START_RUN                 <- workflow, floor timestamp
-   9...29            RECORD_ACTUALS_SNAPSHOT   x 21
-     30  10:25:42    CLOSE_OUT                 <- processor, on floor complete
-     31  10:26:18    ACKNOWLEDGE               <- controlling`,
+      label: "The operations on one ledger, in order",
+      code: `SET_COMMITMENT            <- first workflow, the extracted commitment
+SET_SOURCE_DOCUMENT       <- first workflow, the scan attached
+SET_COMMITMENT            <- first workflow, the line and part from the floor
+APPROVE_ORDER             <- reviewer, in Connect
+BIND_ORDER_ID             <- second workflow, the id the floor returned
+OPEN_LEDGER               <- second workflow
+RECORD_ACTUALS_SNAPSHOT   <- third workflow, one per floor reading`,
     },
     {
       type: "media",
@@ -957,15 +1095,21 @@ Host      switchboard         the reactor, port 4001 - workflow runtime inside i
     {
       type: "paragraph",
       spans: [
-        "The log accepts appends only. If a rate table changes next quarter, the rates this close-out used stay in the record, and a replay reproduces the same figures.",
+        "The log accepts appends only. Replay it and you get the same ledger, reading for reading.",
       ],
     },
 
-    { type: "heading", text: "Closing the run" },
+    { type: "heading", text: "Where the demo stops" },
     {
       type: "paragraph",
       spans: [
-        "When the floor reports the order complete, a processor closes the ledger out. There is no button, so nobody selects which evidence the close-out reads. It compares the evidence with the commitment and records four things:",
+        "When the floor reports the order complete, the ledger stays open and the dashboard marks it Close-out pending. This demo ends there.",
+      ],
+    },
+    {
+      type: "paragraph",
+      spans: [
+        "The ledger package defines a close-out. It compares the evidence with the commitment and records four things:",
       ],
     },
     {
@@ -980,43 +1124,29 @@ ship / hold   CONFORMS with a delivery window left -> ship; otherwise hold, fail
     {
       type: "paragraph",
       spans: [
-        "The internal rates price the run because in-process scrap does not reach the customer. The contract rates size the exposure because the customer measures yield per delivered lot. The panel shows both next to each other: for the window-frame part, 45 EUR to bin a unit and 180 EUR if the customer rejects one.",
-      ],
-    },
-    {
-      type: "paragraph",
-      spans: [
-        "Settlement is out of scope. No money changes hands in this workflow. It issues no invoice, applies no penalty, negotiates no missed shipment date, records no customer inspection result, and carries no counterparty signature. The exposure figure is a projection against the contract's own rates, and every surface labels it as one. The record is unilateral, and it stops at the plant's own doorstep on a single decision, ship or hold. Settlement between a buyer and a supplier is a different document, and a different demo.",
-      ],
-    },
-    {
-      type: "paragraph",
-      spans: [
-        "Controlling acknowledges the close-out. Production can read the record and cannot edit it, so the figure production reports is the figure controlling sees. A site that wants segregation of duties adds a second required acknowledgement. Two exits cover runs that do not complete: ",
-        { code: "CLOSE_EARLY" },
-        " closes a partial run against a written reason, and ",
-        { code: "VOID_LEDGER" },
-        " retires the ledger when the floor cancels the order.",
+        "The package computes that close-out in its order poller, a ", { text: "processor", href: `${ACADEMY}/Learn/switchboard/processors-and-read-models` }, ". This demo keeps the poller off, because the floor workflow already writes the evidence trail and two writers on one append-only trail would record every reading twice. None of the three workflows may dispatch ",
+        { code: "CLOSE_OUT" },
+        ", so no verdict, run cost or ship-or-hold recommendation appears yet.",
       ],
     },
 
-    { type: "heading", text: "From individual ledgers to a dashboard" },
+    { type: "heading", text: "All ledgers on one dashboard" },
     {
       type: "paragraph",
       spans: [
-        "One ledger shows the mechanism. The drive's root view shows why the record exists, so spend your time here.",
+        "The drive's root view, the PL Dashboard, puts every ledger in one table.",
       ],
     },
     {
       type: "paragraph",
       spans: [
-        "A row gives you the commitment from a purchase order, the id of the order the floor is running, that order's live status, production against what was promised, yield, and the verdict. It reaches from a contract clause a salesperson typed months ago to a counter that moved four seconds ago.",
+        "A row gives you the commitment from a purchase order, the id of the order the floor is running, that order's live status, production against what was promised, and yield.",
       ],
     },
     {
       type: "paragraph",
       spans: [
-        "The document archive holds the promise and knows nothing about the machines. The shop-floor data layer holds the machines and has no field for the promise. UMH draws better charts from this data than we do, decomposed per ISO 22400. The row exists because a document model holds both halves and a read-only processor keeps the machine half current.",
+        "UMH draws better charts from this data than we do, decomposed per ISO 22400. The row exists because one ", { text: "document model", href: `${ACADEMY}/Learn/document-models/your-first-document-model` }, " holds both halves, the contract and the counts, and a workflow keeps the machine half current.",
       ],
     },
     {
@@ -1037,14 +1167,8 @@ ship / hold   CONFORMS with a delivery window left -> ship; otherwise hold, fail
       caption:
         "The dashboard over four consumed purchase orders, each a ledger at its own stage.",
     },
-    {
-      type: "paragraph",
-      spans: [
-        "Paperless keeps the original purchase orders. UMH keeps the record of what the machines did. Powerhouse keeps the document that binds the two.",
-      ],
-    },
 
-    { type: "heading", text: "What the demo fakes" },
+    { type: "heading", text: "How the demo compares to a plant" },
     {
       type: "paragraph",
       spans: [
@@ -1052,29 +1176,68 @@ ship / hold   CONFORMS with a delivery window left -> ship; otherwise hold, fail
       ],
     },
     {
-      type: "list",
-      items: [
+      type: "table",
+      columns: ["Area", "In this demo", "In a plant"],
+      rows: [
         [
-          "The ledger creates the production order. Approving posts to the simulator and binds the id it returns. In a plant the ERP mints that id and the ledger reads it. The simulator also plays ERP and MES at once, one process both issuing the order and executing it, where a plant separates the two.",
+          ["Order id"],
+          ["The ledger posts the order to the simulator and binds the id it returns."],
+          ["The ERP mints the id, and the ledger reads it."],
         ],
         [
-          "Evidence arrives by polling the simulator's API rather than through the Unified Namespace. The UNS path exists in the codebase and is not registered here.",
+          ["ERP and MES"],
+          ["One simulator process issues the order and executes it."],
+          ["Two systems: the ERP issues the order, and the MES dispatches it to a line."],
         ],
         [
-          "Close-out is not in a workflow. The verdict, conformance dimensions and costs come from a calculation over the ledger's state, and a workflow cannot call a function. Everything up to it is the workflow's; closing out stays a human action in the editor.",
+          ["Machine data"],
+          ["A workflow polls the simulator's API. The Unified Namespace path exists in the codebase and is not registered here."],
+          ["The ledger reads evidence from the Unified Namespace."],
         ],
         [
-          "The simulator dispatches round-robin and generates a competing order every 30 seconds. A ledger's order shares its line with four others, so a full-size purchase order takes hours. For the recordings we reduced the committed quantity to 20 units after extraction, through the same ",
-          { code: "SET_COMMITMENT" },
-          " operation a reviewer would use.",
+          ["Orders on the floor"],
+          ["The simulator runs in manual ERP mode, so the only orders on the floor are the ones approved ledgers create."],
+          ["The ledger's order runs alongside the rest of the plant's work."],
         ],
         [
-          "Four sample purchase orders, one simulated plant. The customer names, parts and rates are fictional. The contract clauses on the PDFs are the ones the ledger reads. We derived the conformance rules from those clauses, and a plant would check them against how it measures a run.",
+          ["Run length"],
+          [
+            "Some screenshots come from runs cut to 20 units after extraction, through the same ",
+            { code: "SET_COMMITMENT" },
+            " a reviewer would use, so a run finishes in minutes.",
+          ],
+          ["The full committed quantity."],
+        ],
+        [
+          ["Close-out"],
+          ["Ledgers stop at Close-out pending and stay open. No verdict, run cost or ship-or-hold recommendation appears."],
+          ["The ledger package's close-out records conformance, run cost, exposure and a ship-or-hold recommendation."],
+        ],
+        [
+          ["Extraction model"],
+          ["OpenRouter, a hosted model API, so the purchase order's text leaves your machines for that one step."],
+          ["A model you choose, which can run inside your network, depending on the deployment."],
+        ],
+        [
+          ["Orders and rates"],
+          ["Four sample purchase orders and one simulated plant. Customer names, parts and rates are fictional."],
+          ["Your customers, parts and contract rates."],
+        ],
+        [
+          ["Conformance rules"],
+          ["Derived from the clauses on the sample PDFs."],
+          ["Checked against how the plant measures a run."],
         ],
       ],
     },
+    {
+      type: "paragraph",
+      spans: [
+        "Some screenshots in this post come from an earlier build that still closed ledgers out, so they show close-out steps and states this demo does not reach.",
+      ],
+    },
 
-    { type: "heading", text: "Building other workflows" },
+    { type: "heading", text: "Using the same pattern for other workflows" },
     {
       type: "paragraph",
       spans: [
@@ -1084,7 +1247,7 @@ ship / hold   CONFORMS with a delivery window left -> ship; otherwise hold, fail
     {
       type: "paragraph",
       spans: [
-        "Paperless keeps ingesting and archiving. UMH keeps transporting and storing machine data. The Powerhouse integration adds a document model, a human review gate, an append-only operation log, a programmable API and domain-specific interfaces, with no write path into either system.",
+        "Paperless keeps ingesting and archiving. UMH keeps transporting and storing machine data. The Powerhouse integration adds a document model, a human review gate, an append-only operation log, a programmable API and domain-specific interfaces. It writes nothing back to the archive, and it sends the floor only the orders a person approved.",
       ],
     },
     {
@@ -1094,35 +1257,31 @@ ship / hold   CONFORMS with a delivery window left -> ship; otherwise hold, fail
       ],
     },
 
-    { type: "heading", text: "Run it yourself" },
+    { type: "heading", text: "Running the demo on your machine" },
     {
       type: "paragraph",
       spans: [
         "The demo runs on your machine from ",
-        { text: "the ledger package's own repository", href: UMH_REPO },
-        ". You need Docker, ",
-        { text: "bun", href: "https://bun.sh" },
-        ", and an ",
+        { text: "its own repository", href: UMH_REPO },
+        ". You need Docker with Compose v2, and an ",
         { text: "OpenRouter", href: "https://openrouter.ai" },
-        " key for the extraction step. Without the key everything else still works and that one step fails with a 401.",
+        " key for the extraction step. The first run pulls about 3 GB.",
       ],
     },
     {
       type: "code",
       language: "bash",
-      code: `cp demo/.env.example demo/.env   # your OpenRouter key
-bun install
-
-bun run demo:up                  # the floor and the archive, in Docker
-./demo/start.sh                  # the reactor and Connect - leave running
-bun run demo:seed                # drives, connections and workflows`,
+      code: `git clone https://github.com/powerhouse-inc/umh-powerhouse.git
+cd umh-powerhouse
+cp .env.example .env   # set PAPERLESS_AI_API_KEY and UMH_LEDGER_VERSION
+./start.sh             # starts the stack, seeds drives, connections and workflows`,
     },
     {
       type: "paragraph",
       spans: [
-        "The seed prints the Connect links when it finishes. To check the whole path end to end, ",
-        { code: "bun run demo:verify" },
-        " uploads a real purchase order, waits for the workflow and reads the ledger that came out. It ends in fourteen passed checks, or names the one that failed and why.",
+        "When the stack is up, ",
+        { code: "start.sh" },
+        " opens Paperless and the PL Dashboard drive in Connect.",
       ],
     },
     {
@@ -1134,28 +1293,28 @@ bun run demo:seed                # drives, connections and workflows`,
       items: [
         [
           "Paperless at ",
-          { code: "localhost:18000" },
+          { code: "localhost:8000" },
           ", using ",
           { code: "admin / paperless" },
           " as the demo credentials.",
         ],
-        ["Connect, with Workflow Studio, at ", { code: "localhost:3001" }, "."],
+        ["Connect, with Workflow Studio, at ", { code: "localhost:3000" }, "."],
         [
           "Switchboard's GraphQL playground at ",
           { code: "localhost:4001/graphql" },
           ".",
         ],
-        ["The machine simulator at ", { code: "localhost:18081" }, "."],
+        ["The machine simulator at ", { code: "localhost:8081" }, "."],
       ],
     },
     {
       type: "resources",
-      title: "Run it yourself",
+      title: "Links from this post",
       items: [
         {
-          label: "The UMH demo",
+          label: "UMH x Powerhouse demo",
           href: UMH_REPO,
-          note: "The compose file, the workflow definitions, the seed and the sample purchase orders used in this post.",
+          note: "The compose file, the three workflow definitions, the seed and the sample purchase orders used in this post.",
         },
         {
           label: "UMH factory demo",
@@ -1163,9 +1322,24 @@ bun run demo:seed                # drives, connections and workflows`,
           note: "The upstream factory simulator, which also runs on its own.",
         },
         {
-          label: "Vetra",
-          href: "https://vetra.io",
-          note: "Browse packages and build your own workflow in Vetra Studio.",
+          label: "UMH",
+          href: "https://www.umh.app",
+          note: "The open-source factory data infrastructure the simulated floor runs on.",
+        },
+        {
+          label: "Paperless-ngx",
+          href: "https://github.com/paperless-ngx/paperless-ngx",
+          note: "The document archive that receives the purchase orders.",
+        },
+        {
+          label: "The ledger package on Vetra",
+          href: UMH_LEDGER_PACKAGE,
+          note: "The Production Ledger document model and editors the demo installs.",
+        },
+        {
+          label: "The UMH integration",
+          href: "/integrations/umh",
+          note: "The integration record: the scenario, the workflow and the film.",
         },
       ],
     },

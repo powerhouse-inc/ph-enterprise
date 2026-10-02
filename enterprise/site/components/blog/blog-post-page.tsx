@@ -106,7 +106,7 @@ export function BlogPostPage({ post }: { post: BlogPost }) {
                 article keeps the page's left edge once the contents list is
                 gone. */}
             <BlogReveal>
-              <article className="max-w-[900px] min-w-0">
+              <article className="relative max-w-[900px] min-w-0">
                 <BlogBody blocks={post.body} />
               </article>
             </BlogReveal>

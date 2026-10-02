@@ -98,6 +98,68 @@ function CodeBlock({
   );
 }
 
+/**
+ * Light, in the body's own type: a comparison is prose in columns, so it
+ * reads as text rather than as a code panel. Below md each row stacks and
+ * repeats the column headers as labels, so nothing scrolls sideways.
+ */
+function Table({ block }: { block: Extract<BlogBlock, { type: "table" }> }) {
+  return (
+    <figure className="fade-up my-9">
+      <table className="w-full border-collapse text-left max-md:block">
+        {block.caption ? (
+          <caption className="mb-3 text-left text-[13px] leading-[1.55] text-copy-muted max-md:block">
+            {block.caption}
+          </caption>
+        ) : null}
+        <thead className="max-md:hidden">
+          <tr className="border-b border-copy/25">
+            {block.columns.map((column) => (
+              <th
+                key={column}
+                scope="col"
+                className="py-3 pr-6 align-bottom text-[14px] font-semibold text-copy last:pr-0"
+              >
+                {column}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="max-md:block">
+          {block.rows.map((row, rowIndex) => (
+            <tr
+              key={rowIndex}
+              className="border-b border-border-light align-top max-md:block max-md:py-4"
+            >
+              {row.map((cell, cellIndex) =>
+                cellIndex === 0 ? (
+                  <th
+                    key={cellIndex}
+                    scope="row"
+                    className="py-4 pr-6 text-[15.5px] leading-[1.6] font-semibold text-copy max-md:block max-md:py-0 md:w-[22%]"
+                  >
+                    <Inlines spans={cell} />
+                  </th>
+                ) : (
+                  <td
+                    key={cellIndex}
+                    className="py-4 pr-6 text-[15.5px] leading-[1.6] text-pretty text-copy-muted last:pr-0 max-md:block max-md:pt-2 max-md:pb-0"
+                  >
+                    <span className="block text-[13px] font-medium text-copy md:hidden">
+                      {block.columns[cellIndex]}
+                    </span>
+                    <Inlines spans={cell} />
+                  </td>
+                ),
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </figure>
+  );
+}
+
 function Media({ block }: { block: Extract<BlogBlock, { type: "media" }> }) {
   // Slots stay in the data file with src: null while the asset is produced.
   if (!block.src) return null;
@@ -110,6 +172,7 @@ function Media({ block }: { block: Extract<BlogBlock, { type: "media" }> }) {
         width={block.width ?? 1600}
         height={block.height ?? 1000}
         caption={block.caption}
+        displayWidth={block.displayWidth}
       />
     );
   }
@@ -119,8 +182,13 @@ function Media({ block }: { block: Extract<BlogBlock, { type: "media" }> }) {
       <div className="overflow-hidden rounded-[16px] border border-border-light bg-white p-1.5 shadow-[0_2px_12px_rgba(17,22,20,0.1)]">
         <div className="overflow-hidden rounded-[11px] bg-paper">
           <video
-            className="block w-full"
+            // width/height reserve the aspect ratio while loading; h-auto keeps
+            // the attribute height from pinning the frame at 720px.
+            className="block h-auto w-full"
             src={block.src}
+            poster={block.poster}
+            width={block.width}
+            height={block.height}
             controls
             muted
             loop
@@ -244,6 +312,9 @@ export function BlogBody({ blocks }: { blocks: readonly BlogBlock[] }) {
               />
             );
 
+          case "table":
+            return <Table key={index} block={block} />;
+
           case "media":
             return <Media key={index} block={block} />;
 
@@ -259,22 +330,26 @@ export function BlogBody({ blocks }: { blocks: readonly BlogBlock[] }) {
 
           case "primer":
             // A real heading for crawlers and screen readers ("what is X" is a
-            // search query), styled as the landing page's quiet micro-label.
+            // search query). From xl the box sits in the margin beside the
+            // column, at the height it is placed in the text, and takes no
+            // room in the flow; below xl it is an ordinary box. The article
+            // is the positioned ancestor.
             return (
-              <section
+              <aside
                 key={index}
-                className="fade-up mb-11 border-b border-border-light pb-9"
+                aria-labelledby={headingId(block.label)}
+                className="fade-up my-9 rounded-[14px] border border-border-light bg-white p-5 shadow-[0_2px_12px_rgba(17,22,20,0.06)] xl:absolute xl:left-[calc(100%+28px)] xl:my-0 xl:w-[248px]"
               >
                 <h2
                   id={headingId(block.label)}
-                  className="scroll-mt-28 text-[12px] font-semibold tracking-[0.06em] text-copy-muted uppercase"
+                  className="font-heading scroll-mt-28 text-[16px] leading-[1.3] font-semibold text-copy"
                 >
                   {block.label}
                 </h2>
-                <p className="mt-3.5 text-[16px] leading-[1.7] text-pretty text-copy-muted">
+                <p className="mt-2.5 text-[14.5px] leading-[1.6] text-pretty text-copy-muted">
                   <Inlines spans={block.spans} />
                 </p>
-              </section>
+              </aside>
             );
 
           case "resources":
