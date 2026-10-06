@@ -8,9 +8,10 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingLenis } from "@/components/landing/landing-lenis";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { SectionContainer } from "@/components/landing/section-container";
-import type { IntegrationEntry, IntegrationShot } from "@/data/integrations";
+import { STATUS_LABEL, type IntegrationEntry, type IntegrationShot } from "@/data/integrations";
 import { ModelAnatomy } from "./model-anatomy";
 import { RecordVideo } from "./record-video";
+import { ScenarioDiagram } from "./scenario-diagram";
 import { ScrollVideo } from "./scroll-video";
 
 /**
@@ -28,10 +29,12 @@ function Label({ children, className = "" }: { children: React.ReactNode; classN
 function HeroActions({
   repoUrl,
   walkthroughSlug,
+  vetraUrl,
   className = "",
 }: {
   repoUrl?: string;
   walkthroughSlug?: string;
+  vetraUrl?: string;
   className?: string;
 }) {
   return (
@@ -59,9 +62,21 @@ function HeroActions({
           Read the walkthrough
         </Link>
       ) : null}
+      {vetraUrl ? (
+        <a
+          href={vetraUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-1 text-[14px] font-semibold text-t2 underline-offset-4 transition-colors hover:text-t1 hover:underline"
+        >
+          The package on Vetra
+          <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+        </a>
+      ) : null}
     </div>
   );
 }
+
 
 /**
  * A tall workflow capture with its reading guide: the guide runs the height of
@@ -178,7 +193,7 @@ function ModelBody({
     </div>
     )}
 
-    <Label className="mt-10">Lifecycle</Label>
+    <Label className="mt-10">{model.lifecycleLabel ?? "Lifecycle"}</Label>
     <ol className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-2.5">
       {model.lifecycle.map((state, i) => (
         <li key={state} className="flex items-center gap-2">
@@ -209,6 +224,196 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
+/**
+ * The vendor's mark and site, set above the title so the reader can reach the
+ * system being integrated in one click. White chip: vendor marks are drawn
+ * for a light surface.
+ */
+function VendorLink({
+  name,
+  logo,
+  site,
+}: {
+  name: string;
+  logo?: IntegrationEntry["logo"];
+  site: { url: string; label: string };
+}) {
+  return (
+    <a
+      href={site.url}
+      target="_blank"
+      rel="noreferrer"
+      className="group inline-flex h-12 items-center gap-3 rounded-[10px] bg-white py-2 pr-4 pl-2.5 transition-shadow hover:shadow-[0_0_0_3px_rgba(36,215,232,0.45)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+    >
+      {logo ? (
+        <Image
+          src={logo.src}
+          alt=""
+          width={logo.width}
+          height={logo.height}
+          className="h-8 w-auto rounded-[6px]"
+        />
+      ) : null}
+      <span className="text-[16px] font-semibold text-copy">{name}</span>
+      <span className="flex items-center gap-1 text-[13px] text-copy-muted group-hover:text-copy">
+        {site.label}
+        <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+      </span>
+    </a>
+  );
+}
+
+/**
+ * The simple layout's one section: the steps in plain words beside the
+ * workflow capture, and a note on what the demo is and where it stops.
+ */
+function SimpleSections({
+  integration,
+  spine,
+}: {
+  integration: IntegrationEntry;
+  spine?: IntegrationShot;
+}) {
+  const how = integration.howItWorks;
+  if (!how) return null;
+  return (
+    <section
+      id="how-it-works"
+      className="border-t border-border-light bg-paper-soft py-20 text-copy md:py-24"
+    >
+      <SectionContainer>
+        <SectionTitle>How it works</SectionTitle>
+        <p className="mt-5 max-w-[64ch] text-[17px] leading-[1.7] text-pretty text-copy-muted">
+          {how.intro.map((part) =>
+            typeof part === "string" ? (
+              part
+            ) : (
+              <a
+                key={part.href}
+                href={part.href}
+                target="_blank"
+                rel="noreferrer"
+                className="font-semibold text-copy underline underline-offset-4 hover:text-brand"
+              >
+                {part.text}
+              </a>
+            ),
+          )}
+        </p>
+
+        {how.video ? (
+          <figure className="mt-10">
+            {/* Below the desktop breakpoint the film's type, set for 1920px,
+                cannot be read, so the poster links to the film at full size. */}
+            <a
+              href={how.video.src}
+              target="_blank"
+              rel="noreferrer"
+              className="block lg:hidden"
+            >
+              <Image
+                src={how.video.poster}
+                alt=""
+                width={how.video.width}
+                height={how.video.height}
+                sizes="92vw"
+                className="h-auto w-full rounded-[14px] border border-border-light"
+              />
+              <span className="mt-3 inline-flex items-center gap-1 text-[14px] font-medium text-copy">
+                Watch the film at full size
+                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </span>
+            </a>
+            {/* z-[160]: above the page grain (150), below the nav (200). */}
+            <div className="relative z-[160] hidden overflow-hidden rounded-[14px] border border-border-light bg-ink shadow-[0_12px_40px_rgba(17,22,20,0.18)] lg:block">
+              <RecordVideo
+                src={how.video.src}
+                poster={how.video.poster}
+                width={how.video.width}
+                height={how.video.height}
+                label={how.video.label}
+                timeline
+              />
+            </div>
+            {how.video.caption ? (
+              <figcaption className="mt-3 text-[13.5px] leading-[1.55] text-copy-muted">
+                {how.video.caption}
+              </figcaption>
+            ) : null}
+          </figure>
+        ) : null}
+
+        {/* The capture is tall and dense, so it takes the wider column. */}
+        <div className="mt-12 grid grid-cols-1 items-start gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-14">
+          <ol className="divide-y divide-border-light border-y border-border-light">
+            {how.steps.map((step, i) => (
+              <li
+                key={step.title}
+                className="grid grid-cols-[36px_minmax(0,1fr)] gap-x-4 py-6"
+              >
+                <span className="font-mono text-[13px] leading-[1.9] text-copy-muted">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h3 className="font-heading text-[18px] leading-[1.35] font-semibold text-copy">
+                    {step.title}
+                  </h3>
+                  <p className="mt-1.5 max-w-[56ch] text-[15.5px] leading-[1.65] text-pretty text-copy-muted">
+                    {step.body}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          {spine ? (
+            <figure className="w-full">
+              {/* The canvas is a tall capture whose block labels cannot be
+                  read at column width, so the image opens at full size. */}
+              {/* Out of the tab order: "Open full size" below is the one
+                  keyboard stop. The image keeps its alt for screen readers. */}
+              <a
+                href={spine.src}
+                target="_blank"
+                rel="noreferrer"
+                tabIndex={-1}
+                className="block rounded-[14px]"
+              >
+                <Image
+                  src={spine.src}
+                  alt={spine.alt}
+                  width={spine.width}
+                  height={spine.height}
+                  sizes="(min-width: 1024px) 640px, 92vw"
+                  className="h-auto w-full rounded-[14px] border border-border-light"
+                />
+              </a>
+              <figcaption className="mt-3 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 text-[13.5px] leading-[1.55] text-copy-muted">
+                {how.shotCaption ? <span>{how.shotCaption}</span> : null}
+                <a
+                  href={spine.src}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex shrink-0 items-center gap-1 font-medium text-copy underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+                >
+                  Open full size
+                  <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </a>
+              </figcaption>
+            </figure>
+          ) : null}
+        </div>
+
+        {how.note ? (
+          <p className="mt-10 max-w-[62ch] text-[14.5px] leading-[1.65] text-pretty text-copy-muted">
+            {how.note}
+          </p>
+        ) : null}
+      </SectionContainer>
+    </section>
+  );
+}
+
 export function IntegrationPage({
   integration,
 }: {
@@ -236,14 +441,23 @@ export function IntegrationPage({
     walkthroughSlug,
     shots,
     video,
+    scenario,
+    close,
+    fullName,
+    site,
+    layout,
+    hero,
+    vetra,
   } = integration;
+  const simple = layout === "simple";
 
-  // The hero carries one piece of first-viewport evidence. A walkthrough video
-  // wins when there is one, since it shows the whole flow; the lead shot then
-  // joins the gallery. Without a video the lead shot opens the page, and on
-  // mobile, where that hero figure is hidden, it drops into the gallery.
-  const lead = video ? undefined : shots?.[0];
-  const rest = video ? (shots ?? []) : (shots?.slice(1) ?? []);
+  // The hero carries one piece of first-viewport evidence. A scenario diagram
+  // or a walkthrough video wins when there is one, and every shot then stays in
+  // the body. Otherwise the lead shot opens the page, and on mobile, where that
+  // hero figure is hidden, it drops into the gallery.
+  const heroHasEvidence = Boolean(video || scenario);
+  const lead = heroHasEvidence ? undefined : shots?.[0];
+  const rest = heroHasEvidence ? (shots ?? []) : (shots?.slice(1) ?? []);
   // A tall workflow capture with a reading guide leads the surfaces section:
   // the workflow is how the result is made, the surfaces are where it lands.
   const spine = rest.find((shot) => shot.stages && shot.height > shot.width);
@@ -276,24 +490,48 @@ export function IntegrationPage({
                 {/* Set a step smaller than the split hero: here the video, not
                     the headline, has to reach the first viewport. */}
                 <h1 className="font-heading text-[clamp(36px,3.7vw,50px)] leading-[1.06] font-[660] tracking-[-0.02em] text-t1">
-                  {name}
-                  <span className="mt-1 block text-t2">{claim}</span>
+                  <span className="block text-t2">{name}</span>
+                  <span className="mt-1 block text-t1">{claim}</span>
                 </h1>
 
                 <div>
                   <p className="max-w-[48ch] text-[17px] leading-[1.7] text-pretty text-t2">
-                    {oneLiner}
+                    {hero?.subtitle ?? oneLiner}
                   </p>
                   <p className="mt-4 text-[14px] text-t3">
+                    {site ? (
+                      <>
+                        <a
+                          href={site.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-0.5 text-t2 underline-offset-4 hover:text-t1 hover:underline"
+                        >
+                          {site.label}
+                          <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
+                        </a>
+                        <span className="px-2 text-t3/50" aria-hidden="true">
+                          ·
+                        </span>
+                      </>
+                    ) : fullName ? (
+                      <>
+                        {fullName}
+                        <span className="px-2 text-t3/50" aria-hidden="true">
+                          ·
+                        </span>
+                      </>
+                    ) : null}
                     {category}
                     <span className="px-2 text-t3/50" aria-hidden="true">
                       ·
                     </span>
-                    <span className="font-medium text-proof">{status}</span>
+                    <span className="font-medium text-t2">{STATUS_LABEL[status]}</span>
                   </p>
                   <HeroActions
                     repoUrl={repoUrl}
                     walkthroughSlug={walkthroughSlug}
+                    vetraUrl={vetra?.url}
                     className="mt-7"
                   />
                 </div>
@@ -312,7 +550,7 @@ export function IntegrationPage({
                     label={video.label}
                   />
                 </div>
-                <figcaption className="mt-4 max-w-[80ch] text-[13px] leading-[1.55] text-t3">
+                <figcaption className="mt-4 max-w-[65ch] text-[13px] leading-[1.55] text-t3">
                   {video.caption}
                 </figcaption>
               </figure>
@@ -327,26 +565,58 @@ export function IntegrationPage({
               }
             >
               <div>
+                {simple && site ? (
+                  <div className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-3">
+                    <VendorLink name={name} logo={integration.logo} site={site} />
+                    <span className="text-[14px] font-medium text-t2">{STATUS_LABEL[status]}</span>
+                  </div>
+                ) : null}
                 <h1 className="font-heading text-[clamp(38px,4.4vw,58px)] leading-[1.06] font-[660] tracking-[-0.02em] text-t1">
-                  {name}
-                  <span className="mt-1 block text-t2">{claim}</span>
+                  {simple ? null : <span className="block text-t2">{name}</span>}
+                  <span className={simple ? "block text-t1" : "mt-1 block text-t1"}>{claim}</span>
                 </h1>
 
                 <p className="mt-6 max-w-[54ch] text-[17px] leading-[1.7] text-pretty text-t2">
-                  {oneLiner}
+                  {hero?.subtitle ?? oneLiner}
                 </p>
-
+                {simple ? null : (
                 <p className="mt-5 text-[14px] text-t3">
+                  {site ? (
+                    <>
+                      <a
+                        href={site.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-0.5 text-t2 underline-offset-4 hover:text-t1 hover:underline"
+                      >
+                        {site.label}
+                        <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
+                      </a>
+                      <span className="px-2 text-t3/50" aria-hidden="true">
+                        ·
+                      </span>
+                    </>
+                  ) : fullName ? (
+                    <>
+                      {fullName}
+                      <span className="px-2 text-t3/50" aria-hidden="true">
+                        ·
+                      </span>
+                    </>
+                  ) : null}
                   {category}
                   <span className="px-2 text-t3/50" aria-hidden="true">
                     ·
                   </span>
-                  <span className="font-medium text-proof">{status}</span>
+                  <span className="font-medium text-t2">{STATUS_LABEL[status]}</span>
                 </p>
+                )}
 
                 <HeroActions
-                  repoUrl={repoUrl}
+                  // The repo and its setup live in the walkthrough on simple pages.
+                  repoUrl={simple ? undefined : repoUrl}
                   walkthroughSlug={walkthroughSlug}
+                  vetraUrl={vetra?.url}
                   className="mt-9"
                 />
               </div>
@@ -371,11 +641,26 @@ export function IntegrationPage({
               ) : null}
             </div>
           )}
+
+          {/* The scenario the demo runs, drawn from the record's own values.
+              It fills the band where a chaptered film has left it empty. */}
+          {scenario ? (
+            <figure className="mt-12 lg:mt-14">
+              <ScenarioDiagram scenario={scenario} />
+              <figcaption className="mt-4 max-w-[65ch] text-[13px] leading-[1.55] text-t3">
+                {scenario.caption}
+              </figcaption>
+            </figure>
+          ) : null}
         </BlogHeroBand>
 
         {video?.chapters ? <ScrollVideo video={video} chapters={video.chapters} /> : null}
         <div id="after-film" />
 
+        {simple ? (
+          <SimpleSections integration={integration} spine={spine} />
+        ) : (
+        <>
         {/* The boundary. After a scroll film the stage has already landed on
             this ground, so a top rule would only draw a seam. */}
         <section
@@ -538,10 +823,12 @@ export function IntegrationPage({
             ) : null}
 
             {spine ? (
+              <>
+              <Label className="mt-14">Where the record is used</Label>
               <dl
                 // Under the steps list its bottom rule already separates them.
                 className={`grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4 ${
-                  pipeline ? "mt-10" : "mt-14 border-t border-border-light pt-8"
+                  pipeline ? "mt-4" : "mt-4 border-t border-border-light pt-8"
                 }`}
               >
                 {surfaces.map((surface) => (
@@ -561,6 +848,7 @@ export function IntegrationPage({
                   </div>
                 ))}
               </dl>
+              </>
             ) : (
             <dl className="mt-10 divide-y divide-border-light border-y border-border-light">
               {surfaces.map((surface) => (
@@ -707,12 +995,16 @@ export function IntegrationPage({
           </section>
         ) : null}
 
-        {/* Limits. Stands on its own so a record without a repo still states them. */}
-        {limits ? (
+        </>
+        )}
+
+        {/* Limits. Stands on its own so a record without a repo still states
+            them. The simple layout leaves them to the walkthrough. */}
+        {limits && !simple ? (
           <section className="border-t border-border-light bg-paper py-20 text-copy md:py-24">
             <SectionContainer>
               <SectionTitle>Limits worth knowing</SectionTitle>
-              <ul className="mt-8 max-w-[76ch] divide-y divide-border-light border-y border-border-light">
+              <ul className="mt-8 max-w-[62ch] divide-y divide-border-light border-y border-border-light">
                 {limits.map((item) => (
                   <li
                     key={item}
@@ -731,12 +1023,15 @@ export function IntegrationPage({
           <SectionContainer>
             <div className="mx-auto max-w-[760px] text-center">
               <h2 className="font-heading text-[clamp(30px,3.4vw,46px)] leading-[1.08] font-[680] tracking-[-0.02em] text-copy">
-                Start with a workflow assessment.
+                {close?.title ?? "Start with a workflow assessment."}
               </h2>
-              <p className="mx-auto mt-5 max-w-[56ch] text-[17px] leading-[1.65] text-pretty text-copy-muted">
-                Find out where Powerhouse can improve operational efficiency. We
-                structure the first workflow before a build starts.
-              </p>
+              {/* A record's own close may stand on its title alone. */}
+              {close && !close.body ? null : (
+                <p className="mx-auto mt-5 max-w-[56ch] text-[17px] leading-[1.65] text-pretty text-copy-muted">
+                  {close?.body ??
+                    "Find out where Powerhouse can improve operational efficiency. We structure the first workflow before a build starts."}
+                </p>
+              )}
               <div className="mt-8 flex items-center justify-center">
                 <BookCallButton
                   className="h-11 rounded-md px-5 text-[14px]"

@@ -1,15 +1,28 @@
 "use client";
 
 import { useRef, useState, type CSSProperties } from "react";
+import { ArrowDown } from "lucide-react";
 import type { IntegrationVideo, VideoChapter } from "@/data/integrations";
 import { SectionContainer } from "@/components/landing/section-container";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { RecordVideo } from "./record-video";
 
 /** Viewport heights of scroll per chapter of film. */
-const VH_PER_CHAPTER = 80;
+const VH_PER_CHAPTER = 30;
+/**
+ * Share of each chapter's scroll spent playing it. The rest holds the
+ * chapter's settled frame, so wherever the visitor stops scrolling the stage
+ * shows a finished frame rather than a transition between scenes.
+ */
+const PLAY_SHARE = 0.6;
+/**
+ * Seconds before the next chapter at which a chapter counts as settled. Each
+ * scene fades out over its last 0.3-0.4 s, so the hold point sits before that
+ * fade, on the finished frame.
+ */
+const SETTLE_LEAD = 0.55;
 /** Viewport heights of scroll for the stage to land on the paper below. */
-const LAND_VH = 70;
+const LAND_VH = 30;
 const NAV_PX = 58; // the fixed LandingNav
 /** Seconds of closing fade left unplayed. */
 const END_TRIM = 0.5;
@@ -45,6 +58,9 @@ const PAPER_INK = {
  *   next section opens on and the film steps back into a framed figure.
  * - Scroll-linked motion is motion (WCAG 2.3.3), so under reduced motion the
  *   pin is dropped for the ordinary figure plus a static chapter list.
+ * - Below the desktop breakpoint the same still path is used: at phone width
+ *   the film's type, set for 1920px, cannot be read, so pinning it would only
+ *   spend the visitor's scroll on a thumbnail.
  */
 export function ScrollVideo({
   video,
@@ -57,13 +73,17 @@ export function ScrollVideo({
   const film = useRef<HTMLVideoElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const frame = useRef<HTMLDivElement>(null);
+  const skip = useRef<HTMLAnchorElement>(null);
   const trigger = useRef<ScrollTrigger | null>(null);
   const [active, setActive] = useState(0);
   const [still, setStill] = useState(false);
 
   useGSAP(
     () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+        window.matchMedia("(max-width: 1023px)").matches
+      ) {
         setStill(true);
         return;
       }
@@ -71,8 +91,10 @@ export function ScrollVideo({
       if (!el) return;
 
       let target = 0;
-      const chapterAt = (t: number) =>
-        Math.max(0, chapters.findLastIndex((c) => c.start <= t));
+      const n = chapters.length;
+      // Where chapter i has finished animating and can be held.
+      const settledAt = (i: number, duration: number) =>
+        (i < n - 1 ? chapters[i + 1].start : duration - END_TRIM) - SETTLE_LEAD;
 
       const filmPx = () => (window.innerHeight * chapters.length * VH_PER_CHAPTER) / 100;
 
@@ -84,10 +106,15 @@ export function ScrollVideo({
         onUpdate: (self) => {
           // Mobile Safari ignores preload until asked; a seek needs data.
           if (el.readyState === 0) el.load();
-          // Stop short of the film's closing fade (made for the loop), so
-          // the stage lands on the end card rather than a blank frame.
-          target = self.progress * Math.max(0, (el.duration || 0) - END_TRIM);
-          setActive(chapterAt(target));
+          const duration = el.duration || 0;
+          if (!duration) return;
+          // Each chapter owns an equal share of the scroll: play it, then hold.
+          const x = Math.min(self.progress * n, n - 1e-6);
+          const i = Math.floor(x);
+          const from = chapters[i].start;
+          const to = Math.max(from, settledAt(i, duration));
+          target = from + (to - from) * Math.min(1, (x - i) / PLAY_SHARE);
+          setActive(i);
         },
       });
 
@@ -103,11 +130,14 @@ export function ScrollVideo({
             invalidateOnRefresh: true,
           },
         })
-        // Ground: eased, so it spends little of the scroll in mid-grey.
-        .fromTo(stage.current, { "--stage-bg": DARK_BG }, { "--stage-bg": PAPER_BG, duration: 1, ease: "power2.inOut" }, 0)
-        // Ink: swapped in a short window at the crossover, never blended
-        // through the grey the ground is passing through.
-        .fromTo(stage.current, DARK_INK, { ...PAPER_INK, duration: 0.12 }, 0.44)
+        // Ground: an expo curve holds near dark, crosses fast, then holds near
+        // paper, so the stage spends almost none of the scroll in mid-grey.
+        .fromTo(stage.current, { "--stage-bg": DARK_BG }, { "--stage-bg": PAPER_BG, duration: 1, ease: "expo.inOut" }, 0)
+        // Ink: swapped almost instantly at the midpoint of that crossing, so
+        // text never sits on the grey between the two grounds.
+        .fromTo(stage.current, DARK_INK, { ...PAPER_INK, duration: 0.04 }, 0.48)
+        // The film is over once the landing starts; the skip link has no job.
+        .to(skip.current, { autoAlpha: 0, duration: 0.15 }, 0)
         // Step back into a framed figure, keeping the grid's left edge.
         .fromTo(frame.current, { scale: 1 }, { scale: 0.88, transformOrigin: "left center", duration: 1 }, 0);
 
@@ -134,11 +164,10 @@ export function ScrollVideo({
   );
 
   /** Jump the scroll position to where a chapter starts. */
-  function goTo(chapter: VideoChapter) {
+  function goTo(index: number) {
     const st = trigger.current;
-    const duration = film.current?.duration;
-    if (!st || !duration) return;
-    const at = st.start + (st.end - st.start) * (chapter.start / duration);
+    if (!st) return;
+    const at = st.start + ((st.end - st.start) * index) / chapters.length;
     window.scrollTo({ top: at + 1, behavior: "smooth" });
   }
 
@@ -177,14 +206,6 @@ export function ScrollVideo({
       className="relative bg-ink-deep"
       style={{ height: `${chapters.length * VH_PER_CHAPTER + LAND_VH + 100}vh` }}
     >
-      {/* Keyboard users should not have to page through the whole track. */}
-      <a
-        href="#after-film"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-10 focus:rounded-md focus:bg-ink focus:px-3 focus:py-2 focus:text-t1"
-      >
-        Skip past the film
-      </a>
-
       <div
         ref={stage}
         style={{ "--stage-bg": DARK_BG, ...DARK_INK } as CSSProperties}
@@ -223,7 +244,7 @@ export function ScrollVideo({
                   <li key={c.title} className={on ? "" : "hidden lg:block"}>
                     <button
                       type="button"
-                      onClick={() => goTo(c)}
+                      onClick={() => goTo(i)}
                       aria-current={on ? "step" : undefined}
                       className="w-full py-2.5 text-left outline-none focus-visible:underline focus-visible:underline-offset-4"
                     >
@@ -234,18 +255,29 @@ export function ScrollVideo({
                       >
                         {c.title}
                       </span>
-                      <span
-                        className={`block overflow-hidden text-[14px] leading-[1.55] text-(--fg2) transition-[max-height,opacity] duration-300 ${
-                          on ? "mt-1 max-h-40 opacity-100" : "max-h-0 opacity-0"
-                        }`}
-                      >
-                        {c.body}
-                      </span>
+                      {/* Only the active chapter carries its body. It fades in;
+                          animating height would reflow the rail on every step. */}
+                      {on ? (
+                        <span className="mt-1 block text-[14px] leading-[1.55] text-(--fg2) animate-in fade-in duration-300 motion-reduce:animate-none">
+                          {c.body}
+                        </span>
+                      ) : null}
                     </button>
                   </li>
                 );
               })}
             </ol>
+
+            {/* Visible to everyone, not only keyboard users: the track is long,
+                and a visitor who has seen enough should not have to scroll it. */}
+            <a
+              ref={skip}
+              href="#after-film"
+              className="inline-flex items-center gap-1.5 self-start text-[13px] font-medium text-(--fg3) underline-offset-4 transition-colors hover:text-(--fg1) hover:underline focus-visible:text-(--fg1) focus-visible:underline lg:col-start-2"
+            >
+              Skip the film
+              <ArrowDown className="h-3.5 w-3.5" aria-hidden="true" />
+            </a>
           </div>
         </SectionContainer>
       </div>
