@@ -593,7 +593,7 @@ export function IntegrationsHero() {
           id="hero-connect"
           level="h1"
           title="Connect your existing tools"
-          subtitle="700+ ready-made connectors, plus integrations built for your industry. Nothing you run today has to be replaced."
+          subtitle={`Activepieces support brings ${PIECE_COUNT} ready-made connectors, plus Powerhouse integrations built for your industry. Nothing you run today has to be replaced.`}
         />
         {/* Any piece, plus our own: one panel, joined by the plus. */}
         <div
@@ -608,7 +608,7 @@ export function IntegrationsHero() {
       <div className="mt-20">
         <GroupTitle
           id="hero-workflows"
-          title="Turn into reliable enterprise apps"
+          title="And turn them into reliable enterprise apps"
           subtitle="Combine with auditable data models, controlled execution flows and more."
         />
         <RecipePanel />
