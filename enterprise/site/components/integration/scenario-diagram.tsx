@@ -19,7 +19,10 @@ function SystemNode({ system }: { system: ScenarioSystem }) {
     // ledger card, so the three steps read as one row. Siblings, not nesting.
     <div className="h-full rounded-[10px] border border-border-md p-4">
       <span className="inline-flex h-11 items-center gap-2.5 rounded-[8px] bg-paper px-3">
-        {system.logo.kind === "mark" ? (
+        {/* A system with no logo of its own, such as a drive app, shows its name. */}
+        {!system.logo ? (
+          <span className="text-[15px] font-semibold text-copy">{system.name}</span>
+        ) : system.logo.kind === "mark" ? (
           <>
             <Image
               src={system.logo.src}
@@ -134,10 +137,11 @@ export function ScenarioDiagram({ scenario }: { scenario: IntegrationScenario })
           </div>
         </div>
 
-        {/* The ledger drives the floor, and the floor reports back to it */}
+        {/* The record drives the target and, when the integration is two-way,
+            the target reports back. A one-way record draws one edge. */}
         <div className="flex flex-row items-center justify-center gap-6 self-center lg:flex-col lg:gap-5">
           <Flow label={flows.dispatch} />
-          <Flow label={flows.report} direction="left" />
+          {flows.report ? <Flow label={flows.report} direction="left" /> : null}
         </div>
 
         <SystemNode system={target} />
