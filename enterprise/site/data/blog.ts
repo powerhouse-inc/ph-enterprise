@@ -45,6 +45,11 @@ export type BlogBlock =
       displayWidth?: number;
     }
   | { type: "note"; spans: readonly BlogInline[] }
+  /** The systems an example joins, as a design-system integration badge. Square marks only. */
+  | {
+      type: "integration";
+      services: readonly { name: string; logo: string }[];
+    }
   /**
    * Opening primer: a quiet labelled block that defines the subject for
    * readers who have not met it, set in smaller type than the body.
@@ -644,9 +649,9 @@ const UMH_POST: BlogPost = {
       type: "media",
       kind: "image",
       src: "/blog/umh/hero-paperless-connect.png",
-      width: 1424,
-      height: 489,
-      alt: "Paperless on the left holding three purchase-order scans; Connect on the right showing the PL Dashboard drive with three ledgers.",
+      width: 2900,
+      height: 680,
+      alt: "Paperless on the left holding the four sample purchase-order scans; Connect on the right showing the PL Dashboard with the four ledgers they became, three completed on the floor and one still a draft.",
       caption:
         "Paperless holds the scans. Connect holds the ledgers they became.",
     },
@@ -708,7 +713,11 @@ nginx               cost-rate and stop-reason APIs     port 80`,
     {
       type: "note",
       spans: [
-        "The demo publishes the standard ports. Stop any Paperless, factory simulator or PostgreSQL you already run on 8000, 8081 or 5432 before you start it.",
+        "The demo publishes the standard ports: 3000, 4001, 8000, 8081, 8095, 80, 502, 4840\u20134852 and 5432. Stop anything you already run on them, or move Paperless, Connect, Switchboard and PostgreSQL with the ",
+        { code: "*_HOST_PORT" },
+        " variables in ",
+        { code: ".env" },
+        ".",
       ],
     },
 
@@ -722,35 +731,43 @@ nginx               cost-rate and stop-reason APIs     port 80`,
       ],
     },
     {
+      type: "integration",
+      services: [
+        { name: "Paperless-ngx", logo: "/logos/integrations/marks/paperless-ngx.svg" },
+        { name: "Activepieces", logo: "/logos/integrations/activepieces.svg" },
+        { name: "UMH", logo: "/logos/integrations/umh.svg" },
+      ],
+    },
+    {
       type: "list",
       items: [
         [
-          "Draft a ledger from a purchase order. Twelve blocks, from the archive's new-document trigger to a draft ledger with its line and part filled in.",
+          "Initialize a ledger from a new purchase order. Twelve blocks, from the archive's new-document trigger to a draft ledger with its line and part filled in.",
         ],
         [
-          "Create the floor order on approval. Seven blocks, triggered by a reviewer approving, ending with the floor's own order id bound to the ledger.",
+          "Create a floor order on purchase order approval. Seven blocks, triggered by a reviewer approving, ending with the floor's own order id bound to the ledger.",
         ],
         [
-          "Append floor progress to the evidence trail. Four blocks on a polling trigger, two of which are guards that decide to write nothing.",
+          "Append floor progress to the ledger evidence trail. Four blocks on a polling trigger, two of which are guards that decide to write nothing.",
         ],
       ],
     },
     {
       type: "media",
       kind: "image",
-      src: "/blog/umh-workflows/wf-draft-ledger.png",
-      width: 3200,
-      height: 1182,
-      alt: "Workflow Studio showing the twelve-step workflow that drafts a ledger from a purchase order, with two succeeded runs beneath it.",
+      src: "/blog/umh-workflows/workflows-overview.png",
+      width: 2184,
+      height: 1724,
+      alt: "Workflow Studio's overview of the three workflows: initialize a ledger from a new purchase order, a Paperless trigger and twelve steps; create a floor order on purchase order approval, seven steps including two error paths; append floor progress to the ledger evidence trail, four steps. Each shows its last run as succeeded and a strip of recent runs.",
       caption:
-        "The first workflow in Workflow Studio: its twelve steps, and the two runs it has made.",
+        "The three workflows in Workflow Studio, each with its steps and its recent runs.",
     },
 
     { type: "heading", text: "Turning a scanned order into a draft ledger" },
     {
       type: "paragraph",
       spans: [
-        "After startup the PL Dashboard drive contains its Paperless connection and nothing else. The repository ships four sample purchase orders in ",
+        "After startup the PL Dashboard drive is empty. The connections to Paperless, OpenRouter, the factory floor and the reactor live in the Workflows drive beside the three workflows. The repository ships four sample purchase orders in ",
         { code: "demo-pdfs/" },
         ".",
       ],
@@ -794,18 +811,26 @@ nginx               cost-rate and stop-reason APIs     port 80`,
       language: "bash",
       code: `curl -s http://localhost:4001/graphql/production-ledger \\
   -H 'content-type: application/json' \\
-  -d '{"query":"{ ProductionLedger { documents { items { state { global { status customer partNumber committedQuantity committedQualityPct orderId } } } } } }"}'`,
+  -d '{"query":"{ productionLedger { list(status: \\"DRAFT\\") { documentId status customer committedQuantity committedQualityPct orderId } } }"}'`,
     },
     {
       type: "code",
       language: "json",
       code: `{
-  "status": "DRAFT",
-  "customer": "Kestrel Drive Systems B.V.",
-  "partNumber": "THT-MAIN-A",
-  "committedQuantity": 1200,
-  "committedQualityPct": 99,
-  "orderId": null
+  "data": {
+    "productionLedger": {
+      "list": [
+        {
+          "documentId": "Wpf_lkoFAuJU6kLfU2l8tv-ugWNYq29Ae9rLujjPfQM",
+          "status": "DRAFT",
+          "customer": "Kestrel Drive Systems B.V.",
+          "committedQuantity": 1200,
+          "committedQualityPct": 99,
+          "orderId": null
+        }
+      ]
+    }
+  }
 }`,
     },
     {
@@ -834,13 +859,13 @@ nginx               cost-rate and stop-reason APIs     port 80`,
       type: "media",
       kind: "image",
       src: "/blog/umh/ledger-review-panel.png",
-      width: 1090,
-      height: 905,
-      // A 2x capture of one panel: at column width the UI reads at 1.6x.
+      width: 1696,
+      height: 2124,
+      // A 2x capture of one panel, shown near its real size.
       displayWidth: 560,
-      alt: "The Review incoming order panel on a draft ledger, awaiting approval: customer, UMH line, part number, quantity and date wanted, with an Approve order button.",
+      alt: "The Review incoming order panel on Kestrel Drive Systems' draft ledger, awaiting approval: customer, UMH line electronics-through-hole-1, part THT-MAIN-A, quantity 1,200, the requested delivery flagged as sooner than the 48-hour lead time, the contract terms, the yield-floor decision, site parameters, who must acknowledge the close-out, and an Approve, freeze & open button.",
       caption:
-        "The model's answers, as the reviewer sees them. Nothing reaches the floor until someone clicks Approve order.",
+        "The model's answers, as the reviewer sees them. Nothing reaches the floor until someone clicks Approve, freeze & open.",
     },
     {
       type: "paragraph",
@@ -887,8 +912,8 @@ nginx               cost-rate and stop-reason APIs     port 80`,
           ["No quantity and no delivery date."],
           [
             "A partial draft, which ",
-            { code: "OPEN_LEDGER" },
-            " refuses to open.",
+            { code: "APPROVE_ORDER" },
+            " refuses to approve, so it never reaches the floor.",
           ],
         ],
       ],
@@ -933,7 +958,7 @@ nginx               cost-rate and stop-reason APIs     port 80`,
     {
       type: "paragraph",
       spans: [
-        "The reviewer clicks Approve order, and the editor dispatches ",
+        "The reviewer clicks Approve, freeze & open, and the editor dispatches ",
         { code: "APPROVE_ORDER" },
         " on the ledger.",
       ],
@@ -955,16 +980,16 @@ nginx               cost-rate and stop-reason APIs     port 80`,
     {
       type: "paragraph",
       spans: [
-        "The second workflow reacts to the approval. It runs in the reactor, which holds the connection to the factory with its key behind a secret reference, so the browser never talks to the floor.",
+        "The second workflow reacts to the approval. It runs in the reactor, which holds the connection to the factory, so the browser never talks to the floor. The simulator's API takes no credential, so that connection is only an address; the Paperless and OpenRouter keys stay on the reactor behind secret references.",
       ],
     },
     {
       type: "media",
       kind: "image",
       src: "/blog/umh-workflows/wf-create-order-steps.png",
-      width: 2000,
-      height: 640,
-      alt: "Workflow Studio showing Create the floor order on approval, seven steps: document event trigger, read the approved ledger, does it already name an order, is there a line to run it on, create the order on the floor, bind the id and open the ledger, and two error steps that say why the order was not created or that there is no line to run it on.",
+      width: 2210,
+      height: 1580,
+      alt: "Workflow Studio showing Create a floor order on purchase order approval: a document event trigger, then seven steps: read the approved ledger, does it already name an order, is there a line to run it on, create the order on the floor, bind the id and open the ledger, and two error steps that say why the order was not created or that there is no line to run it on. Below, three succeeded runs, one per approved ledger.",
       caption:
         "The second workflow, seven steps. If there is no line to run on, or the floor does not create the order, an error step records the reason on the ledger.",
     },
@@ -977,14 +1002,13 @@ nginx               cost-rate and stop-reason APIs     port 80`,
     {
       type: "media",
       kind: "image",
-      // Cropped from ledger-order-pdf.png, clear of its CLOSED OUT badge.
       src: "/blog/umh/ledger-approved-record.png",
-      width: 682,
-      height: 328,
-      displayWidth: 682,
-      alt: "The ledger's Record panel after approval: approved by piet@meridianmetalwerke.de at 9/11/2026, 4:49:51 PM, source scan attached, nothing changed on review; below it the Order ID field holding the floor's order id and the UMH line.",
+      width: 1696,
+      height: 588,
+      displayWidth: 680,
+      alt: "The Record panel on BuildCorp's ledger after approval: approved by piet@meridianmetalwerke.de at 10/8/2026, 8:23:14 PM, original scan attached, nothing changed on review, run not started.",
       caption:
-        "The result: the ledger names who approved and when, and the Order ID field holds the id the floor returned.",
+        "The result: the ledger names who approved, when, and against which scan. The commitment above it now holds the order id the floor returned.",
     },
     {
       type: "paragraph",
@@ -1000,9 +1024,9 @@ nginx               cost-rate and stop-reason APIs     port 80`,
       type: "media",
       kind: "image",
       src: "/blog/umh/simulator-orders-highlighted.png",
-      width: 1280,
-      height: 800,
-      alt: "The machine simulator's Orders view with the ledger's order id highlighted in the table.",
+      width: 2560,
+      height: 1600,
+      alt: "The machine simulator's Orders view: three orders the approved ledgers created, with BuildCorp's order 6fadfc12, WIN-STD-A on window-frame-1, highlighted: closed, 320 planned, 320 good, 8 scrap.",
       caption:
         "The simulator's Orders view. Approving a ledger adds a row like the highlighted one.",
     },
@@ -1016,12 +1040,12 @@ nginx               cost-rate and stop-reason APIs     port 80`,
       type: "code",
       language: "json",
       code: `{
-  "startedAt": "2026-09-02T09:58:29.867Z",
-  "scannedRef": "window-frame-1",
+  "status": "OPEN",
+  "orderId": "6fadfc12-86f6-49d2-bef5-ecffb29197a1",
   "snapshots": [
-    { "capturedAt": "09:58:49Z", "quantityCompleted": 0, "quantityScrap": 0, "orderStatus": "IN_PROGRESS" },
-    { "capturedAt": "09:59:19Z", "quantityCompleted": 1, "quantityScrap": 0, "orderStatus": "IN_PROGRESS" },
-    { "capturedAt": "09:59:50Z", "quantityCompleted": 2, "quantityScrap": 0, "orderStatus": "IN_PROGRESS" }
+    { "capturedAt": "18:23:35Z", "quantityCompleted": 25, "quantityScrap": 1, "qualityPct": 96.2, "floorStatus": "RUNNING" },
+    { "capturedAt": "18:24:07Z", "quantityCompleted": 73, "quantityScrap": 2, "qualityPct": 97.3, "floorStatus": "RUNNING" },
+    { "capturedAt": "18:24:22Z", "quantityCompleted": 98, "quantityScrap": 2, "qualityPct": 98, "floorStatus": "RUNNING" }
   ]
 }`,
     },
@@ -1029,9 +1053,9 @@ nginx               cost-rate and stop-reason APIs     port 80`,
       type: "media",
       kind: "image",
       src: "/blog/umh-workflows/wf-append-evidence.png",
-      width: 3200,
-      height: 836,
-      alt: "The four-step workflow that appends floor progress to the evidence trail, with its trigger, two branch guards and a dispatch.",
+      width: 2210,
+      height: 1340,
+      alt: "The workflow that appends floor progress to the ledger evidence trail: an order-progressed trigger, then four steps: a guard that skips readings that counted nothing, a lookup of the ledger bound to the order, a guard that the ledger is open, and the dispatch that appends one snapshot. Below, its runs, all succeeded.",
       caption:
         "Four blocks, two of them guards. A run that stops at a guard succeeded and decided to write nothing.",
     },
@@ -1046,15 +1070,15 @@ nginx               cost-rate and stop-reason APIs     port 80`,
       kind: "image",
       src: "/blog/umh/evidence-trail.png",
       width: 1696,
-      height: 1948,
-      alt: "The Evidence Trail panel: live floor status, committed against good and scrap, the completion bar, and the expanded snapshot list.",
+      height: 1044,
+      alt: "The Evidence Trail panel on BuildCorp's ledger: closed on the floor, 320 of 320 good and 8 scrap, quality 97.6%, tabs for completion, scrap, quality, OEE, availability, performance, stages, machines and the table of 10 snapshots, and a completion chart with red dots where scrap rose.",
       caption:
-        "The evidence trail fills as the run proceeds: committed against good and scrap, with every snapshot kept.",
+        "The evidence trail after the run: committed against good and scrap, every snapshot kept. At 97.6% the run finished below the order's 98.5% quality floor, which the close-out would judge.",
     },
     {
       type: "paragraph",
       spans: [
-        "The floor reports more than this deployment reads. The historian on the same machine holds OEE per workcell and stop hours attributed to reason codes, while the REST path here returns counters only. Two things come next: filters on the evidence trail for scrap, quality and efficiency, and a chart that draws any machine signal against the commitment.",
+        "The floor reports more than this deployment reads. The historian on the same machine holds OEE per workcell and stop hours attributed to reason codes, while the REST path here returns counters, yield and OEE with its availability and performance parts. The evidence trail charts those against the commitment, with further tabs for stages and machines.",
       ],
     },
     {
@@ -1087,9 +1111,9 @@ RECORD_ACTUALS_SNAPSHOT   <- third workflow, one per floor reading`,
       type: "media",
       kind: "image",
       src: "/blog/umh/history.png",
-      width: 1280,
-      height: 800,
-      alt: "Connect's history view for a ledger: one row per operation, in order.",
+      width: 3200,
+      height: 2120,
+      alt: "Connect's history view for BuildCorp's ledger: sixteen revisions, newest first, from SET_COMMITMENT, SET_SOURCE_DOCUMENT and SET_COMMITMENT through APPROVE_ORDER, BIND_ORDER_ID and OPEN_LEDGER to ten RECORD_ACTUALS_SNAPSHOT operations, each with a verified signature.",
       caption: "One row per operation, in the order they were dispatched.",
     },
     {
@@ -1162,10 +1186,10 @@ ship / hold   CONFORMS with a delivery window left -> ship; otherwise hold, fail
       kind: "image",
       src: "/blog/umh/connect-dashboard.png",
       width: 2880,
-      height: 1800,
-      alt: "The PL Dashboard: stage counts across the top, one row per ledger with floor status and progress.",
+      height: 1240,
+      alt: "The PL Dashboard over four ledgers: Kestrel, Brenner and BuildCorp open and completed on the floor, each marked Close-out pending with its production bar and quality, and Halden still a draft.",
       caption:
-        "The dashboard over four consumed purchase orders, each a ledger at its own stage.",
+        "The dashboard over the four sample purchase orders: three runs complete and waiting on close-out, one order not yet approved.",
     },
 
     { type: "heading", text: "How the demo compares to a plant" },
@@ -1202,9 +1226,9 @@ ship / hold   CONFORMS with a delivery window left -> ship; otherwise hold, fail
         [
           ["Run length"],
           [
-            "Some screenshots come from runs cut to 20 units after extraction, through the same ",
+            "The simulator finishes a run in minutes. One ledger in the dashboard capture, Brenner's, was cut to 20 units before approval, through the same ",
             { code: "SET_COMMITMENT" },
-            " a reviewer would use, so a run finishes in minutes.",
+            " a reviewer would use. The others ran their full quantity.",
           ],
           ["The full committed quantity."],
         ],
@@ -1215,7 +1239,7 @@ ship / hold   CONFORMS with a delivery window left -> ship; otherwise hold, fail
         ],
         [
           ["Extraction model"],
-          ["OpenRouter, a hosted model API, so the purchase order's text leaves your machines for that one step."],
+          ["OpenRouter, a hosted model API, called by two steps. Extraction sends the purchase order's text; line matching sends the extracted commitment and the floor's list of lines and recipes. Both leave your machines."],
           ["A model you choose, which can run inside your network, depending on the deployment."],
         ],
         [
@@ -1233,7 +1257,7 @@ ship / hold   CONFORMS with a delivery window left -> ship; otherwise hold, fail
     {
       type: "paragraph",
       spans: [
-        "Some screenshots in this post come from an earlier build that still closed ledgers out, so they show close-out steps and states this demo does not reach.",
+        "One screenshot in this post, the ledger beside its scan, comes from an earlier build that still closed ledgers out, so it shows a close-out state this demo does not reach.",
       ],
     },
 
@@ -1273,7 +1297,7 @@ ship / hold   CONFORMS with a delivery window left -> ship; otherwise hold, fail
       language: "bash",
       code: `git clone https://github.com/powerhouse-inc/umh-powerhouse.git
 cd umh-powerhouse
-cp .env.example .env   # set PAPERLESS_AI_API_KEY and UMH_LEDGER_VERSION
+cp .env.example .env   # set PAPERLESS_AI_API_KEY; UMH_LEDGER_VERSION is pinned
 ./start.sh             # starts the stack, seeds drives, connections and workflows`,
     },
     {
@@ -1281,7 +1305,7 @@ cp .env.example .env   # set PAPERLESS_AI_API_KEY and UMH_LEDGER_VERSION
       spans: [
         "When the stack is up, ",
         { code: "start.sh" },
-        " opens Paperless and the PL Dashboard drive in Connect.",
+        " opens Paperless, the PL Dashboard drive in Connect, and the machine simulator.",
       ],
     },
     {
