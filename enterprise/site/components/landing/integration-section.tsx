@@ -4,9 +4,30 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { ArrowRight } from "lucide-react";
-import { INTEGRATIONS } from "@/data/integrations";
+import { INTEGRATIONS, PIECE_COUNT } from "@/data/integrations";
 import { useFadeUpInScope } from "@/hooks/use-fade-up-scope";
 import { SectionContainer } from "./section-container";
+
+/**
+ * A sample of the Activepieces catalogue, in the systems the narrative above
+ * names: email, CRM, finance, documents, data. Logos are the ones Activepieces
+ * serves at activepieces.com/logos/pieces/. Stage 01 of the diagram above shows
+ * a different ten, so the two strips do not read as the same list twice.
+ */
+const SAMPLE_PIECES = [
+  ["slack", "Slack"],
+  ["microsoft-teams", "Microsoft Teams"],
+  ["stripe", "Stripe"],
+  ["shopify", "Shopify"],
+  ["jira-cloud", "Jira"],
+  ["linear", "Linear"],
+  ["github", "GitHub"],
+  ["airtable", "Airtable"],
+  ["dropbox", "Dropbox"],
+  ["tableau", "Tableau"],
+  ["openai", "OpenAI"],
+  ["anthropic-claude", "Claude"],
+] as const;
 
 export function IntegrationSection() {
   const rootRef = useRef<HTMLElement>(null);
@@ -41,6 +62,42 @@ export function IntegrationSection() {
                 it&rsquo;s structured, and who can access it, whether human or
                 agent.
               </p>
+            </div>
+
+            {/* The catalogue, shown rather than claimed. */}
+            <div className="mt-8 border-t border-border-light pt-6">
+              <ul
+                aria-label="More of the systems Powerhouse connects"
+                className="grid grid-cols-6 gap-2 sm:grid-cols-8 lg:grid-cols-6"
+              >
+                {SAMPLE_PIECES.map(([file, name]) => (
+                  <li
+                    key={file}
+                    title={name}
+                    className="flex aspect-square items-center justify-center rounded-[10px] border border-border-light bg-white"
+                  >
+                    <Image
+                      src={`/logos/activepieces/${file}.svg`}
+                      alt={name}
+                      width={28}
+                      height={28}
+                      className="h-[46%] w-[46%] object-contain"
+                    />
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 text-[15px] leading-[1.6] text-copy-muted">
+                Chat, payments, project tracking, storage, analytics and the
+                model providers. {PIECE_COUNT} connectors in all, each one a
+                workflow you can read and re-run.
+              </p>
+              <Link
+                href="/integrations"
+                className="mt-3 inline-flex items-center gap-1.5 text-[15px] font-semibold text-[#7A3AFF] hover:underline"
+              >
+                Browse the integrations
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
             </div>
           </div>
 
