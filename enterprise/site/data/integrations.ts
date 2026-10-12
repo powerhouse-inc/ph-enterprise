@@ -1703,6 +1703,13 @@ export const LISTED_INTEGRATIONS: readonly IntegrationCard[] = [
 /** The catalogue record the index links to from its catalogue band. */
 export const CATALOGUE = ACTIVEPIECES;
 
+/**
+ * activepieces.com/pieces listed 763 pieces on 2026-09-28. Rounded down so the
+ * figure stays true as the catalogue grows; recheck before raising it. Shared,
+ * so the homepage and the integrations hero never quote different numbers.
+ */
+export const PIECE_COUNT = "700+";
+
 /** Detail pages and sitemap both read this order. */
 export const INTEGRATION_ORDER: readonly string[] = INTEGRATIONS.map(
   (entry) => entry.slug,

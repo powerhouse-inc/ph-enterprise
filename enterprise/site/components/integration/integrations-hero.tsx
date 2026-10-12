@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, Lock, Plus } from "lucide-react";
 import { BlogHeroBand } from "@/components/blog/blog-hero-band";
-import { CATALOGUE, getIntegration } from "@/data/integrations";
+import { CATALOGUE, PIECE_COUNT, getIntegration } from "@/data/integrations";
 import { CTA_URL } from "@/lib/site";
 import {
   IndustryCarousel,
@@ -20,12 +20,6 @@ import {
  */
 
 const ACTIVEPIECES_CATALOGUE_URL = "https://www.activepieces.com/pieces";
-
-/**
- * activepieces.com/pieces listed 763 pieces on 2026-09-28. Rounded down so the
- * figure stays true as the catalogue grows; recheck before raising it.
- */
-const PIECE_COUNT = "700+";
 
 /**
  * Pieces from that catalogue, with the logos Activepieces itself serves at
