@@ -67,17 +67,24 @@ function recordLogo(slug: string): SlideLogo {
 const INDUSTRY_SLIDES: readonly IndustrySlide[] = [
   {
     industry: "Operations",
-    name: "Paperless-ngx and Docling",
-    line: "Scans, emails and uploads land in one archive, then become typed records split at their own headings.",
+    name: "Paperless-ngx",
+    line: "Scans, emails and uploads land in one archive, then leave as typed invoice records.",
     href: "/integrations/paperless-ngx",
-    logos: [recordLogo("paperless-ngx"), recordLogo("docling")],
+    logos: [recordLogo("paperless-ngx")],
   },
   {
     industry: "Manufacturing",
     name: "UMH",
     line: "Purchase orders become production ledgers the factory floor reports against.",
     href: "/integrations/umh",
-    logos: [{ ...recordLogo("umh"), name: "UMH" }],
+    logos: [{ ...recordLogo("umh"), name: "UMH" }, recordLogo("paperless-ngx")],
+  },
+  {
+    industry: "Operations",
+    name: "Docling",
+    line: "PDFs, scans and Office files become markdown, split at the author's own headings.",
+    href: "/integrations/docling",
+    logos: [recordLogo("docling")],
   },
   {
     industry: "Construction",
