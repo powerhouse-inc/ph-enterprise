@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { Check, Lock, ShieldCheck, Sparkles } from "lucide-react";
 import { useRef } from "react";
+import { PIECE_COUNT } from "@/data/integrations";
 import { useFadeUpInScope } from "@/hooks/use-fade-up-scope";
 import { cn } from "@/lib/utils";
 import { SectionContainer } from "./section-container";
@@ -37,56 +39,122 @@ function StageText({
   );
 }
 
-/** Scattered source-document mini cards for stage 01. */
+/**
+ * A source card's heading: the mark of the system the document came from, set
+ * in a chip, with what the card holds beside it. Every mark here is 1:1, which
+ * is what lets the chip be square and the logo this large. Paperless-ngx is
+ * deliberately not among them: its 3.1:1 wordmark was the one asset forcing
+ * every chip down to fit it. It carries the "First integration" card further
+ * down the page instead, at a size a wordmark can actually be read.
+ */
+function CardHead({
+  label,
+  logo,
+  name,
+}: {
+  label: string;
+  logo: string;
+  name: string;
+}) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <span className="inline-flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-[8px] border border-slate-200/70 bg-slate-100">
+        <Image
+          src={logo}
+          alt={name}
+          width={48}
+          height={48}
+          className="h-[26px] w-[26px] object-contain"
+        />
+      </span>
+      <p className="text-[8.5px] font-semibold tracking-[0.04em] text-slate-500 uppercase">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+/** A single scattered document, positioned and tilted within the stack. */
+function SourceCard({
+  className,
+  children,
+  ...head
+}: {
+  className: string;
+  label: string;
+  logo: string;
+  name: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className={cn(
+        "absolute h-[104px] w-[144px] rounded-[11px] bg-white p-2.5 shadow-[0_10px_24px_rgba(0,0,0,0.35)]",
+        className,
+      )}
+    >
+      <CardHead {...head} />
+      {children}
+    </div>
+  );
+}
+
+/**
+ * The documents stage 01 starts from, scattered as paper. Positions are tuned
+ * against the 200px box: each card's tilt is allowed to overhang its own
+ * footprint, so they are kept clear of the right and bottom edges.
+ */
 function SourceCards() {
   return (
-    <div className="relative mx-auto h-[152px] w-full max-w-[360px]">
-      {/* Receipts */}
-      <div className="absolute top-[0px] left-[16px] h-[66px] w-[108px] -rotate-[6deg] rounded-[10px] bg-white p-2 shadow-[0_10px_24px_rgba(0,0,0,0.35)]">
-        <p className="text-[9px] font-semibold tracking-[0.04em] text-slate-500 uppercase">
-          Receipts
-        </p>
-        <div className="mt-1.5 space-y-1">
+    <div className="relative mx-auto h-[236px] w-full max-w-[360px]">
+      <SourceCard
+        className="top-[2px] left-[0px] -rotate-[6deg]"
+        label="Receipts"
+        logo="/logos/activepieces/quickbooks.svg"
+        name="QuickBooks"
+      >
+        <div className="mt-2.5 space-y-1.5">
           <div className="h-[3px] w-4/5 rounded-full bg-slate-200" />
           <div className="h-[3px] w-3/5 rounded-full bg-slate-200" />
         </div>
-        <p className="mt-1.5 text-[10px] font-semibold text-slate-800">
-          $182.40
-        </p>
-      </div>
+        <p className="mt-2 text-[9.5px] font-semibold text-slate-700">$182.40</p>
+      </SourceCard>
 
-      {/* Invoices */}
-      <div className="absolute top-[12px] left-[150px] h-[66px] w-[108px] rotate-[4deg] rounded-[10px] bg-white p-2 shadow-[0_10px_24px_rgba(0,0,0,0.35)]">
-        <p className="text-[9px] font-semibold tracking-[0.04em] text-slate-500 uppercase">
-          Invoices
-        </p>
-        <div className="mt-1.5 grid grid-cols-3 gap-1">
+      <SourceCard
+        className="top-[18px] left-[176px] rotate-[4deg]"
+        label="Invoices"
+        logo="/logos/activepieces/stripe.svg"
+        name="Stripe"
+      >
+        <div className="mt-2.5 grid grid-cols-3 gap-1.5">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-[10px] rounded-[2px] bg-slate-200" />
+            <div key={i} className="h-[12px] rounded-[2px] bg-slate-200" />
           ))}
         </div>
-      </div>
+      </SourceCard>
 
-      {/* Claim status */}
-      <div className="absolute top-[74px] left-[40px] h-[66px] w-[108px] -rotate-[3deg] rounded-[10px] bg-white p-2 shadow-[0_10px_24px_rgba(0,0,0,0.35)]">
-        <p className="text-[9px] font-semibold tracking-[0.04em] text-slate-500 uppercase">
-          Claim status
-        </p>
-        <div className="mt-2 h-[3px] w-4/5 rounded-full bg-slate-200" />
-        <span className="mt-2 inline-flex rounded-full bg-amber-100 px-1.5 py-0.5 text-[8.5px] font-semibold text-amber-700">
-          In review
+      <SourceCard
+        className="top-[112px] left-[20px] -rotate-[3deg]"
+        label="Manufacturing"
+        logo="/logos/integrations/umh.svg"
+        name="UMH"
+      >
+        <div className="mt-2.5 h-[3px] w-4/5 rounded-full bg-slate-200" />
+        <span className="mt-2.5 inline-flex rounded-full bg-amber-100 px-1.5 py-0.5 text-[9px] font-semibold text-amber-700">
+          In production
         </span>
-      </div>
+      </SourceCard>
 
-      {/* Emails */}
-      <div className="absolute top-[86px] left-[184px] h-[66px] w-[108px] rotate-[5deg] rounded-[10px] bg-white p-2 shadow-[0_10px_24px_rgba(0,0,0,0.35)]">
-        <p className="text-[9px] font-semibold tracking-[0.04em] text-slate-500 uppercase">
-          Emails
-        </p>
-        <div className="mt-1.5 space-y-1.5">
-          {["80%", "60%", "72%"].map((w) => (
+      <SourceCard
+        className="top-[122px] left-[196px] rotate-[5deg]"
+        label="Emails"
+        logo="/logos/activepieces/gmail.svg"
+        name="Gmail"
+      >
+        <div className="mt-2 space-y-1.5">
+          {["76%", "56%", "68%"].map((w) => (
             <div key={w} className="flex items-center gap-1.5">
-              <div className="h-2 w-2 rounded-full bg-slate-300" />
+              <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-slate-300" />
               <div
                 className="h-[3px] rounded-full bg-slate-200"
                 style={{ width: w }}
@@ -94,7 +162,7 @@ function SourceCards() {
             </div>
           ))}
         </div>
-      </div>
+      </SourceCard>
     </div>
   );
 }
@@ -410,7 +478,11 @@ export function HowPowerhouseWorks() {
                 num="01"
                 title="Connect existing systems"
                 body="Start from the documents, spreadsheets, inboxes, and legacy systems already carrying the work."
-              />
+              >
+                <p className="mt-3 max-w-[520px] text-[12.5px] leading-[1.6] text-white/60">
+                  {PIECE_COUNT} integrations, with industry-specific extensions.
+                </p>
+              </StageText>
             </div>
 
             <div className="flex w-full justify-center lg:w-[360px]">
