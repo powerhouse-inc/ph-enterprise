@@ -24,10 +24,10 @@ export default function Home() {
       <div className="relative z-10">
         <SiloedDataSection />
         <HowPowerhouseWorks />
-        <AppAnatomySection />
+        <IntegrationSection />
         <ControlOwnershipSection />
         <WhySection />
-        <IntegrationSection />
+        <AppAnatomySection />
         <StackSection />
         <ContactCta />
         <LandingFooter />
