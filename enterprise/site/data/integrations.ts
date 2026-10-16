@@ -240,7 +240,14 @@ export type IntegrationEntry = {
   howItWorks?: {
     /** Plain text, with optional links. */
     intro: readonly (string | { text: string; href: string })[];
-    steps: readonly { title: string; body: string }[];
+    /**
+     * Badge section that runs each step: 0 is Powerhouse, 1.. index into
+     * `services`. When set with `services`, the steps are drawn as the
+     * design system's stage + diagram instead of a plain list.
+     */
+    steps: readonly { title: string; body: string; service?: number }[];
+    /** The systems the steps run in, in badge order. Square marks only. */
+    services?: readonly { name: string; logo: string }[];
     /** What the demo is and where it stops. */
     note?: string;
     /** Caption for the workflow capture shown beside the steps. */
@@ -277,14 +284,16 @@ export type IntegrationScenario = {
     verdict?: string;
   };
   /** Edge labels, in the order the scenario runs. */
-  flows: { capture: string; dispatch: string; report: string };
+  /** `report` is omitted when the integration runs one way. */
+  flows: { capture: string; dispatch: string; report?: string };
   caption: string;
 };
 
 export type ScenarioSystem = {
   name: string;
   role: string;
-  logo: { src: string; width: number; height: number; kind: "mark" | "wordmark" };
+  /** Omitted for a target with no mark of its own, such as a drive app. */
+  logo?: { src: string; width: number; height: number; kind: "mark" | "wordmark" };
   items: readonly string[];
 };
 
@@ -378,7 +387,90 @@ const PAPERLESS: IntegrationEntry = {
   activepieces:
     "Its Paperless trigger is also an Activepieces piece, which the UMH workflows use.",
 
-  claim: "Invoices, structured on arrival.",
+  site: {
+    url: "https://github.com/paperless-ngx/paperless-ngx",
+    label: "github.com/paperless-ngx",
+  },
+  claim: "Invoices from Paperless-ngx, filed as structured records",
+  layout: "simple",
+  hero: {
+    subtitle:
+      "Paperless receives an invoice PDF by upload, watched folder or email. A language model reads it into a Powerhouse invoice record, filed by month for review in Connect and queryable over GraphQL.",
+  },
+  howItWorks: {
+    intro: [
+      "The paperless-sync connector joins Paperless to a Billing drive in Powerhouse. It reads only the documents Paperless has classified as invoices, and it never writes back to the archive.",
+    ],
+    steps: [
+      {
+        title: "Paperless receives the invoice",
+        body: "Upload the PDF, drop it in the consume folder, or let Paperless collect it from a mailbox. Paperless reads the text and classifies the document as an invoice.",
+      },
+      {
+        title: "The connector hands it to a model",
+        body: "A Paperless workflow pushes the invoice to paperless-sync, which sends the extracted text to the configured model. The example uses google/gemini-2.5-flash through OpenRouter.",
+      },
+      {
+        title: "The model fills the invoice record",
+        body: "Issuer, payer, invoice number, dates, currency, line items and totals become typed fields on a Powerhouse invoice.",
+      },
+      {
+        title: "It is filed for review",
+        body: "The record lands in the Billing drive under the month it belongs to. Open it in Connect and check it against the original scan.",
+      },
+      {
+        title: "Every consumer reads the same state",
+        body: "Connect shows the invoice, Switchboard serves it over GraphQL and HTTP, and the Billing dashboard rolls up every invoice by month and status.",
+      },
+    ],
+    note: "The example runs locally in Docker on sample invoices. It accepts PDFs only, and synchronisation runs one way: edits made in Powerhouse do not travel back to Paperless.",
+    // Rendered from integration-films/paperless/scene.html, built from the
+    // walkthrough's own captures and invoice PT-2026-2041's values.
+    video: {
+      src: "/integrations/paperless-invoice-12s.mp4",
+      poster: "/integrations/paperless-invoice-12s-poster.jpg",
+      width: 1920,
+      height: 1080,
+      label:
+        "A twelve-second film of the flow: invoice PT-2026-2041 from Lumen Type Foundry is read by Paperless, its fields become a typed Powerhouse invoice record, the same invoice opens in Connect, and the Billing dashboard shows it among the rest.",
+      caption: "Invoice PT-2026-2041, from the scan to the Billing dashboard.",
+    },
+  },
+  close: {
+    title: "Put your own invoices on a record like this.",
+  },
+  // Invoice PT-2026-2041 from the walkthrough's run of powerhouse-inc/paperless-billing.
+  scenario: {
+    source: {
+      name: "Paperless-ngx",
+      role: "Document archive",
+      logo: { src: "/logos/integrations/paperless-ngx.svg", width: 2670, height: 860, kind: "wordmark" },
+      items: ["Invoice PT-2026-2041", "Uploaded PDF, OCR and classified"],
+    },
+    target: {
+      name: "Billing dashboard",
+      role: "Every invoice in the drive, rolled up",
+      items: ["Monthly value by status", "Top payers by invoice total"],
+    },
+    record: {
+      title: "Invoice",
+      model: "powerhouse/invoice",
+      fields: [
+        { name: "issuer", value: "Lumen Type Foundry" },
+        { name: "invoiceNo", value: "PT-2026-2041" },
+        { name: "dateDue", value: "2026-10-01" },
+        { name: "totalPriceTaxIncl", value: "13,500.00 EUR" },
+      ],
+      approval: "Filed for review",
+      evidence: "Billing drive, September 2026",
+    },
+    flows: {
+      capture: "Read by a language model",
+      dispatch: "Rolled up as invoices arrive",
+    },
+    caption:
+      "The demo scenario: an invoice arrives in Paperless, becomes an invoice record in Powerhouse, and the Billing dashboard rolls it up with the rest.",
+  },
   flow: "Paperless-ngx \u2192 Invoice",
   oneLiner:
     "An invoice arrives as a PDF and leaves as a structured record that interfaces, APIs and AI tools can work with.",
@@ -574,28 +666,37 @@ const UMH: IntegrationEntry = {
     steps: [
       {
         title: "Paperless receives the purchase order",
+        service: 1,
         body: "Upload the PDF or drop it in the consume folder. Paperless reads the text and tags the document as a purchase order.",
       },
       {
         title: "A workflow drafts the ledger",
+        service: 2,
         body: "A model reads the order into a Production Ledger: customer, part, quantity, quality floor and delivery date. The production line comes from the UMH floor's own list.",
       },
       {
         title: "You approve it in Connect",
+        service: 3,
         body: "Check each field against the original scan, correct what the model got wrong, then approve.",
       },
       {
         title: "The order goes to the UMH floor",
+        service: 4,
         body: "A second workflow creates the order on the floor, stores the order id on the ledger and opens it.",
       },
       {
         title: "The floor reports back",
+        service: 4,
         body: "Every 15 seconds a third workflow adds the floor's good parts and scrap to the ledger.",
       },
     ],
+    services: [
+      { name: "Paperless-ngx", logo: "/logos/integrations/marks/paperless-ngx.svg" },
+      { name: "Activepieces", logo: "/logos/integrations/activepieces.svg" },
+      { name: "Connect", logo: "/logos/connect-icon.svg" },
+      { name: "UMH", logo: "/logos/integrations/umh.svg" },
+    ],
     note: "The UMH floor here is a simulator and the orders are fictional. The demo ends when the run completes: the ledger stays open with close-out pending.",
-    shotCaption:
-      "The first workflow in Workflow Studio: a Paperless trigger, then Activepieces and Powerhouse pieces down to the draft ledger.",
     // Rendered from umh/umh-video/scene.html, cut at 12 s so it ends on the
     // evidence trail: the verdict scene shows a close-out this demo stops before.
     video: {
@@ -648,29 +749,29 @@ const UMH: IntegrationEntry = {
       { name: "customer", type: "String", note: "The buyer issuing the purchase order." },
       { name: "manufacturer", type: "String", note: "The supplier receiving it." },
       { name: "agreementRef", type: "String", note: "The supply agreement the order cites." },
-      { name: "line", type: "Enum", note: "Production line instance, resolved against the live floor." },
-      { name: "partNumber", type: "Enum", note: "Part or recipe code, resolved against that line." },
+      { name: "line", type: "String", note: "Production line instance, resolved against the live floor." },
+      { name: "partNumber", type: "String", note: "Part or recipe code, resolved against that line." },
       { name: "committedQuantity", type: "Number", note: "The ordered quantity." },
       { name: "committedQualityPct", type: "Number", note: "First-pass yield floor from the quality clause." },
       { name: "yieldComparison", type: "Enum", note: "AT_OR_ABOVE, or STRICTLY_ABOVE when the clause says above." },
       { name: "committedOeeFloorPct", type: "Number", note: "Minimum line OEE from the capacity clause." },
       { name: "oeeMeasurementBasis", type: "Enum", note: "BUYER_MEASURED, SUPPLIER_REPORTED, or NOT_MEASURED." },
-      { name: "scrapLiabilityPerUnit", type: "Number", note: "Liability rate per rejected unit." },
-      { name: "latePenaltyPerHour", type: "Number", note: "Penalty rate per hour of late delivery." },
+      { name: "scrapLiabilityPerUnit", type: "Money", note: "Liability rate per rejected unit." },
+      { name: "latePenaltyPerHour", type: "Money", note: "Penalty rate per hour of late delivery." },
       { name: "requestedDeliveryAt", type: "DateTime", note: "Requested delivery, as a UTC timestamp." },
       { name: "orderId", type: "String", note: "The id the floor minted, bound once and never rewritten." },
-      { name: "requiredAcknowledgements", type: "Array", note: "CONTROLLING, PRODUCTION, or both." },
+      { name: "requiredAcknowledgements", type: "Array", note: "MANUFACTURER, CUSTOMER, PRODUCTION or CONTROLLING; CONTROLLING by default." },
     ],
-    lifecycleLabel: "Operations, in order",
+    // The operations this demo dispatches. START_RUN is a manual editor
+    // action no workflow sends; CLOSE_OUT and ACKNOWLEDGE are never reached.
+    lifecycleLabel: "Operations in this demo, in order",
     lifecycle: [
       "SET_COMMITMENT",
+      "SET_SOURCE_DOCUMENT",
       "APPROVE_ORDER",
       "BIND_ORDER_ID",
       "OPEN_LEDGER",
-      "START_RUN",
       "RECORD_ACTUALS_SNAPSHOT",
-      "CLOSE_OUT",
-      "ACKNOWLEDGE",
     ],
     // Boxes are measured on the crop, 654 x 646.
     anatomy: {
@@ -710,11 +811,11 @@ const UMH: IntegrationEntry = {
     // Drafting and line resolution are shown block by block on the workflow
     // capture, so the list starts where that capture ends.
     {
-      label: "Create the floor order on approval",
+      label: "Create a floor order on purchase order approval",
       body: "Seven blocks, triggered by the reviewer's APPROVE_ORDER. It asserts there is a line to run on, creates the order, then binds the returned id and opens the ledger. Both failure paths write the reason onto the document instead of failing silently.",
     },
     {
-      label: "Append floor progress to the evidence trail",
+      label: "Append floor progress to the ledger evidence trail",
       body: "Four blocks on a polling trigger. It skips readings that counted nothing, finds the ledger bound to the order, checks the ledger is open, and appends one snapshot.",
     },
     {
@@ -758,16 +859,23 @@ const UMH: IntegrationEntry = {
       role: "The new-document trigger, which registers its own webhook in Paperless.",
     },
     {
+      name: "@powerhousedao/piece-core",
+      role: "The branches and assertions that guard each workflow.",
+    },
+    {
       name: "@activepieces/piece-open-router",
-      role: "The extraction step, from the Activepieces catalogue.",
+      role: "The extraction and line-matching steps, from the Activepieces catalogue.",
+    },
+    {
+      name: "@activepieces/piece-json",
+      role: "Resolves the model's line and part against the floor's own list.",
     },
   ],
 
   requirements: [
     "Docker with Compose v2. The whole stack runs in it, and the first run pulls about 3 GB.",
-    "An OpenRouter key for the extraction step, set as PAPERLESS_AI_API_KEY in .env.",
-    "The ledger package version, set as UMH_LEDGER_VERSION in .env.",
-    "Free host ports: 8000 (Paperless), 3000 (Connect), 4001 (reactor), 8081 (the simulator), 80 (gateway), 502 (Modbus), 4840\u20134852 (OPC-UA) and 5432 (database).",
+    "An OpenRouter key for the two model steps, set as PAPERLESS_AI_API_KEY in .env. The ledger package version, UMH_LEDGER_VERSION, comes pinned in .env.example.",
+    "Free host ports: 8000 (Paperless), 3000 (Connect), 4001 (reactor), 8081 (the simulator), 8095 (umh-core), 80 (gateway), 502 (Modbus), 4840\u20134852 (OPC-UA) and 5432 (database). Paperless, Connect, the reactor and the database can be moved with the *_HOST_PORT variables in .env.",
   ],
 
 
@@ -779,12 +887,12 @@ const UMH: IntegrationEntry = {
   walkthroughSlug: "united-manufacturing-hub-powered-by-powerhouse",
   primer: {
     label: "What is UMH?",
-    body: "UMH is an open-source stack for manufacturing data. It reads machines over protocols such as OPC-UA and Modbus, keeps their history in a time-series database, and makes the shop floor queryable. This example vendors a fixed v1.4.0 deployment of its factory simulator, with umh-core pinned at v0.44.8, so the floor runs on your own machines.",
+    body: "UMH is an open-source stack for manufacturing data. It reads machines over protocols such as OPC-UA and Modbus, keeps their history in a time-series database, and makes the shop floor queryable. This example vendors a fixed v1.4.0 deployment of the UMH factory demo, with its machine simulator at v1.1.0 and umh-core pinned at v0.44.8, so the floor runs on your own machines.",
   },
   limits: [
     "The factory floor is a simulator, and the purchase orders, customers and rates are fictional. Purchase order BC-2026-0917 is one of the four sample orders in the repo.",
     "Available means there is something to run. This is a demo on demo data, not a production deployment.",
-    "Extraction sends the purchase order's text to OpenRouter, a hosted model API, so the document leaves your machines for that one step.",
+    "Two steps call OpenRouter, a hosted model API: extraction sends the purchase order's text, and line matching sends the extracted commitment with the floor's list of lines and recipes. Both leave your machines.",
     "The demo stops before close-out. Ledgers reach Close-out pending and stay open, so there is no verdict, run cost or ship-or-hold recommendation yet.",
   ],
   close: {
@@ -829,49 +937,15 @@ const UMH: IntegrationEntry = {
   },
   shots: [
     {
-      src: "/integrations/umh-workflow-canvas.png",
-      alt: "The Workflow Studio canvas for the workflow that drafts a ledger from a purchase order: a Paperless trigger, a purchase-order branch, then twelve blocks down to applying the resolved line and part.",
+      // Workflow Studio's overview on the demo, captured 2026-10-08 after a
+      // run: all three workflows, each with its steps and recent runs. Padded
+      // to 16:10 with Studio's own page colour so the card shows it whole.
+      src: "/integrations/umh-workflows-overview.png",
+      alt: "Workflow Studio's overview of the three UMH workflows: initialize a ledger from a new purchase order (a Paperless trigger and twelve steps), create a floor order on purchase order approval (seven steps, two of them error paths), and append floor progress to the ledger evidence trail (four steps), each marked succeeded with its recent runs.",
       caption:
-        "The integration, as a workflow: a Paperless trigger, then twelve blocks to a draft ledger with its line and part resolved.",
-      width: 1680,
-      height: 2794,
-      stages: [
-        {
-          heading: "Trigger and guard",
-          body: "Paperless fires on a new document, and a branch stops anything that is not a purchase order.",
-          steps: [
-            { label: "New document", piece: "Paperless-ngx" },
-            { label: "Is it a purchase order?", piece: "Branch" },
-          ],
-        },
-        {
-          heading: "Draft the ledger",
-          body: "The extractor reads the ledger's own schema at run time. The apply step may dispatch SET_COMMITMENT and nothing else.",
-          steps: [
-            { label: "Read the ledger's own schema", piece: "Reactor" },
-            { label: "Extract the commitment", piece: "OpenRouter" },
-            { label: "Create the draft ledger", piece: "Reactor" },
-            { label: "Apply the extracted commitment", piece: "Reactor" },
-            { label: "Fetch the original scan", piece: "Paperless-ngx" },
-            { label: "Attach the scan to the ledger", piece: "Reactor" },
-          ],
-        },
-        {
-          heading: "Resolve the line and part",
-          body: "The model's answer is only a search key. It is resolved against the floor's own catalogue, so an invented line matches nothing.",
-          steps: [
-            { label: "List the floor's lines", piece: "UMH" },
-            { label: "Ask which line and part", piece: "OpenRouter" },
-            { label: "Resolve it against the floor", piece: "JSON query" },
-            { label: "Did it resolve to a real line?", piece: "Branch" },
-          ],
-        },
-        {
-          heading: "Apply, or leave it for review",
-          body: "Only a resolved line and part are written. Anything else leaves the reviewer's blocker in place.",
-          steps: [{ label: "Apply the line and part", piece: "Reactor" }],
-        },
-      ],
+        "The integration, as three workflows in Workflow Studio: intake, the floor order on approval, and the floor's progress.",
+      width: 2758,
+      height: 1724,
     },
   ],
 };
@@ -897,7 +971,90 @@ const ACTIVEPIECES: IntegrationEntry = {
   },
   summary:
     "The Activepieces piece catalogue runs inside the reactor, so an integration is a workflow you can read, edit and re-run rather than code you have to deploy.",
-  claim: "Integrations, built as workflows.",
+  site: { url: "https://www.activepieces.com", label: "activepieces.com" },
+  claim: "Integrations built as Activepieces workflows inside the reactor",
+  layout: "simple",
+  hero: {
+    subtitle:
+      "The Activepieces piece catalogue runs inside the Powerhouse reactor. An integration becomes a workflow you open, read and change in Workflow Studio, and each step that writes to a document names the operations it may dispatch.",
+  },
+  howItWorks: {
+    intro: [
+      "Powerhouse runs the ",
+      { text: "Activepieces catalogue", href: "https://www.activepieces.com/pieces" },
+      " beside pieces of its own that read and write documents. The UMH integration is built this way, and the film shows its workflows.",
+    ],
+    steps: [
+      {
+        title: "A trigger starts the run",
+        body: "A piece polls a service, or a document trigger fires on an operation the reactor has just recorded.",
+      },
+      {
+        title: "Guards decide whether to continue",
+        body: "Branch and assert blocks stop a run early, or refuse to continue when a precondition does not hold. A run that stops at a guard is a successful run.",
+      },
+      {
+        title: "Steps read what they need",
+        body: "Find a document by its state, get a file from a source system, or hand a model the document model's own schema so a prompt cannot drift from it.",
+      },
+      {
+        title: "A model proposes, a query resolves",
+        body: "Ask a language model, then resolve its answer against a real list with a query, so what gets written came from the system rather than the model.",
+      },
+      {
+        title: "The write step dispatches operations",
+        body: "It dispatches onto a document against the allow-list that step declares. The step that applies an extracted commitment permits SET_COMMITMENT and nothing else.",
+      },
+    ],
+    note: "Twenty-one of the catalogue's pieces declare a runtime dependency and cannot be loaded, because the reactor imports a piece bundle and installs nothing. The rest are self-contained and load normally.",
+    // Rendered from integration-films/activepieces/scene.html, built from the
+    // UMH demo's Workflow Studio captures.
+    video: {
+      src: "/integrations/activepieces-workflow-12s.mp4",
+      poster: "/integrations/activepieces-workflow-12s-poster.jpg",
+      width: 1920,
+      height: 1080,
+      label:
+        "A twelve-second film: Workflow Studio lists the UMH demo's workflows and connections, the five kinds of block are laid out with the write step allowed to dispatch SET_COMMITMENT only, then the twelve-step workflow that drafts a ledger and the seven-step workflow that creates the floor order are shown as graphs.",
+      caption: "Workflow Studio and two of the UMH demo's workflows, block by block.",
+    },
+  },
+  close: {
+    title: "Build your own integration as a workflow like this.",
+  },
+  // The UMH demo's Production Ledger, which three Activepieces workflows write.
+  scenario: {
+    source: {
+      name: "Activepieces",
+      role: "Piece catalogue",
+      logo: { src: "/logos/integrations/activepieces.svg", width: 22, height: 19, kind: "mark" },
+      items: ["Several hundred pieces", "Paperless, OpenRouter and UMH in this demo"],
+    },
+    target: {
+      name: "UMH",
+      role: "Simulated factory floor",
+      logo: { src: "/logos/integrations/umh.svg", width: 48, height: 48, kind: "mark" },
+      items: ["Order created on approval", "Good parts and scrap, every 15 seconds"],
+    },
+    record: {
+      title: "Production Ledger",
+      model: "umh/production-ledger",
+      fields: [
+        { name: "customer", value: "BuildCorp AG" },
+        { name: "partNumber", value: "WIN-STD-A" },
+        { name: "committedQuantity", value: "320" },
+      ],
+      approval: "Approved by a reviewer",
+      evidence: "SET_COMMITMENT, allowed for this step",
+    },
+    flows: {
+      capture: "Written by a workflow step",
+      dispatch: "Order created by a workflow",
+      report: "Progress appended by a workflow",
+    },
+    caption:
+      "The scenario from the UMH demo: Activepieces workflows draft a Production Ledger, create the order on the floor after approval, and append the floor's progress.",
+  },
   flow: "Any piece \u2192 Document operation",
   scope: [
     { label: "Data in", value: "Whatever a piece's trigger carries" },
@@ -1040,7 +1197,94 @@ const ARS_CONTEXTA: IntegrationEntry = {
   status: "Available",
   summary:
     "Claims written as linked markdown become Powerhouse notes with typed relationships, provenance and a lifecycle where approval comes from a different actor than the author.",
-  claim: "Claims, typed and queryable.",
+  site: {
+    url: "https://github.com/agenticnotetaking/arscontexta",
+    label: "github.com/agenticnotetaking",
+  },
+  vetra: {
+    url: "https://vetra.io/packages/%40powerhousedao%2Fknowledge-note",
+    label: "The Knowledge Vault package on Vetra",
+  },
+  claim: "Ars Contexta claims, filed as typed notes a person approves",
+  layout: "simple",
+  hero: {
+    subtitle:
+      "An agent following the Ars Contexta methodology turns sources into atomic notes with typed links and provenance. It writes through typed operations, and only a different actor can approve a note into canonical knowledge.",
+  },
+  howItWorks: {
+    intro: [
+      "The powerhouse-knowledge plugin gives an agent host the Ars Contexta pipeline as skills. The agent writes into the vault through typed operations, and the 249 research claims stay on disk as the methodology a note is checked against.",
+    ],
+    steps: [
+      {
+        title: "A source is recorded",
+        body: "A source lands in the vault with its origin, its type and a status, before any claim is taken out of it.",
+      },
+      {
+        title: "Each claim becomes a note",
+        body: "One note per claim, each carrying an edge back to the source it came from. The skip rate is reported rather than hidden.",
+      },
+      {
+        title: "Links are proposed with a reason",
+        body: "Typed links are proposed between the new notes and what the vault already holds, and every link has to state its reason.",
+      },
+      {
+        title: "Older notes are rewoven",
+        body: "Older notes are revisited where a new claim changes what they should say, so the graph stays current in both directions.",
+      },
+      {
+        title: "A gate checks, a person approves",
+        body: "A quality gate checks description length, connection count and whether each link survives being read back. Approval comes from a different actor than the author, and the model enforces it.",
+      },
+    ],
+    note: "The vault runs on your own reactor with the bai-knowledge-note package. Semantic search needs Switchboard 1.0.50 or newer; older deployments fall back to keyword search.",
+    // Rendered from integration-films/ars-contexta/scene.html, built from the
+    // Knowledge Vault's own captures. They come from two vaults, so the film
+    // shows the flow, not one run.
+    video: {
+      src: "/integrations/ars-contexta-note-12s.mp4",
+      poster: "/integrations/ars-contexta-note-12s-poster.jpg",
+      width: 1920,
+      height: 1080,
+      label:
+        "A twelve-second film of the flow: sources sit in the vault queued for extraction, the Ars Contexta pipeline records, reduces, reflects, reweaves and verifies them into notes, a note reaches canonical once a different actor approves it, and the Knowledge Vault app answers a question from three cited notes.",
+      caption: "Sources in the vault, a note through the pipeline, and an answer cited from notes.",
+    },
+  },
+  close: {
+    title: "Put your own knowledge on a record like this.",
+  },
+  // The note "Typed links turn a pile of notes into a map." from the
+  // Powerhouse Vault's canonical list, as the Knowledge Vault captures show it.
+  scenario: {
+    source: {
+      name: "Ars Contexta",
+      role: "Methodology and agent skills",
+      items: ["249 research claims, read from disk", "Sources filed in the vault"],
+    },
+    target: {
+      name: "Knowledge Vault",
+      role: "Chat, search and the graph",
+      items: ["Answers cited from notes", "Running locally"],
+    },
+    record: {
+      title: "Knowledge note",
+      model: "bai/knowledge-note",
+      fields: [
+        { name: "noteType", value: "concept" },
+        { name: "topics", value: "#graph #links" },
+        { name: "status", value: "canonical" },
+      ],
+      approval: "Approved by a different actor",
+      evidence: "Typed links turn a pile of notes into a map.",
+    },
+    flows: {
+      capture: "Written through typed operations",
+      dispatch: "Read and cited",
+    },
+    caption:
+      "The scenario: an agent following Ars Contexta writes notes into the vault, a different actor approves them, and the Knowledge Vault app answers from them.",
+  },
   flow: "Ars Contexta \u2192 Knowledge note",
   scope: [
     { label: "Data in", value: "Research claims, sources and working sessions" },
@@ -1237,7 +1481,87 @@ const DOCLING: IntegrationEntry = {
   },
   summary:
     "PDFs, scans and Office files become markdown split at their own headings, and each section a person keeps is filed as a Knowledge Vault source.",
-  claim: "Whole documents, split where the author split them.",
+  site: { url: "https://www.docling.ai", label: "docling.ai" },
+  claim: "Documents converted by Docling, split into the sections you keep",
+  layout: "simple",
+  hero: {
+    subtitle:
+      "Drop a PDF, scan or Office file on the vault's Intake view. Docling converts it to markdown and splits it at its own headings, and each section a person keeps is filed as a Knowledge Vault source.",
+  },
+  howItWorks: {
+    intro: [
+      "The docling-service runs in its own container beside the Switchboard. The service knows formats and the vault knows sources, and nothing is filed until a person confirms.",
+    ],
+    steps: [
+      {
+        title: "The file goes to the converter",
+        body: "The vault's convert route passes it to the service, and its extension picks the parser. Office files, HTML and text need no models and convert at once.",
+      },
+      {
+        title: "A PDF is read cheapest first",
+        body: "Docling's own pass reads born-digital pages and plain scans. A garbled text layer falls back to pdf.js, then to Tesseract or Docling's bundled OCR, and the response names the step that produced the text.",
+      },
+      {
+        title: "The service measures what survived",
+        body: "It counts how much of the PDF's own text reached the markdown, and lists the formulas and pictures it saw but could not transcribe.",
+      },
+      {
+        title: "You review the sections",
+        body: "The vault proposes one section per heading group and folds very small ones into their neighbours. Untick what you do not need and pick the source type.",
+      },
+      {
+        title: "Each kept section is filed",
+        body: "It becomes a source in a folder named after the file, with its figures attached, queued for extraction into notes.",
+      },
+    ],
+    note: "Converting writes nothing on its own, and only a signed-in caller can start a conversion: a long book takes minutes of compute.",
+    // Rendered from integration-films/docling/scene.html, built from the
+    // Knowledge Vault's own captures of the intake flow.
+    video: {
+      src: "/integrations/docling-sources-12s.mp4",
+      poster: "/integrations/docling-sources-12s-poster.jpg",
+      width: 1920,
+      height: 1080,
+      label:
+        "A twelve-second film of the flow: a file is dropped on the vault's Add sources view, Docling splits Design for How People Think into 117 parts for review, a kept section becomes a typed Source record converted by docling.rs, and the files land in the vault queued for extraction.",
+      caption: "A book dropped on the vault, split at its headings and filed as sources.",
+    },
+  },
+  close: {
+    title: "Put your own documents on a record like this.",
+  },
+  // Design for How People Think (John Whalen, 2019), as the Knowledge Vault's
+  // review capture shows it: 117 parts proposed, sections ticked to keep.
+  scenario: {
+    source: {
+      name: "Docling",
+      role: "Document converter",
+      logo: { src: "/logos/integrations/docling.svg", width: 1024, height: 1024, kind: "mark" },
+      items: ["Design for How People Think, 117 parts", "29 formats, up to 30 MB each"],
+    },
+    target: {
+      name: "Knowledge Vault",
+      role: "Sources queued for extraction",
+      items: ["One folder per file", "Original file attached to every source"],
+    },
+    record: {
+      title: "Source",
+      model: "bai/source",
+      fields: [
+        { name: "sourceType", value: "ARTICLE" },
+        { name: "provenance.tool", value: "docling.rs" },
+        { name: "status", value: "extracting" },
+      ],
+      approval: "Kept by a person at review",
+      evidence: "PART III PUTTING THE SIX MINDS TO WORK",
+    },
+    flows: {
+      capture: "Converted, split at its headings",
+      dispatch: "Queued for extraction",
+    },
+    caption:
+      "The scenario: Docling converts a book and splits it at its headings, the sections a person keeps become sources in Powerhouse, and the vault queues them for extraction.",
+  },
   flow: "Docling → Source",
   scope: [
     { label: "Data in", value: "PDFs, scans, Office files and HTML, 29 formats in all" },
@@ -1414,7 +1738,87 @@ const SPECKLE: IntegrationEntry = {
   },
   summary:
     "Each revision of a Speckle building model becomes a record of its quantities and of what changed, while the 3D model itself stays in Speckle.",
-  claim: "Every revision, measured and compared.",
+  site: { url: "https://speckle.systems", label: "speckle.systems" },
+  claim: "Speckle model revisions, measured and compared element by element",
+  layout: "simple",
+  hero: {
+    subtitle:
+      "A person runs a sync, and each revision of a Speckle building model becomes a Powerhouse record of its quantities and of what changed. The geometry stays in Speckle, and nothing is written back.",
+  },
+  howItWorks: {
+    intro: [
+      "The sync runner in speckle-package reads Speckle on request and writes what it finds onto a Speckle Project record. It runs on the Switchboard with a service credential and never writes back to Speckle.",
+    ],
+    steps: [
+      {
+        title: "Name the Speckle project",
+        body: "In the Sync Console, name the Speckle server and project, check that both resolve, and pick the record to mirror into.",
+      },
+      {
+        title: "Run a sync",
+        body: "Run sync records a request on the sync document. The sync runner on the Switchboard reacts to that request, not to a timer.",
+      },
+      {
+        title: "The runner reads the new versions",
+        body: "It walks each model's recent versions and the objects in them, up to the caps set in the console. Versions it has already pulled are skipped.",
+      },
+      {
+        title: "Each revision is totalled and compared",
+        body: "Each revision gets its volume, area and length per category, and each pair of revisions gets the elements added, modified and removed.",
+      },
+      {
+        title: "The results land on the record",
+        body: "They arrive on the Speckle Project record as operations. Writing the same revision again changes nothing, so a repeated sync is safe.",
+      },
+    ],
+    note: "The demo project is Nordkai Bridge on a local Speckle server. A sync runs when someone asks for one: auto-sync needs a webhook from Speckle that the package does not ship yet.",
+    // Rendered from integration-films/speckle/scene.html, built from the
+    // record's own captures of the Nordkai Bridge project.
+    video: {
+      src: "/integrations/speckle-revision-12s.mp4",
+      poster: "/integrations/speckle-revision-12s-poster.jpg",
+      width: 1920,
+      height: 1080,
+      label:
+        "A twelve-second film of the flow: the four revisions of the Nordkai Bridge model in Speckle are read, the latest becomes a Speckle Project record with its volume, area and change counts, the Model Explorer paints the changed elements, and the churn view shows which categories kept moving.",
+      caption: "Nordkai Bridge, from four revisions in Speckle to what each one changed.",
+    },
+  },
+  close: {
+    title: "Put your own models on a record like this.",
+  },
+  // Nordkai Bridge (be4c927cce), as the record's Model Explorer captures show it.
+  scenario: {
+    source: {
+      name: "Speckle",
+      role: "Building model platform",
+      logo: { src: "/logos/integrations/speckle.svg", width: 100, height: 24, kind: "wordmark" },
+      items: ["Nordkai Bridge, 4 revisions", "Revit models, synced on request"],
+    },
+    target: {
+      name: "Model Explorer",
+      role: "The model with its changes painted in",
+      items: ["Modified amber, removed red", "A timeline of every revision"],
+    },
+    record: {
+      title: "Speckle Project",
+      model: "speckle/project",
+      fields: [
+        { name: "revision", value: "69b4e8994f" },
+        { name: "objects", value: "38" },
+        { name: "volume", value: "543.76 m\u00b3" },
+        { name: "changed", value: "+0 ~12 \u22125" },
+      ],
+      approval: "Synced on request",
+      evidence: "Volume \u221234 m\u00b3, area \u221262 m\u00b2",
+    },
+    flows: {
+      capture: "Read on request",
+      dispatch: "Painted onto the model",
+    },
+    caption:
+      "The demo scenario: Nordkai Bridge's revisions in Speckle become a Speckle Project record in Powerhouse, and the Model Explorer paints what each revision changed.",
+  },
   flow: "Speckle → Speckle Project",
   scope: [
     { label: "Data in", value: "Models, revisions and element quantities" },

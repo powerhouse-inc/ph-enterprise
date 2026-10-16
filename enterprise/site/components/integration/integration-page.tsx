@@ -9,6 +9,7 @@ import { LandingLenis } from "@/components/landing/landing-lenis";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { SectionContainer } from "@/components/landing/section-container";
 import { STATUS_LABEL, type IntegrationEntry, type IntegrationShot } from "@/data/integrations";
+import { IntegrationFlow, type FlowStep } from "./integration-flow";
 import { ModelAnatomy } from "./model-anatomy";
 import { RecordVideo } from "./record-video";
 import { ScenarioDiagram } from "./scenario-diagram";
@@ -238,6 +239,9 @@ function VendorLink({
   logo?: IntegrationEntry["logo"];
   site: { url: string; label: string };
 }) {
+  // A wordmark already spells the name, so it stands in for the text; a
+  // square mark sits beside it.
+  const wordmark = logo ? logo.width / logo.height > 2 : false;
   return (
     <a
       href={site.url}
@@ -248,13 +252,15 @@ function VendorLink({
       {logo ? (
         <Image
           src={logo.src}
-          alt=""
+          alt={wordmark ? name : ""}
           width={logo.width}
           height={logo.height}
           className="h-8 w-auto rounded-[6px]"
         />
       ) : null}
-      <span className="text-[16px] font-semibold text-copy">{name}</span>
+      {wordmark ? null : (
+        <span className="text-[16px] font-semibold text-copy">{name}</span>
+      )}
       <span className="flex items-center gap-1 text-[13px] text-copy-muted group-hover:text-copy">
         {site.label}
         <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -276,6 +282,10 @@ function SimpleSections({
 }) {
   const how = integration.howItWorks;
   if (!how) return null;
+  // Every step mapped to a system: draw them as the stage + diagram.
+  const flowSteps = how.services && how.steps.every((step) => step.service !== undefined)
+    ? (how.steps as readonly FlowStep[])
+    : undefined;
   return (
     <section
       id="how-it-works"
@@ -343,8 +353,23 @@ function SimpleSections({
           </figure>
         ) : null}
 
+        {flowSteps && how.services ? (
+          <div className="mt-12">
+            <IntegrationFlow services={how.services} steps={flowSteps} />
+          </div>
+        ) : null}
+
         {/* The capture is tall and dense, so it takes the wider column. */}
-        <div className="mt-12 grid grid-cols-1 items-start gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-14">
+        {/* With no workflow capture the steps take a reading column alone. */}
+        {/* The diagram replaces both the list and the capture. */}
+        {flowSteps ? null : (
+        <div
+          className={
+            spine
+              ? "mt-12 grid grid-cols-1 items-start gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-14"
+              : "mt-12 max-w-[760px]"
+          }
+        >
           <ol className="divide-y divide-border-light border-y border-border-light">
             {how.steps.map((step, i) => (
               <li
@@ -403,6 +428,7 @@ function SimpleSections({
             </figure>
           ) : null}
         </div>
+        )}
 
         {how.note ? (
           <p className="mt-10 max-w-[62ch] text-[14.5px] leading-[1.65] text-pretty text-copy-muted">
@@ -613,8 +639,9 @@ export function IntegrationPage({
                 )}
 
                 <HeroActions
-                  // The repo and its setup live in the walkthrough on simple pages.
-                  repoUrl={simple ? undefined : repoUrl}
+                  // On simple pages the walkthrough carries the repo and its
+                  // setup; a record without one keeps the repo link.
+                  repoUrl={simple && walkthroughSlug ? undefined : repoUrl}
                   walkthroughSlug={walkthroughSlug}
                   vetraUrl={vetra?.url}
                   className="mt-9"

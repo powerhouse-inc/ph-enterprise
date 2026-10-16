@@ -8,6 +8,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { BlogFigure } from "@/components/blog/blog-figure";
+import { IntegrationStage } from "@/components/integration/integration-flow";
 import type { BlogBlock, BlogInline } from "@/data/blog";
 import { cn } from "@/lib/utils";
 
@@ -354,6 +355,11 @@ export function BlogBody({ blocks }: { blocks: readonly BlogBlock[] }) {
 
           case "resources":
             return <Resources key={index} block={block} />;
+
+          case "integration":
+            return (
+              <IntegrationStage key={index} services={block.services} />
+            );
         }
       })}
     </div>
