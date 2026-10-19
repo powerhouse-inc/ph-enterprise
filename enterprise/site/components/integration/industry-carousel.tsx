@@ -195,7 +195,7 @@ export function IndustryCarousel({ slides }: { slides: readonly IndustrySlide[] 
             const hidden = copy !== 1;
             return (
               <li
-                key={`${copy}-${slide.industry}`}
+                key={`${copy}-${slide.href}`}
                 className="w-[78%] shrink-0 snap-start sm:w-[62%]"
                 aria-hidden={hidden || undefined}
                 aria-label={hidden ? undefined : `${i + 1} of ${count}: ${slide.industry}`}
@@ -227,7 +227,7 @@ export function IndustryCarousel({ slides }: { slides: readonly IndustrySlide[] 
         <div className="ml-2 flex items-center gap-1.5">
           {slides.map((slide, i) => (
             <button
-              key={slide.industry}
+              key={slide.href}
               type="button"
               onClick={() => goTo(i)}
               aria-label={`Show ${slide.industry}`}

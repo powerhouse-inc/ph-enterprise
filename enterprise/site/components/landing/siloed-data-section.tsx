@@ -161,7 +161,7 @@ export function SiloedDataSection() {
   return (
     <section
       id="problem"
-      className="relative z-10 rounded-t-[40px]"
+      className="relative z-10 border-t border-border-light"
       style={{
         fontFamily: "Inter, sans-serif",
         background: "#faf9f7",

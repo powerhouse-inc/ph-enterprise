@@ -4,12 +4,8 @@ import type { ReactNode } from "react";
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, Lock, Plus } from "lucide-react";
 import { BlogHeroBand } from "@/components/blog/blog-hero-band";
 import { CATALOGUE, PIECE_COUNT, getIntegration } from "@/data/integrations";
-import { CTA_URL } from "@/lib/site";
-import {
-  IndustryCarousel,
-  type IndustrySlide,
-  type SlideLogo,
-} from "./industry-carousel";
+import { INDUSTRY_SLIDES } from "@/data/industry-slides";
+import { IndustryCarousel } from "./industry-carousel";
 
 /**
  * The integrations index hero. A headline, then the offer in two rows:
@@ -51,74 +47,6 @@ const PIECES = [
   ["anthropic-claude", "Claude"],
   ["webhook", "Webhook"],
 ] as const;
-
-/** Wordmark and glyph dimensions come from the records where one exists. */
-function recordLogo(slug: string): SlideLogo {
-  const record = getIntegration(slug);
-  if (!record?.logo) throw new Error(`No logo on integration record "${slug}"`);
-  return { name: record.name, ...record.logo, kind: record.logo.kind ?? "wordmark" };
-}
-
-/**
- * Industry verticals, each shown with the integrations that serve it.
- * Distyra has no record on this site yet, so it links out to its own. Legal
- * has no integration yet: its slide is an open slot that leads to a call.
- */
-const INDUSTRY_SLIDES: readonly IndustrySlide[] = [
-  {
-    industry: "Operations",
-    name: "Paperless-ngx",
-    line: "Scans, emails and uploads land in one archive, then leave as typed invoice records.",
-    href: "/integrations/paperless-ngx",
-    logos: [recordLogo("paperless-ngx")],
-  },
-  {
-    industry: "Manufacturing",
-    name: "UMH",
-    line: "Purchase orders become production ledgers the factory floor reports against.",
-    href: "/integrations/umh",
-    logos: [{ ...recordLogo("umh"), name: "UMH" }, recordLogo("paperless-ngx")],
-  },
-  {
-    industry: "Operations",
-    name: "Docling",
-    line: "PDFs, scans and Office files become markdown, split at the author's own headings.",
-    href: "/integrations/docling",
-    logos: [recordLogo("docling")],
-  },
-  {
-    industry: "Construction",
-    name: "Speckle",
-    line: "Each building-model revision becomes a record of its quantities and what changed.",
-    href: "/integrations/speckle",
-    logos: [recordLogo("speckle")],
-  },
-  {
-    industry: "Financial",
-    name: "Distyra",
-    line: "EU bank statements and PSD2 streams, parsed into records a person can check.",
-    href: "https://www.distyra.eu",
-    // Distyra's own mark, from distyra.eu/assets/brand/distyra-mark.svg.
-    logos: [
-      {
-        name: "Distyra",
-        src: "/logos/integrations/distyra-mark.svg",
-        width: 280,
-        height: 210,
-        kind: "mark",
-      },
-    ],
-  },
-  {
-    industry: "Legal",
-    name: "Legal",
-    line: "Contracts, case files and matter records. Tell us which system holds yours.",
-    href: CTA_URL,
-    logos: [],
-    placeholder: "Your legal system",
-    linkLabel: "Talk to us about it",
-  },
-];
 
 /*
  * The recipe diagram: one invoice workflow drawn in the homepage's visual
@@ -451,19 +379,16 @@ function PanelHead({
 function CataloguePanel() {
   return (
     <section className="flex flex-col" aria-labelledby="hero-any-piece">
-      <Image
-        src="/logos/activepieces/activepieces-logo-light.svg"
-        alt={CATALOGUE.name}
-        width={945}
-        height={147}
-        className="h-[22px] w-auto self-start"
-      />
+      {/* A credit, not a logo: the framework is not one of the integrations. */}
+      <p className="text-[13px] text-t3">
+        Built on the open-source {CATALOGUE.name} framework
+      </p>
       <div className="mt-6">
         <PanelHead
           id="hero-any-piece"
           figure={PIECE_COUNT}
           unit="open-source connectors"
-          title={`Use any ${CATALOGUE.name} piece`}
+          title="Connect any of them to a workflow"
         />
       </div>
 
@@ -493,7 +418,7 @@ function CataloguePanel() {
       <div className="flex-1" aria-hidden="true" />
 
       <PanelLink href={ACTIVEPIECES_CATALOGUE_URL}>
-        Browse all {PIECE_COUNT} pieces
+        Browse all {PIECE_COUNT} connectors
       </PanelLink>
     </section>
   );
@@ -594,7 +519,7 @@ export function IntegrationsHero() {
           id="hero-connect"
           level="h1"
           title="Connect your existing tools"
-          subtitle={`Activepieces support brings ${PIECE_COUNT} ready-made connectors, plus Powerhouse integrations built for your industry. Nothing you run today has to be replaced.`}
+          subtitle={`Powerhouse workflows connect to ${PIECE_COUNT} systems out of the box, alongside integrations built for your industry. Nothing you run today has to be replaced.`}
         />
         {/* Any piece, plus our own: one panel, joined by the plus. */}
         <div

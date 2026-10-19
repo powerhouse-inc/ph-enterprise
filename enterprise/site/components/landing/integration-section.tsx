@@ -11,7 +11,7 @@ import { SectionContainer } from "./section-container";
 /**
  * A sample of the Activepieces catalogue, in the systems the narrative above
  * names: email, CRM, finance, documents, data. Logos are the ones Activepieces
- * serves at activepieces.com/logos/pieces/. Stage 01 of the diagram above shows
+ * serves at activepieces.com/logos/pieces/. Stage 01 of the diagram below shows
  * a different ten, so the two strips do not read as the same list twice.
  */
 const SAMPLE_PIECES = [
@@ -39,7 +39,8 @@ export function IntegrationSection() {
     <section
       ref={rootRef}
       id="integrations"
-      className="border-t border-border-light bg-paper-soft py-20 text-copy"
+      // First after the hero, so it is the sheet that rises over it.
+      className="relative z-10 rounded-t-[40px] bg-paper-soft py-20 text-copy"
     >
       <SectionContainer>
         <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:gap-16">
@@ -64,11 +65,19 @@ export function IntegrationSection() {
               </p>
             </div>
 
-            {/* The catalogue, shown rather than claimed. */}
+            {/* The catalogue, led by its size, then shown rather than claimed. */}
             <div className="mt-8 border-t border-border-light pt-6">
+              <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <span className="font-heading text-[clamp(44px,4.4vw,60px)] leading-none font-[680] tracking-[-0.02em] text-copy">
+                  {PIECE_COUNT}
+                </span>
+                <span className="text-[17px] leading-[1.5] text-copy">
+                  systems you can connect
+                </span>
+              </p>
               <ul
                 aria-label="More of the systems Powerhouse connects"
-                className="grid grid-cols-6 gap-2 sm:grid-cols-8 lg:grid-cols-6"
+                className="mt-6 grid grid-cols-6 gap-2 sm:grid-cols-8 lg:grid-cols-6"
               >
                 {SAMPLE_PIECES.map(([file, name]) => (
                   <li
@@ -88,8 +97,8 @@ export function IntegrationSection() {
               </ul>
               <p className="mt-4 text-[15px] leading-[1.6] text-copy-muted">
                 Chat, payments, project tracking, storage, analytics and the
-                model providers. {PIECE_COUNT} connectors in all, each one a
-                workflow you can read and re-run.
+                model providers. Each connector is a workflow step you can read
+                and re-run.
               </p>
               <Link
                 href="/integrations"
