@@ -659,9 +659,7 @@ const UMH: IntegrationEntry = {
   },
   howItWorks: {
     intro: [
-      "Three workflows built from ",
-      { text: "Activepieces", href: "https://www.activepieces.com/pieces" },
-      " pieces connect Paperless, the Production Ledger and the UMH floor. Each one runs inside Powerhouse, and you can open and edit it in Workflow Studio. You make one decision: approve the order.",
+      "Three Powerhouse workflows connect Paperless, the Production Ledger and the UMH floor. Each one runs inside Powerhouse, and you can open and edit it in Workflow Studio. You make one decision: approve the order.",
     ],
     steps: [
       {
@@ -676,23 +674,23 @@ const UMH: IntegrationEntry = {
       },
       {
         title: "You approve it in Connect",
-        service: 3,
+        service: 2,
         body: "Check each field against the original scan, correct what the model got wrong, then approve.",
       },
       {
         title: "The order goes to the UMH floor",
-        service: 4,
+        service: 3,
         body: "A second workflow creates the order on the floor, stores the order id on the ledger and opens it.",
       },
       {
         title: "The floor reports back",
-        service: 4,
+        service: 3,
         body: "Every 15 seconds a third workflow adds the floor's good parts and scrap to the ledger.",
       },
     ],
     services: [
+      // The systems, not the framework the workflows are built in.
       { name: "Paperless-ngx", logo: "/logos/integrations/marks/paperless-ngx.svg" },
-      { name: "Activepieces", logo: "/logos/integrations/activepieces.svg" },
       { name: "Connect", logo: "/logos/connect-icon.svg" },
       { name: "UMH", logo: "/logos/integrations/umh.svg" },
     ],
@@ -2003,10 +2001,12 @@ const SPECKLE: IntegrationEntry = {
   ],
 };
 
+// Activepieces is not here: it is the framework the integrations are built
+// in, not an integration, so it has no record page of its own. The index and
+// the homepage name it as the catalogue behind PIECE_COUNT.
 export const INTEGRATIONS: readonly IntegrationEntry[] = [
   PAPERLESS,
   UMH,
-  ACTIVEPIECES,
   ARS_CONTEXTA,
   DOCLING,
   SPECKLE,

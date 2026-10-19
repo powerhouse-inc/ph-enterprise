@@ -20,7 +20,8 @@ import { STATUS_LABEL, type IntegrationCard, type RecipePart } from "@/data/inte
 
 const RECIPE_KIND: Record<RecipePart["kind"], string> = {
   system: "System",
-  pieces: "Activepieces",
+  // The pieces a workflow uses; Activepieces is the framework, not a system.
+  pieces: "Workflow",
   connector: "Connector",
   model: "Document model",
   app: "App",

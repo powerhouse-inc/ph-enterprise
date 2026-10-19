@@ -21,12 +21,15 @@ export default function Home() {
       <LandingNav />
       <LandingHero />
       {/* Stacks above the sticky hero so the page scrolls up and over it. */}
-      <div className="relative z-10">
+      {/* #hero-sheet is what the hero recedes under as it scrolls. */}
+      <div id="hero-sheet" className="relative z-10">
+        {/* Connections first: the systems you already run, and the catalogue. */}
+        <IntegrationSection />
         <SiloedDataSection />
         <HowPowerhouseWorks />
-        <IntegrationSection />
         <ControlOwnershipSection />
         <WhySection />
+        {/* Building your own application comes after the case for it. */}
         <AppAnatomySection />
         <StackSection />
         <ContactCta />

@@ -4,7 +4,8 @@ import Image from "next/image";
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { Button } from "@/components/ui/button";
-import { HeroMark } from "./hero-mark";
+import { IndustryCarousel } from "@/components/integration/industry-carousel";
+import { INDUSTRY_SLIDES } from "@/data/industry-slides";
 import { SectionContainer } from "./section-container";
 import { BookCallButton } from "./book-call-button";
 
@@ -23,8 +24,9 @@ export function LandingHero() {
       }
 
       // Resolved by hand: selector strings in here are scoped to the hero,
-      // and the sheet lives outside it.
-      const sheet = document.getElementById("problem");
+      // and the sheet lives outside it. The sheet is whichever section comes
+      // first after the hero, so reordering the page does not break this.
+      const sheet = document.getElementById("hero-sheet");
       if (!sheet) return;
 
       gsap
@@ -70,10 +72,8 @@ export function LandingHero() {
         <SectionContainer>
           <div className="mx-auto max-w-[880px] text-center">
             <h1 className="font-heading mb-7 text-[clamp(44px,5.4vw,74px)] font-[660] leading-[1.08] tracking-[-0.02em] text-t1 max-md:text-[44px] max-sm:text-[41px]">
-              <span className="block">
-                Turn operational{" "}
-                <span className="max-sm:block">workflows into</span>
-              </span>
+              {/* The canonical promise (COPY_STANDARD). */}
+              <span className="block">Turn workflows into</span>
               <span className="block bg-[linear-gradient(90deg,#24D7E8_0%,#3FBCF2_55%,#7A3AFF_125%)] bg-clip-text text-transparent">
                 <span className="max-sm:block">software</span>{" "}
                 <span className="max-sm:block">you own.</span>
@@ -81,10 +81,10 @@ export function LandingHero() {
             </h1>
 
             <p className="mx-auto mb-9 max-w-[640px] text-[18px] leading-[1.65] text-t2">
-              Powerhouse transforms sensitive, document-heavy processes into
-              structured applications. With permissions, approvals, and
-              attributable history built in. Your teams and AI can work together
-              without giving up control of your data.
+              Powerhouse connects the systems you already run and turns
+              sensitive, document-heavy workflows into applications your team
+              and AI can share. Permissions, approvals and attributable history
+              come built in.
             </p>
 
             <div className="flex items-center justify-center gap-3 max-sm:flex-col">
@@ -101,8 +101,14 @@ export function LandingHero() {
             </div>
           </div>
 
-          <div className="relative hidden sm:block">
-            <HeroMark />
+          {/* The industries the integrations serve, in place of the mark.
+              Not on phones: the hero is pinned, and the next section would
+              cover the carousel before it could be read. */}
+          <div className="mx-auto mt-14 hidden max-w-[1040px] text-left sm:block">
+            <p className="text-[13px] text-t3">Built for the work your industry runs on</p>
+            <div className="mt-4">
+              <IndustryCarousel slides={INDUSTRY_SLIDES} />
+            </div>
           </div>
         </SectionContainer>
       </div>

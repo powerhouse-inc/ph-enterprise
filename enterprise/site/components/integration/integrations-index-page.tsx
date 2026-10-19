@@ -6,7 +6,7 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingLenis } from "@/components/landing/landing-lenis";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { SectionContainer } from "@/components/landing/section-container";
-import { CATALOGUE, LISTED_INTEGRATIONS } from "@/data/integrations";
+import { CATALOGUE, LISTED_INTEGRATIONS, PIECE_COUNT } from "@/data/integrations";
 import { DistyraPreview } from "./distyra-preview";
 import { IntegrationRecordCard } from "./integration-record-card";
 import { IntegrationsHero } from "./integrations-hero";
@@ -93,8 +93,8 @@ export function IntegrationsIndexPage() {
             </h2>
             <p className="mt-5 max-w-[58ch] text-[16px] leading-[1.7] text-pretty text-copy-muted">
               Each one pairs a professional system with a document model and
-              an app, and adds Activepieces pieces where the workflow needs
-              them. Open one for the full detail and how to run it.
+              an app, joined by workflows you can read and change. Open one
+              for the full detail and how to run it.
             </p>
 
             <div className="mt-12 flex flex-col gap-6">
@@ -121,14 +121,15 @@ export function IntegrationsIndexPage() {
             <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,6fr)] lg:gap-16">
               <div>
                 <h2 className="font-heading text-[clamp(30px,3.2vw,42px)] leading-[1.12] font-[680] tracking-[-0.02em] text-copy">
-                  Hundreds more through the {CATALOGUE.name} catalogue
+                  {PIECE_COUNT} systems through the workflow layer
                 </h2>
                 <p className="mt-5 max-w-[46ch] text-[16px] leading-[1.7] text-pretty text-copy-muted">
-                  {CATALOGUE.name} is an open-source catalogue of several
-                  hundred pieces. Each piece connects one service. Its
-                  triggers start a workflow, and its actions do something in
-                  that service. Powerhouse runs the catalogue on your
-                  Switchboard, so a piece can feed any workflow.
+                  Powerhouse workflows are built on {CATALOGUE.name}, an
+                  open-source framework with a catalogue of {PIECE_COUNT}{" "}
+                  pieces. Each piece connects one service: its triggers start
+                  a workflow, and its actions do something in that service.
+                  The catalogue runs on your Switchboard, so any piece can feed
+                  any workflow.
                 </p>
                 <div className="mt-7 flex flex-col items-start gap-3">
                   <a
@@ -137,16 +138,9 @@ export function IntegrationsIndexPage() {
                     rel="noreferrer"
                     className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-copy hover:underline"
                   >
-                    Browse the pieces
+                    Browse the catalogue
                     <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                   </a>
-                  <Link
-                    href={`/integrations/${CATALOGUE.slug}`}
-                    className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-copy hover:underline"
-                  >
-                    How Powerhouse runs them
-                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                  </Link>
                 </div>
               </div>
 

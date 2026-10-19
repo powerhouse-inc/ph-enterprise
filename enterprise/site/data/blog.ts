@@ -725,16 +725,17 @@ nginx               cost-rate and stop-reason APIs     port 80`,
     {
       type: "paragraph",
       spans: [
-        "The integration is three workflows, built from the piece catalogue ",
+        "The integration is three Powerhouse workflows. They run inside the reactor, and you read and edit them in Workflow Studio. Most of their steps are Powerhouse pieces for Paperless, UMH and the ledger; the two model calls and one lookup come from ",
         { text: "Activepieces", href: "https://www.activepieces.com" },
-        " publishes. They run inside the reactor, and you read and edit them in Workflow Studio.",
+        ", the open-source framework the workflows are built on.",
       ],
     },
     {
       type: "integration",
       services: [
+        // Same systems as the UMH record's How it works badge.
         { name: "Paperless-ngx", logo: "/logos/integrations/marks/paperless-ngx.svg" },
-        { name: "Activepieces", logo: "/logos/integrations/activepieces.svg" },
+        { name: "Connect", logo: "/logos/connect-icon.svg" },
         { name: "UMH", logo: "/logos/integrations/umh.svg" },
       ],
     },
