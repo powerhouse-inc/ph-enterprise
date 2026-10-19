@@ -152,14 +152,24 @@ export function IntegrationSection() {
               ))}
             </dl>
 
-            {/* The integration's full record lives on the Integrations pillar. */}
-            <Link
-              href={`/integrations/${integration.slug}`}
-              className="mt-6 inline-flex items-center gap-1.5 text-[15px] font-semibold text-[#7A3AFF] hover:underline"
-            >
-              Open the record
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
+            {/* The integration's full record, and the rest of them, live on
+                the Integrations pillar. */}
+            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
+              <Link
+                href={`/integrations/${integration.slug}`}
+                className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-[#7A3AFF] hover:underline"
+              >
+                Open the record
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+              <Link
+                href="/integrations"
+                className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-copy hover:underline"
+              >
+                View all integrations
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </div>
           </div>
         </div>
       </SectionContainer>
