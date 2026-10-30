@@ -1,0 +1,93 @@
+/* The problem figure: only what is particular to it. Ink tokens, labels,
+   the legend and the layout are in ../figure-shared.css. */
+
+.fr-figure {
+  margin: 0;
+}
+
+/* Where the open drawer came out of the cabinet: a shadowed gap. */
+.fr-recess {
+  fill: var(--anatomy-shade-0);
+  stroke: none;
+}
+
+/* The outside AI tool's mark. */
+.fr-spark {
+  fill: var(--anatomy-hi);
+  stroke: none;
+}
+
+/* Screen glass, a step off the white bodies; the grommet's hole; the cable. */
+.fr-glass {
+  fill: #f2f4f3;
+  stroke: none;
+}
+.fr-hole {
+  fill: var(--anatomy-shade-0);
+  stroke: var(--anatomy-lo);
+  stroke-width: 0.6;
+  vector-effect: non-scaling-stroke;
+}
+.fr-cable {
+  stroke-width: 1.4;
+}
+
+/* A piece of the claim (receipt, amounts, approval, status, the copies):
+   in the accent while its part is lit. */
+.fr-plate [data-key][data-on] {
+  stroke: var(--anatomy-lit);
+}
+
+/* The spreadsheet column the amounts are in, framed while it is lit. */
+.fr-plate .fr-key-box:not([data-on]) {
+  display: none;
+}
+
+/* The status card: pending shows the empty ring, paid stamps a check in it. */
+.fr-plate .fr-check {
+  display: none;
+}
+.fr-plate[data-paid] .fr-check {
+  display: inline;
+}
+
+/* The AI tool's context chips: dashed while empty, framed and filled once
+   a copy is pasted in. */
+.fr-plate [data-chip] .fr-chip-frame,
+.fr-plate [data-chip] .fr-chip-fill {
+  display: none;
+}
+.fr-plate [data-chip][data-filled] .fr-chip-frame,
+.fr-plate [data-chip][data-filled] .fr-chip-fill {
+  display: inline;
+}
+.fr-plate [data-chip][data-filled] .fr-chip-empty {
+  display: none;
+}
+
+/* The entry the log should hold once the status changed: dashed, empty. */
+.fr-plate .fr-missing {
+  opacity: 0;
+  stroke: var(--anatomy-lit);
+  stroke-dasharray: 2.5 2;
+  transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fr-plate[data-missing] .fr-missing {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fr-plate .fr-missing {
+    transition: none;
+  }
+}
+
+/* Phones: the scene runs edge to edge (the desk on the left, the AI tool on
+   the right), so enlarge it less than the shared 124% and crop it unevenly,
+   keeping both ends in view. */
+@media (max-width: 640px) {
+  .fr-plate .fig-stage {
+    width: 110%;
+    margin: 0 -5.6% 0 -4.4%;
+  }
+}
