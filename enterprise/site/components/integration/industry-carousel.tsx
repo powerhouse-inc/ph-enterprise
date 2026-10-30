@@ -47,7 +47,7 @@ function SlideCard({ slide, hidden }: { slide: IndustrySlide; hidden: boolean })
   const external = slide.href.startsWith("http");
   const body = (
     <>
-      <span className="font-heading text-[26px] leading-[1.1] font-semibold tracking-[-0.015em] text-t1">
+      <span className="font-heading text-[26px] leading-[1.1] font-medium tracking-[-0.015em] text-t1">
         {slide.industry}
       </span>
       {slide.logos.length ? (
@@ -232,7 +232,7 @@ export function IndustryCarousel({ slides }: { slides: readonly IndustrySlide[] 
               onClick={() => goTo(i)}
               aria-label={`Show ${slide.industry}`}
               aria-current={i === active ? "true" : undefined}
-              className={`h-1.5 rounded-full transition-all focus-visible:outline-2 focus-visible:outline-brand ${
+              className={`h-1.5 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-brand ${
                 i === active ? "w-5 bg-brand" : "w-1.5 bg-t3/60 hover:bg-t2"
               }`}
             />

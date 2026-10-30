@@ -104,16 +104,21 @@ to a new surface requires the same rationale, not habit.
   standard now bans map-as-action. Watch for the next one.
 - Infrastructure truth is not marketing copy (the email-fallback footnote
   under the primary CTA).
+- Radius tokens were multiples of `--radius` (7.2, 9.6, 16.8, 21.6px) beside
+  hand-written 8, 12 and 16px. The scale is now explicit in `globals.css`:
+  sm 6, md 8 (controls, tiles), lg 12 (cards), xl 16 (panels, the cap).
 
 ## Open findings (audited 2026-08-13, not yet fixed)
 
-1. `why-section.tsx`: four identical cards, each an icon tile stacked above
-   a heading. Two named tells at once; vary the layout or fold the icons
-   into the text line.
+1. Fixed 2026-10-29: `why-section.tsx` is a ruled list of four rows, no
+   icon tiles or cards.
 2. Use-case pages: uppercase tracked kickers ("THE PROBLEM", "IN SHORT")
    with accent dots; same family as the eyebrows we deleted.
 3. `data/*.ts`: 62 em dashes in body copy across use-case, procurement, and
    report content.
-4. `app-anatomy-section.tsx`: decorative `animate-ping` on hotspot markers;
-   defensible as an interaction affordance, decide and document or remove.
-   The `hpw-pulse` travel dots depict data flow and stay.
+4. Fixed 2026-10-29: the ping around the active hotspot marker is removed;
+   its colour already marks it. The `hpw-pulse` travel dots depict data
+   flow and stay.
+5. `public/product/invoice-app-anatomy.png` is a marketing collage (tilted
+   panels, glows, frosted cards), not a screenshot. Replace it with a real
+   capture of the invoice app; the app-anatomy hotspots are placed on it.

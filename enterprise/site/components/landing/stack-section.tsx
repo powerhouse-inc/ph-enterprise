@@ -57,7 +57,7 @@ export function StackSection() {
 
         <div className="fade-up grid grid-cols-1 items-stretch gap-6 lg:grid-cols-3">
           {/* Achra */}
-          <div className="flex flex-col rounded-[16px] border border-[#9810fa]/40 bg-ink bg-[radial-gradient(120%_100%_at_100%_0%,rgba(152,16,250,0.16)_0%,transparent_60%)] p-7 shadow-[0_2px_12px_rgba(17,22,20,0.1)]">
+          <div className="flex flex-col rounded-xl bg-ink p-7">
             <Image
               src="/logos/stack/achra-ph-logo-light.svg"
               alt="Achra, powered by Powerhouse"
@@ -70,14 +70,14 @@ export function StackSection() {
               organisation, hire operators, find builders and offer your
               local-first products, platforms and agents to the world.
             </p>
-            <p className="mb-7 text-[12px] font-semibold tracking-[0.06em] text-[#ad46ff] uppercase">
+            <p className="mb-7 text-[14px] text-t3">
               Services platform
             </p>
             <a
               href="https://achra.com/"
               target="_blank"
               rel="noreferrer"
-              className="mt-auto inline-flex h-10 w-fit items-center gap-1.5 rounded-lg bg-[#9810fa] px-4 text-[13px] font-semibold text-white transition-opacity hover:opacity-90"
+              className="mt-auto inline-flex h-10 w-fit items-center gap-1.5 rounded-md border border-border px-4 text-[13px] font-medium text-t1 transition-colors hover:border-border-md hover:bg-white/5"
             >
               Visit Achra
               <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -85,7 +85,7 @@ export function StackSection() {
           </div>
 
           {/* Powerhouse */}
-          <div className="flex flex-col rounded-[16px] border border-brand/30 bg-ink bg-[radial-gradient(120%_100%_at_50%_0%,rgba(36,215,232,0.14)_0%,transparent_60%)] p-7 shadow-[0_2px_12px_rgba(17,22,20,0.1)]">
+          <div className="flex flex-col rounded-xl bg-ink p-7">
             <Image
               src="/logos/stack/stack-logo-powerhouse.svg"
               alt="Powerhouse"
@@ -95,17 +95,17 @@ export function StackSection() {
             />
             <p className="mb-6 text-[15px] leading-[1.7] text-t2">
               Open-source infrastructure and tooling for distributed
-              organisations and local first apps, platform &amp; agents.
+              organisations and local-first apps, platforms &amp; agents.
             </p>
 
-            <p className="mb-3 text-[12px] font-semibold tracking-[0.06em] text-t3 uppercase">
+            <p className="mb-3 text-[14px] text-t3">
               Host applications
             </p>
             <ul className="mb-7 space-y-2">
               {HOST_APPLICATIONS.map((app) => (
                 <li
                   key={app.name}
-                  className="flex items-center justify-between gap-4 rounded-[10px] border border-border bg-lifted/60 px-4 py-2.5"
+                  className="flex items-center justify-between gap-4 rounded-md border border-border bg-lifted/60 px-4 py-2.5"
                 >
                   <Image
                     src={app.logo}
@@ -123,7 +123,7 @@ export function StackSection() {
               href="https://powerhouse.io/"
               target="_blank"
               rel="noreferrer"
-              className="mt-auto inline-flex h-10 w-fit items-center gap-1.5 rounded-lg border border-border px-4 text-[13px] font-semibold text-t1 transition-colors hover:border-border-md hover:bg-white/5"
+              className="mt-auto inline-flex h-10 w-fit items-center gap-1.5 rounded-md border border-border px-4 text-[13px] font-medium text-t1 transition-colors hover:border-border-md hover:bg-white/5"
             >
               Visit Powerhouse
               <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -131,7 +131,7 @@ export function StackSection() {
           </div>
 
           {/* Vetra */}
-          <div className="flex flex-col rounded-[16px] border border-[#00a63e]/40 bg-ink bg-[radial-gradient(120%_100%_at_0%_0%,rgba(0,166,62,0.16)_0%,transparent_60%)] p-7 shadow-[0_2px_12px_rgba(17,22,20,0.1)]">
+          <div className="flex flex-col rounded-xl bg-ink p-7">
             <Image
               src="/logos/stack/vetra-ph-logo-light.svg"
               alt="Vetra, powered by Powerhouse"
@@ -144,14 +144,14 @@ export function StackSection() {
               of Powerhouse. Packages, cloud environments and rapid application
               development.
             </p>
-            <p className="mb-7 text-[12px] font-semibold tracking-[0.06em] text-[#00a63e] uppercase">
+            <p className="mb-7 text-[14px] text-t3">
               Builder tooling
             </p>
             <a
               href="https://vetra.io/"
               target="_blank"
               rel="noreferrer"
-              className="mt-auto inline-flex h-10 w-fit items-center gap-1.5 rounded-lg bg-[#00a63e] px-4 text-[13px] font-semibold text-white transition-opacity hover:opacity-90"
+              className="mt-auto inline-flex h-10 w-fit items-center gap-1.5 rounded-md border border-border px-4 text-[13px] font-medium text-t1 transition-colors hover:border-border-md hover:bg-white/5"
             >
               Visit Vetra
               <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
