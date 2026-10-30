@@ -210,8 +210,12 @@ mechanism next to it is still slop and should be cut.
 - Name the current places where work lives.
 - Explain why AI cannot safely operate without structure, permissions, and
   context.
-- Explain the causal chain: disconnected tools create fragments, AI lacks the
-  complete process, accuracy suffers, and unsafe workarounds expose data.
+- Explain the causal chain: disconnected tools create fragments, an AI agent
+  improvises the process from them, nothing holds it to the business rules,
+  and no record says which person, agent, or rule changed the work.
+- The problem is not the data alone. Connecting and structuring data is the
+  start; the agent also needs a fixed path (rules, allowed steps, a record).
+  The Control section answers it on the same example.
 - Do not turn the problem into fear marketing.
 
 ### How It Works

@@ -118,26 +118,26 @@ Current reality.
 
 Headline:
 
-Siloed data limits  
-what AI can deliver.
+More data won't make  
+AI agents reliable.
 
 Lead copy:
 
-Critical workflows are spread across disconnected tools, with no shared structure, permissions, or history.
+Connecting and structuring the data is the start. An AI agent also needs a fixed path: the business rules it must follow, the steps it may take, and a record of every change it makes.
 
-Supporting points:
+Supporting points (the figure's legend: claim #4821 spread over four tools):
 
-AI sees fragments
+AI improvises from fragments
 
-Documents, spreadsheets, email threads, and legacy records do not add up to one trusted workflow boundary.
+With the claim spread over four tools and a prompt, an agent guesses the process. The same claim can take a different path each time.
 
-Private data moves too easily
+Nothing holds AI to the rules
 
-Confidential context can be copied into external AI tools before access, storage, and approval rules are clear.
+No business rule stands between the AI tool and the data. Receipts and amounts get pasted outside, with no access policy.
 
-No accountable history
+No one can say what changed the work
 
-Teams need to know which source, human, model, and rule changed the state of work.
+When the claim is marked paid, nothing records which person, agent, model, or rule changed it.
 
 ## Section: How Powerhouse Works
 
@@ -192,48 +192,39 @@ Control and ownership.
 
 Headline:
 
-Control is visible  
-in the workflow.
+Agents work inside the rules.  
+Every change is on the record.
 
 Lead copy:
 
-Powerhouse turns access, storage, approvals, exports, and history into product surfaces your team can inspect and operate.
+On claim #4821 the AI agent drafts the line items. Powerhouse checks each change against the claim's rules, refuses what they forbid, and signs what they allow.
 
-Control evidence image:
+Figure (built in code, not a screenshot; the hero's claim #4821 continued):
 
-Public path:
+Rules on claim #4821 (powerhouse/expense-report): 1 Line items add up to the total · 2 Only an approver sets the claim to Final · 3 A Final claim is read-only. Rules 1 and 3 belong to the document model; rule 2 is an operation permission set by an administrator.
 
-/usecases/rfp-hub/03-rfp-detail-provenance.png
+Operation history, newest first — 6 signed · 1 refused:
+06 SET_STATUS FINAL · Wouter K · signed
+05 UPDATE_LINE_ITEM Hotel €321.00 → €312.00 · Wouter K · signed
+– SET_STATUS FINAL · AI agent · refused by rule 2: only an approver sets Final
+04 SET_STATUS REVIEW · Maya L · signed
+03 ADD_LINE_ITEM 3 receipts · AI agent · signed
 
-Repo path:
-
-enterprise/site/public/usecases/rfp-hub/03-rfp-detail-provenance.png
-
-Alt text:
-
-Powerhouse product screenshot showing a structured RFP record with provenance, application context, dates, and source links.
+Product evidence (thumbnail, opens full size): /product/doc-history.png — "The same history in the product: each revision is a signed operation, with its payload, its signer, and the signature check open for inspection."
 
 Control points:
 
-Access is scoped to the workflow
+Agents act through operations
 
-Objects, roles, and approval state define who or what can see, change, or route work.
+Each workflow step declares the operations it may dispatch. Nothing else reaches the record.
 
-Ownership stays portable
+Rules refuse, with the reason
 
-Data, schemas, exports, and workflow state remain inspectable and usable outside a single vendor surface.
+A change that breaks the claim's rules is rejected. The agent gets the same answer a person would.
 
-Approvals stay human-readable
+Every change has an author
 
-Exceptions, review state, and operator decisions are part of the record rather than buried in inboxes.
-
-History remains attributable
-
-Source links, exports, status changes, and provenance are visible as first-class product surfaces.
-
-Production evidence is measurable
-
-Powerhouse architecture supports 22 business modules. In one measured invoice-review deployment, review time was reduced by 65%. Treat this as deployment evidence, not a universal guarantee.
+Each history entry names the operation, the time, and the actor: a person or an agent.
 
 ## Section: Why Ownership Matters
 
