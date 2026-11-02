@@ -59,12 +59,16 @@ Rules:
 - Use cyan for primary actions and selected technical highlights.
 - Use green for proof, completion, and control.
 - Avoid purple-blue gradient domination.
+- Violet (`#7A3AFF`, from the legacy brand kit) is not an action, link or
+  surface colour. It appears only inside the Achra logo.
 - Avoid decorative orbs, bokeh, blobs, and spotlight glows.
 - Do not make the whole page one-note dark blue, beige, or green.
 
 ## Typography
 
 - Primary family: Inter.
+- Headings: Poppins at weight 500. Size and colour carry the hierarchy, not
+  weight.
 - Metadata family: system monospace.
 - Use monospace only for short labels, status, and compact metadata.
 - Do not set long copy in uppercase.

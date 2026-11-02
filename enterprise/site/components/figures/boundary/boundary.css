@@ -1,0 +1,279 @@
+/* The How-it-works diagram: diagram-design's architecture grammar in the
+   site's skin. Roles: paper, ink, muted, soft, one accent (a darkened cyan
+   that holds 4.5:1 as a line or text; brand cyan only as the focal tint). */
+
+.dd-boundary {
+  --dd-paper: #fbf9f4;
+  --dd-ink: #111614;
+  --dd-muted: #59625d;
+  --dd-soft: #646d68;
+  --dd-edge: #858a87;
+  --dd-accent: #0b7285;
+  --dd-accent-tint: rgba(36, 215, 232, 0.14);
+  --dd-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  display: grid;
+  gap: 40px;
+}
+
+.dd-figure {
+  margin: 0;
+}
+
+/* The drawing keeps its type sizes: never narrower than its viewBox, and
+   scrolling on its own if a screen is narrower still. */
+.dd-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.dd-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.dd-wide {
+  display: none;
+}
+
+.dd-tall .dd-svg {
+  max-width: 400px;
+}
+
+@media (min-width: 1024px) {
+  .dd-wide {
+    display: block;
+  }
+  .dd-tall {
+    display: none;
+  }
+  .dd-wide .dd-svg {
+    max-width: 1040px;
+  }
+}
+
+@media print {
+  .dd-scroll {
+    overflow-x: visible;
+  }
+  .dd-svg {
+    min-width: 0 !important;
+  }
+}
+
+/* ------------------------------------------------------------ drawing */
+
+.dd-mask {
+  fill: var(--dd-paper);
+}
+
+.dd-zone {
+  fill: rgba(17, 22, 20, 0.02);
+  stroke: var(--dd-soft);
+  stroke-width: 1;
+  stroke-dasharray: 6 4;
+}
+
+.dd-zone-label,
+.dd-label,
+.dd-step-text,
+.dd-sub {
+  font-family: var(--dd-mono);
+  font-size: 11px;
+}
+
+.dd-zone-label {
+  fill: var(--dd-soft);
+}
+
+.dd-label {
+  fill: var(--dd-muted);
+  text-anchor: middle;
+}
+
+.dd-path {
+  fill: none;
+  stroke: var(--dd-muted);
+  stroke-width: 1.2;
+}
+
+/* A return (dashed), and a path stopped at the boundary: dashed, with a bar
+   across its end instead of an arrowhead. */
+.dd-path[data-back],
+.dd-path[data-stopped] {
+  stroke-dasharray: 4 3;
+}
+
+.dd-stop {
+  stroke: var(--dd-ink);
+  stroke-width: 2;
+}
+
+.dd-arrowhead {
+  fill: var(--dd-muted);
+}
+
+.dd-box {
+  stroke-width: 1;
+}
+
+.dd-node[data-kind="external"] .dd-box {
+  fill: rgba(17, 22, 20, 0.03);
+  stroke: var(--dd-edge);
+}
+
+/* Optional, consulted from outside: dashed. */
+.dd-node[data-kind="optional"] .dd-box {
+  fill: rgba(17, 22, 20, 0.02);
+  stroke: var(--dd-edge);
+  stroke-dasharray: 4 3;
+}
+
+.dd-node[data-kind="focal"] .dd-box {
+  fill: var(--dd-accent-tint);
+  stroke: var(--dd-accent);
+  stroke-width: 1.2;
+}
+
+.dd-node[data-kind="backend"] .dd-box {
+  fill: #ffffff;
+  stroke: var(--dd-ink);
+}
+
+.dd-node[data-kind="person"] .dd-box {
+  fill: rgba(89, 98, 93, 0.1);
+  stroke: var(--dd-soft);
+}
+
+.dd-node[data-kind="store"] .dd-box {
+  fill: rgba(17, 22, 20, 0.05);
+  stroke: var(--dd-muted);
+}
+
+/* The step number: a rectangular tag, not a pill. */
+.dd-step {
+  fill: none;
+  stroke: rgba(17, 22, 20, 0.4);
+  stroke-width: 0.8;
+}
+
+.dd-step-text {
+  font-size: 10px;
+  fill: var(--dd-muted);
+  text-anchor: middle;
+}
+
+.dd-node[data-kind="focal"] .dd-step {
+  stroke: var(--dd-accent);
+}
+
+.dd-node[data-kind="focal"] .dd-step-text {
+  fill: var(--dd-accent);
+}
+
+.dd-name {
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  fill: var(--dd-ink);
+  text-anchor: middle;
+}
+
+.dd-sub {
+  fill: var(--dd-muted);
+  text-anchor: middle;
+}
+
+.dd-name.dd-start,
+.dd-sub.dd-start {
+  text-anchor: start;
+}
+
+/* The history's log: change, author, signature. */
+.dd-log-head,
+.dd-log {
+  font-family: var(--dd-mono);
+  font-size: 10px;
+}
+.dd-log-head {
+  fill: var(--dd-soft);
+}
+.dd-log {
+  fill: var(--dd-muted);
+}
+.dd-log[data-column="0"],
+.dd-log[data-column="2"] {
+  fill: var(--dd-ink);
+}
+.dd-log-rule {
+  stroke: rgba(17, 22, 20, 0.16);
+  stroke-width: 1;
+}
+
+/* ---------------------------------------------------------- the steps */
+
+.dd-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+}
+
+.dd-steps li {
+  border-top: 1px solid rgba(17, 22, 20, 0.12);
+  padding: 16px 0 20px;
+}
+
+.dd-steps li:last-child {
+  border-bottom: 1px solid rgba(17, 22, 20, 0.12);
+}
+
+.dd-step-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0 0 8px;
+}
+
+.dd-step-num {
+  font-family: var(--dd-mono);
+  font-size: 13px;
+  color: var(--dd-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.dd-step-title {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--dd-ink);
+}
+
+.dd-step-body,
+.dd-step-note {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--dd-muted);
+  text-wrap: pretty;
+}
+
+.dd-step-note {
+  margin-top: 6px;
+  color: #3d4541;
+}
+
+@media (min-width: 1024px) {
+  .dd-steps {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    column-gap: 24px;
+  }
+  .dd-steps li:last-child {
+    border-bottom: 0;
+  }
+  .dd-step-head {
+    flex-direction: column;
+    gap: 6px;
+  }
+}

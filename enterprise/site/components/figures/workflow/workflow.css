@@ -1,0 +1,33 @@
+/* The workflow figure: only what is particular to it. Ink tokens, labels,
+   the legend and the layout are in ../figure-shared.css. */
+
+.wf-figure {
+  margin: 0;
+}
+
+.wf-hood-top {
+  fill: rgba(126, 164, 206, 0.04);
+}
+
+/* Field values on the typed record: shown as they fill, in the accent. */
+.wf-plate [data-field] {
+  display: none;
+  stroke: var(--anatomy-lit);
+  stroke-width: 1.3px;
+}
+
+/* The status pointer once approved. */
+.wf-plate .wf-pointer {
+  stroke: var(--anatomy-lit);
+  stroke-width: 1.3px;
+}
+
+/* The run log: an entry reads in ink once logged, in the accent while
+   step 05 is printing them. */
+.wf-plate [data-cell][data-logged] .wf-entry {
+  stroke: var(--anatomy-hi);
+}
+
+.wf-plate[data-active="5"] [data-cell][data-logged] .wf-entry {
+  stroke: var(--anatomy-lit);
+}

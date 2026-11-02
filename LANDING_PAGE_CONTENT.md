@@ -47,7 +47,7 @@ software you own.
 
 Supporting copy:
 
-Powerhouse gives sensitive, document-heavy workflows shared structure, permissions, and history, creating operational software that teams and AI can use safely.
+Powerhouse connects the systems you already run and turns sensitive, document-heavy workflows into applications your team and AI agents share. Agents take on more of the work while people keep the decisions, and every change is signed.
 
 Primary CTA:
 
@@ -118,26 +118,28 @@ Current reality.
 
 Headline:
 
-Siloed data limits  
-what AI can deliver.
+More data won't make  
+AI agents reliable.
 
 Lead copy:
 
-Critical workflows are spread across disconnected tools, with no shared structure, permissions, or history.
+Connecting and structuring the data is the start. An AI agent also needs a fixed path: the business rules it must follow, the steps it may take, and a record of every change it makes.
 
-Supporting points:
+Figure (built in code; an isometric drawing on the diagram-design axonometric-plan rules): claim #4821 on one desk, the receipt in a Gmail inbox tray, the amounts in a spreadsheet, the approval in a Slack thread, the status card (paid) in a legacy filing cabinet; an outside AI tool on its own table, the only object in the accent, sees 2 of the 4 pieces; the change log has an empty row. Each object carries a name tag. On phones the tags give way to a caption.
 
-AI sees fragments
+Supporting points (listed beside the figure):
 
-Documents, spreadsheets, email threads, and legacy records do not add up to one trusted workflow boundary.
+AI improvises from fragments
 
-Private data moves too easily
+With the claim spread over four tools and a prompt, an agent guesses the process. The same claim can take a different path each time.
 
-Confidential context can be copied into external AI tools before access, storage, and approval rules are clear.
+Nothing holds AI to the rules
 
-No accountable history
+No business rule stands between the AI tool and the data. Receipts and amounts get pasted outside, with no access policy.
 
-Teams need to know which source, human, model, and rule changed the state of work.
+No one can say what changed the work
+
+When the claim is marked paid, nothing records which person, agent, model, or rule changed it.
 
 ## Section: How Powerhouse Works
 
@@ -147,12 +149,13 @@ How Powerhouse works.
 
 Headline:
 
-Map the workflow.  
-Keep the boundary.
+Your systems connect to a typed workflow that runs inside your boundary.
 
 Lead copy:
 
 Powerhouse turns your private processes into AI-ready software that you own. Explore solutions in a Powerhouse sandbox, then choose local, self-hosted, or remote deployment according to your needs.
+
+Figure (built in code; an architecture diagram on the diagram-design "secure paved road" pattern, on one supplier invoice): your systems send an invoice PDF into your boundary (local or self-hosted), where it becomes invoice INV-2041, a typed invoice record and the diagram's one accent. Inside, a local model reads every field and adds the line items and VAT, an approver signs the approval with a private key, and every operation goes to the operation history, shown as a log of change, author and signature (connector, local model, frontier model, approver). Outside, top right and dashed, a frontier model is consulted for the supplier reply: it receives the invoice status only and returns a draft; the line items stop at the boundary. Each node carries the number of the step it answers. Desktop draws it left to right, phones top to bottom.
 
 Process steps:
 
@@ -170,11 +173,11 @@ Use AI to extract, compare, draft, flag, and route work inside the approved work
 
 4. Keep human approval
 
-Operators approve, reject, or revise important actions with the right context in front of them.
+Operators approve, reject, or revise important actions with the right context in front of them. Here, an approver signs off the invoice with a private key.
 
 5. Retain attributable history
 
-Every source, rule, model output, and human decision remains inspectable as the workflow evolves.
+Every source, rule, model output, and human decision remains inspectable as the workflow evolves. Each entry is signed by the person, model, or connector that made it.
 
 Control note:
 
@@ -192,48 +195,39 @@ Control and ownership.
 
 Headline:
 
-Control is visible  
-in the workflow.
+Agents work inside the rules.  
+Every change is on the record.
 
 Lead copy:
 
-Powerhouse turns access, storage, approvals, exports, and history into product surfaces your team can inspect and operate.
+On claim #4821 the AI agent drafts the line items. Powerhouse checks each change against the claim's rules, refuses what they forbid, and signs what they allow.
 
-Control evidence image:
+Figure (built in code, not a screenshot; the hero's claim #4821 continued):
 
-Public path:
+Rules on claim #4821 (powerhouse/expense-report): 1 Line items add up to the total · 2 Only an approver sets the claim to Final · 3 A Final claim is read-only. Rules 1 and 3 belong to the document model; rule 2 is an operation permission set by an administrator.
 
-/usecases/rfp-hub/03-rfp-detail-provenance.png
+Operation history, newest first — 6 signed · 1 refused:
+06 SET_STATUS FINAL · Wouter K · signed
+05 UPDATE_LINE_ITEM Hotel €321.00 → €312.00 · Wouter K · signed
+– SET_STATUS FINAL · AI agent · refused by rule 2: only an approver sets Final
+04 SET_STATUS REVIEW · Maya L · signed
+03 ADD_LINE_ITEM 3 receipts · AI agent · signed
 
-Repo path:
-
-enterprise/site/public/usecases/rfp-hub/03-rfp-detail-provenance.png
-
-Alt text:
-
-Powerhouse product screenshot showing a structured RFP record with provenance, application context, dates, and source links.
+Product evidence (thumbnail, opens full size): /product/doc-history.png — "The same history in the product: each revision is a signed operation, with its payload, its signer, and the signature check open for inspection."
 
 Control points:
 
-Access is scoped to the workflow
+Agents act through operations
 
-Objects, roles, and approval state define who or what can see, change, or route work.
+Each workflow step declares the operations it may dispatch. Nothing else reaches the record.
 
-Ownership stays portable
+Rules refuse, with the reason
 
-Data, schemas, exports, and workflow state remain inspectable and usable outside a single vendor surface.
+A change that breaks the claim's rules is rejected. The agent gets the same answer a person would.
 
-Approvals stay human-readable
+Every change has an author
 
-Exceptions, review state, and operator decisions are part of the record rather than buried in inboxes.
-
-History remains attributable
-
-Source links, exports, status changes, and provenance are visible as first-class product surfaces.
-
-Production evidence is measurable
-
-Powerhouse architecture supports 22 business modules. In one measured invoice-review deployment, review time was reduced by 65%. Treat this as deployment evidence, not a universal guarantee.
+Each history entry names the operation, the time, and the actor: a person or an agent.
 
 ## Section: Why Ownership Matters
 
@@ -243,8 +237,7 @@ Why ownership matters.
 
 Headline:
 
-You own the boundary,  
-the schema, and the history.
+Powerhouse runs beside your current systems, one workflow at a time.
 
 Body copy:
 

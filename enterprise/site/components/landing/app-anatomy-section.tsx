@@ -94,13 +94,9 @@ export function AppAnatomySection() {
       <SectionContainer>
         <SectionHeading
           className="fade-up mb-14"
-          title={
-            <>
-              A form is only
-              <br className="max-sm:hidden" /> the interface.
-            </>
-          }
-          lead="This invoice application is powered by a typed document model. Approval states, identities, calculations, history, and exports are part of the application, not conventions held in a spreadsheet or someone's head."
+          eyebrow="Example application"
+          title="The parts of an invoice application built on Powerhouse."
+          lead="This example invoice application runs on a typed document model. Approval states, identities, calculations, history, and exports are part of the application, not conventions held in a spreadsheet or someone's head."
         />
 
         <div
@@ -160,12 +156,8 @@ export function AppAnatomySection() {
                         <span className="sr-only">{spot.label}</span>
                       </button>
 
-                      {isActive ? (
-                        <span
-                          aria-hidden="true"
-                          className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand/40 motion-safe:animate-ping sm:h-6 sm:w-6"
-                        />
-                      ) : null}
+                      {/* No ping around the active marker: its colour already
+                          says which part is open (DESLOP finding 4). */}
 
                     </div>
                   );
@@ -173,9 +165,9 @@ export function AppAnatomySection() {
               </div>
             </div>
 
-            <figcaption className="mt-4 text-[13px] leading-[1.6] text-copy-muted">
-              Powerhouse invoice application. Select a marker to inspect what
-              each part of the record does.
+            <figcaption className="mt-4 text-[14px] leading-[1.6] text-copy-muted">
+              An example invoice application built on Powerhouse. Select a
+              marker to inspect what each part of the record does.
             </figcaption>
           </figure>
 
@@ -208,7 +200,7 @@ export function AppAnatomySection() {
                       {String(index + 1).padStart(2, "0")} /{" "}
                       {String(HOTSPOTS.length).padStart(2, "0")}
                     </p>
-                    <p className="font-heading text-[17px] font-semibold leading-[1.3] text-copy">
+                    <p className="font-heading text-[17px] font-medium leading-[1.3] text-copy">
                       {spot.label}
                     </p>
                     <p className="mt-2 text-[14px] leading-[1.7] text-copy-muted">

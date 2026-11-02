@@ -20,11 +20,14 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
+  /* An explicit scale, not multiples of --radius: the multiples produced
+     7.2, 9.6, 16.8 and 21.6px beside hand-written 8, 12 and 16px (DESLOP).
+     sm chips, md controls and tiles, lg cards, xl panels. 16px is the cap. */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 16px;
 
   /* Enterprise brand colors */
   --color-t1: #F6F8F5;

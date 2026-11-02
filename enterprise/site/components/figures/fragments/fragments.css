@@ -1,0 +1,177 @@
+/* The problem figure: diagram-design's axonometric-plan skin in the site's
+   palette. Faces are an opaque white base with ink overlays (light from the
+   top left: the left face ink 7%, the right face ink 15%); silhouettes in
+   ink, inner edges and details at 55% ink; one focal object in the accent. */
+
+.fr-figure {
+  margin: 0;
+  min-width: 0;
+}
+
+/* Tokens sit on the drawing's box, below .iso[data-theme], so they win. */
+.fr-drawing {
+  --fr-paper: #fbf9f4;
+  --fr-ink: #111614;
+  --fr-muted: #59625d;
+  --fr-accent: #0b7285;
+  --anatomy-paper: #ffffff;
+  --anatomy-face: #ffffff;
+  --anatomy-top: #ffffff;
+  --anatomy-shade-0: #dbdcdc;
+  --anatomy-shade-1: #e2e3e3;
+  --anatomy-shade-2: #e8e9e9;
+  --anatomy-shade-3: #eeefef;
+  --anatomy-hi: #111614;
+  --anatomy-mid: #4a4f4d;
+  --anatomy-lo: #7c7f7e;
+  --anatomy-faint: #b5b7b6;
+  --anatomy-dot: #111614;
+  --anatomy-lit: var(--fr-accent);
+  --anatomy-lit-top: #e9fbfd;
+  --anatomy-lit-shade: #c8f3f8;
+  --anatomy-weight: 0.7px;
+}
+
+/* Silhouettes, then inner edges. */
+.fr-figure .iso-edge {
+  stroke: var(--fr-ink);
+  stroke-width: 1.2px;
+}
+.fr-figure .iso-solid[data-lit] > .iso-edge {
+  stroke: var(--fr-accent);
+}
+.fr-figure .iso-crease,
+.fr-figure .iso-bevel {
+  stroke: var(--anatomy-lo);
+  stroke-width: 0.8px;
+}
+
+/* Phones: the drawing fits the width, so its tags would draw at about 6 px.
+   They give way to a caption carrying the same facts (an exception to
+   diagram-design's scroll-sideways rule: the focal object stays in view). */
+.fr-caption {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #59625d;
+  text-wrap: pretty;
+}
+@media (max-width: 699px) {
+  .fr-tag {
+    display: none;
+  }
+}
+@media (min-width: 700px) {
+  .fr-caption {
+    display: none;
+  }
+}
+
+/* Where the open drawer came out of the cabinet: the gap behind it. */
+.fr-recess {
+  fill: var(--anatomy-shade-0);
+  stroke: none;
+}
+
+/* The outside AI tool's mark, and the two pieces it holds. */
+.fr-spark {
+  fill: var(--fr-accent);
+  stroke: none;
+}
+.fr-figure .fr-accent {
+  stroke: var(--fr-accent);
+}
+
+/* Screen glass, a step off the white bodies. */
+.fr-glass {
+  fill: #f2f4f3;
+  stroke: none;
+}
+
+/* ------------------------------------------------------------- tags */
+
+.fr-tag-box {
+  fill: var(--fr-paper);
+  stroke: rgba(17, 22, 20, 0.22);
+  stroke-width: 1;
+}
+.fr-tag[data-focal] .fr-tag-box {
+  stroke: var(--fr-accent);
+}
+.fr-tag-name {
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  fill: var(--fr-ink);
+  text-anchor: middle;
+}
+.fr-tag-sub {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  fill: var(--fr-muted);
+  text-anchor: middle;
+}
+.fr-tag[data-focal] .fr-tag-sub {
+  fill: var(--fr-accent);
+}
+
+/* ---------------------------------------------------------- layout */
+
+/* Copy on top; on wide screens the points sit left of the drawing. */
+.fr-root {
+  display: grid;
+  gap: 32px;
+  grid-template-areas: "copy" "figure" "points";
+}
+.fr-copy {
+  grid-area: copy;
+}
+.fr-figure {
+  grid-area: figure;
+}
+/* Stacked (below 1280 px): the drawing at about its own size, centred. */
+.fr-drawing {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.fr-points {
+  grid-area: points;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 1280px) {
+  .fr-root {
+    grid-template-columns: minmax(0, 4.3fr) minmax(0, 7.7fr);
+    grid-template-areas: "copy copy" "points figure";
+    align-items: center;
+    column-gap: 48px;
+    row-gap: 40px;
+  }
+  .fr-copy {
+    max-width: 880px;
+  }
+}
+
+.fr-points li {
+  border-top: 1px solid rgba(17, 22, 20, 0.12);
+  padding: 16px 0;
+}
+.fr-points li:last-child {
+  border-bottom: 1px solid rgba(17, 22, 20, 0.12);
+}
+.fr-point-title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--fr-ink, #111614);
+}
+.fr-point-body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #59625d;
+  text-wrap: pretty;
+}

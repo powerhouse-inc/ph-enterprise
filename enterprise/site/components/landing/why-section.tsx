@@ -1,6 +1,5 @@
 "use client";
 
-import { CheckCircle2 } from "lucide-react";
 import { useRef } from "react";
 import { useFadeUpInScope } from "@/hooks/use-fade-up-scope";
 import { SectionContainer } from "./section-container";
@@ -13,7 +12,7 @@ const WHY_ITEMS = [
   },
   {
     title: "Open-source stack",
-    body: "Powerhouse is the open-source platform for owned operational software. Your team can inspect, extend, and operate the system.",
+    body: "The platform is open source, so your team can inspect, extend and operate every part of it.",
   },
   {
     title: "Model choice",
@@ -21,7 +20,7 @@ const WHY_ITEMS = [
   },
   {
     title: "No rip-and-replace requirement",
-    body: "Powerhouse connects to existing systems and turns the valuable workflow into owned software over time.",
+    body: "Your current systems keep running. Powerhouse takes over one workflow at a time, starting with the one that matters most.",
   },
 ];
 
@@ -38,34 +37,26 @@ export function WhySection() {
       <SectionContainer>
         <SectionHeading
           className="fade-up"
-          title={
-            <>
-              Adopt it on your terms,
-              <br className="max-sm:hidden" /> next to what you already run.
-            </>
-          }
-          lead="Deployment, tooling, and model choices stay with your team. Powerhouse connects to your existing systems instead of asking you to replace them."
+          title="Powerhouse runs beside your current systems, one workflow at a time."
+          lead="Deployment, tooling and model choices stay with your team."
         />
 
-        <div className="fade-up mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {/* A ruled list, not four identical icon cards (DESLOP finding 1). */}
+        <dl className="fade-up mt-12 grid grid-cols-1 border-t border-border-light lg:grid-cols-2 lg:gap-x-16">
           {WHY_ITEMS.map((item) => (
             <div
               key={item.title}
-              className="rounded-[16px] border border-border-light bg-white p-6"
+              className="grid grid-cols-1 gap-x-8 gap-y-1.5 border-b border-border-light py-6 sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]"
             >
-              <CheckCircle2
-                className="mb-4 h-5 w-5 text-proof"
-                aria-hidden="true"
-              />
-              <h3 className="font-heading mb-2 text-[16px] font-semibold text-copy">
+              <dt className="font-heading text-[17px] leading-[1.4] font-medium text-copy">
                 {item.title}
-              </h3>
-              <p className="text-[14px] leading-[1.65] text-copy-muted">
+              </dt>
+              <dd className="text-[15px] leading-[1.65] text-pretty text-copy-muted">
                 {item.body}
-              </p>
+              </dd>
             </div>
           ))}
-        </div>
+        </dl>
       </SectionContainer>
     </section>
   );

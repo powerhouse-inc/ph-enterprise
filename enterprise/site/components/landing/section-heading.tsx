@@ -39,7 +39,7 @@ export function SectionHeading({
 
       <h2
         className={cn(
-          "font-heading text-[clamp(32px,3.6vw,48px)] font-[680] leading-[1.08] tracking-[-0.02em]",
+          "font-heading text-[clamp(28px,3vw,40px)] font-medium leading-[1.1] tracking-[-0.02em] text-balance",
           onDark ? "text-t1" : "text-copy",
         )}
       >

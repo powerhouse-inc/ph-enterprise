@@ -1,23 +1,23 @@
 "use client";
-// ControlOwnershipSection — "Control and ownership: Control is visible in the workflow."
-// Deliberately styled inline (own warm palette) rather than with theme tokens,
-// matching SiloedDataSection. The product shots overlap: the offering editor at
-// 78% width, its annotated revision history pinned over the bottom-right. Both
-// show the same OperationalHubOffering document. The annotated history is a
-// static export of the design_handoff_product_shot composition (1600x1000 @2x).
+// ControlOwnershipSection — "Agents work inside the rules. Every change is on the record."
+// The answer to the problem section, on the page's own example: claim #4821
+// (the hero's record). Beside the claim's rules, its operation history, newest
+// first: the AI agent's line items, Maya's review, the agent's attempt to set
+// the claim Final, refused by rule 2, Wouter's correction of the hotel line and
+// his approval. Operation types and statuses are the real powerhouse/expense-report
+// model's. Below, a thumbnail opens the real product's signed revision history.
 
 import Image from "next/image";
 import { createPortal } from "react-dom";
-import { Maximize2, X } from "lucide-react";
+import { Check, Maximize2, X } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
-const INK = "oklch(0.337 0.006 214)";
-const MUTED = "oklch(0.53 0.01 240)";
-const BORDER = "oklch(0.882 0.002 247)";
+const INK = "#111614";
+const MUTED = "#59625D";
+const BORDER = "rgba(17, 22, 20, 0.14)";
 
-const MAIN_SHOT = "/product/offering-pricing-tiers.png"; // service offering editor with pricing tiers
-const DETAIL_SHOT = "/product/doc-history-annotated.png"; // annotated verifiable document history
+const DETAIL_SHOT = "/product/doc-history.png"; // annotated verifiable document history, flat background
 const DETAIL_ALT =
   "Powerhouse document history with a highlighted signed revision linked to its operation payload, signer address, and signature verification details.";
 
@@ -34,8 +34,8 @@ function Reveal({
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     el.style.opacity = "0";
-    el.style.translate = "0 26px";
-    el.style.transition = "opacity 0.65s ease, translate 0.65s ease";
+    el.style.translate = "0 12px";
+    el.style.transition = "opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), translate 0.45s cubic-bezier(0.22, 1, 0.36, 1)";
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -54,46 +54,6 @@ function Reveal({
   }, []);
   return (
     <div ref={ref} style={style}>
-      {children}
-    </div>
-  );
-}
-
-// Screenshot frame with resting 3D tilt that eases flat + lifts on hover.
-// Stacking order is fixed (zIndex prop) so the pair never flips over each other.
-function TiltFrame({
-  children,
-  restTransform,
-  zIndex,
-  style,
-}: {
-  children: ReactNode;
-  restTransform: string;
-  zIndex?: number;
-  style?: CSSProperties;
-}) {
-  const [hover, setHover] = useState(false);
-  return (
-    <div
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      style={{
-        borderRadius: 16,
-        border: `1px solid ${BORDER}`,
-        overflow: "hidden",
-        transition: "transform 0.45s ease, box-shadow 0.45s ease",
-        willChange: "transform",
-        transform: hover
-          ? "rotateX(0deg) rotateY(0deg) translateY(-6px) scale(1.012)"
-          : restTransform,
-        zIndex,
-        ...style,
-        // boxShadow below wins over style.boxShadow on hover
-        boxShadow: hover
-          ? "1px 4px 15px rgba(52,56,57,0.25), 0 2px 10px 2px rgba(122,58,255,0.2)"
-          : (style?.boxShadow ?? "0 2px 12px rgba(52,56,57,0.1)"),
-      }}
-    >
       {children}
     </div>
   );
@@ -159,24 +119,91 @@ function Lightbox({
   );
 }
 
+const RULES = [
+  { n: "1", text: "Line items add up to the total" },
+  { n: "2", text: "Only an approver sets the claim to Final" },
+  { n: "3", text: "A Final claim is read-only" },
+];
+
+/** Newest first. `refused` names the rule that stopped the operation; it never reaches the signed history. */
+const HISTORY: { index?: string; type: string; detail: string; who: string; at: string; refused?: string }[] = [
+  { index: "06", type: "SET_STATUS", detail: "FINAL", who: "Wouter K", at: "10:04" },
+  { index: "05", type: "UPDATE_LINE_ITEM", detail: "Hotel €321.00 → €312.00", who: "Wouter K", at: "10:02" },
+  { type: "SET_STATUS", detail: "FINAL", who: "AI agent", at: "09:16", refused: "2" },
+  { index: "04", type: "SET_STATUS", detail: "REVIEW", who: "Maya L", at: "09:15" },
+  { index: "03", type: "ADD_LINE_ITEM", detail: "3 receipts", who: "AI agent", at: "09:13" },
+];
+
 const POINTS = [
   {
-    title: "Access is scoped to the workflow",
-    desc: "Objects, roles, and approval state define who or what can see, change, or route work.",
+    title: "Agents act through operations",
+    desc: "Each workflow step declares the operations it may dispatch. Nothing else reaches the record.",
   },
   {
-    title: "Ownership stays portable",
-    desc: "Data, schemas, exports, and workflow state remain inspectable and usable outside a single vendor surface.",
+    title: "Rules refuse, with the reason",
+    desc: "A change that breaks the claim's rules is rejected. The agent gets the same answer a person would.",
   },
   {
-    title: "Approvals stay human-readable",
-    desc: "Exceptions, review state, and operator decisions are part of the record rather than buried in inboxes.",
-  },
-  {
-    title: "History remains attributable",
-    desc: "Source links, exports, status changes, and provenance are visible as first-class product surfaces.",
+    title: "Every change has an author",
+    desc: "Each history entry names the operation, the time, and the actor: a person or an agent.",
   },
 ];
+
+/** Claim #4821's rules beside its operation history: the rails, and what happened on them. */
+function ClaimRails() {
+  return (
+    <div className="grid gap-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,8fr)]">
+      <div className="rounded-xl border border-border-light bg-paper px-5 py-5">
+        <p className="text-[15px] leading-5 font-medium text-copy">Rules on claim #4821</p>
+        <p className="mt-1 font-mono text-[12px] leading-4 text-copy-muted">powerhouse/expense-report</p>
+        <ol className="mt-5 space-y-3">
+          {RULES.map((rule) => (
+            <li key={rule.n} className="grid grid-cols-[22px_minmax(0,1fr)] items-baseline gap-2 text-[15px] leading-6 text-copy">
+              <span className="font-mono text-[12px] text-copy-muted tabular-nums">{rule.n}</span>
+              {rule.text}
+            </li>
+          ))}
+        </ol>
+        <p className="mt-5 border-t border-border-light pt-4 text-[13px] leading-5 text-copy-muted">
+          Rules 1 and 3 belong to the document model. Rule 2 is an operation permission set by an administrator.
+        </p>
+      </div>
+
+      <div className="rounded-xl border border-border-light bg-paper px-5 py-5">
+        <p className="flex items-baseline justify-between gap-4 text-[15px] leading-5 text-copy">
+          <span className="font-medium">Operation history</span>
+          <span className="text-[13px] text-copy-muted">6 signed · 1 refused</span>
+        </p>
+        <ol className="mt-4 font-mono text-[12px] leading-5">
+          {HISTORY.map((op) => (
+            <li
+              key={`${op.type}-${op.at}`}
+              className="grid grid-cols-[22px_minmax(0,1fr)_auto_18px] items-center gap-3 border-t border-border-light py-2.5 sm:grid-cols-[22px_minmax(0,1fr)_auto_40px_18px]"
+            >
+              <span className="text-copy-muted tabular-nums">{op.index ?? "–"}</span>
+              <span className="min-w-0">
+                <span className={op.refused ? "text-copy-muted line-through" : "text-copy"}>{op.type}</span>{" "}
+                <span className={op.refused ? "text-copy-muted line-through" : "text-copy-muted"}>{op.detail}</span>
+                {op.refused ? (
+                  <span className="mt-0.5 block font-sans text-[13px] font-medium text-copy">
+                    Refused by rule {op.refused}: only an approver sets Final
+                  </span>
+                ) : null}
+              </span>
+              <span className={op.who === "AI agent" ? "font-medium text-copy" : "text-copy-muted"}>{op.who}</span>
+              <span className="text-copy-muted tabular-nums max-sm:hidden">{op.at}</span>
+              {op.refused ? (
+                <X className="h-4 w-4 text-copy" strokeWidth={2} aria-label="Refused" />
+              ) : (
+                <Check className="h-4 w-4 text-proof" strokeWidth={1.75} aria-label="Signed" />
+              )}
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  );
+}
 
 export function ControlOwnershipSection() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -185,9 +212,10 @@ export function ControlOwnershipSection() {
     <section
       style={{
         fontFamily: "Inter, sans-serif",
-        background: "#faf9f7",
+        background: "#FBF9F4",
         color: INK,
-        padding: "48px 32px 96px",
+        padding: "80px 32px",
+        borderTop: `1px solid ${BORDER}`,
       }}
     >
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
@@ -200,18 +228,10 @@ export function ControlOwnershipSection() {
             gap: 20,
           }}
         >
-          <h2
-            style={{
-              margin: 0,
-              fontSize: "clamp(34px, 4.5vw, 44px)",
-              fontWeight: 800,
-              letterSpacing: "-0.02em",
-              lineHeight: 1.12,
-            }}
-          >
-            Control is visible
+          <h2 className="font-heading text-[clamp(28px,3vw,40px)] leading-[1.1] font-medium tracking-[-0.02em]" style={{ margin: 0 }}>
+            Agents work inside the rules.
             <br />
-            in the workflow.
+            Every change is on the record.
           </h2>
           <p
             style={{
@@ -222,91 +242,37 @@ export function ControlOwnershipSection() {
               textWrap: "pretty",
             }}
           >
-            Powerhouse turns access, storage, approvals, exports, and history
-            into product surfaces your team can inspect and operate.
+            On claim #4821 the AI agent drafts the line items. Powerhouse checks each change against the
+            claim&apos;s rules, refuses what they forbid, and signs what they allow.
           </p>
         </div>
 
-        {/* Overlapping screenshot pair */}
+        {/* The claim's rules and what happened on them, then the real product's history */}
         <Reveal style={{ marginTop: 48 }}>
-          <div
-            style={{ position: "relative", paddingBottom: 96, perspective: 1600 }}
-          >
-            <TiltFrame
-              restTransform="rotateX(2deg) rotateY(-3deg)"
-              style={{
-                width: "78%",
-                background: "#0d0d0d",
-                boxShadow: "0 2px 12px rgba(52,56,57,0.1)",
-                position: "relative",
-              }}
+          <ClaimRails />
+          <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center">
+            <button
+              type="button"
+              onClick={() => setLightboxOpen(true)}
+              aria-label="View the signed revision history in the product at full size"
+              className="group/zoom relative w-full shrink-0 cursor-zoom-in overflow-hidden rounded-lg border border-border-light bg-ink sm:w-[220px]"
+              style={{ aspectRatio: "16 / 10" }}
             >
-              <Image
-                src={MAIN_SHOT}
-                alt="Powerhouse product screenshot showing a service offering with pricing tiers, billing cycles, and configured service groups."
-                width={2992}
-                height={1728}
-                sizes="(min-width: 1100px) 810px, 78vw"
-                style={{ display: "block", width: "100%", height: "auto" }}
-              />
-            </TiltFrame>
-            <TiltFrame
-              restTransform="rotateX(2deg) rotateY(4deg)"
-              zIndex={1}
-              style={{
-                position: "absolute",
-                right: 0,
-                bottom: 0,
-                width: "44%",
-                aspectRatio: "16 / 10",
-                background: "#fff",
-                boxShadow: "1px 4px 15px rgba(52,56,57,0.25)",
-              }}
-            >
-              <button
-                type="button"
-                onClick={() => setLightboxOpen(true)}
-                aria-label="View the document history detail at full size"
-                className="group/zoom"
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  padding: 0,
-                  border: "none",
-                  background: "transparent",
-                  cursor: "zoom-in",
-                }}
-              >
-                <Image
-                  src={DETAIL_SHOT}
-                  alt={DETAIL_ALT}
-                  fill
-                  sizes="(min-width: 1100px) 458px, 44vw"
-                  style={{ objectFit: "cover" }}
-                />
-                <span className="absolute right-2.5 bottom-2.5 flex h-7 w-7 items-center justify-center rounded-md bg-black/50 text-white/85 opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover/zoom:opacity-100">
-                  <Maximize2 className="h-3.5 w-3.5" aria-hidden="true" />
-                </span>
-              </button>
-            </TiltFrame>
-          </div>
-          <div
-            style={{
-              fontSize: 13,
-              lineHeight: 1.5,
-              color: MUTED,
-              marginTop: 16,
-              maxWidth: 720,
-            }}
-          >
-            A service offering document and its verifiable revision history,
-            with signed operations and inspectable payloads.
+              <Image src={DETAIL_SHOT} alt={DETAIL_ALT} fill sizes="(min-width: 640px) 220px, 92vw" style={{ objectFit: "cover" }} />
+              <span className="absolute right-2 bottom-2 flex h-7 w-7 items-center justify-center rounded-md bg-black/55 text-white/85">
+                <Maximize2 className="h-3.5 w-3.5" aria-hidden="true" />
+              </span>
+            </button>
+            <p className="max-w-[560px] text-[14px] leading-[1.55] text-copy-muted">
+              The same history in the product: each revision is a signed operation, with its payload, its signer, and
+              the signature check open for inspection.
+            </p>
           </div>
         </Reveal>
 
-        {/* Four points */}
+        {/* Three points */}
         <Reveal style={{ marginTop: 56 }}>
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             {POINTS.map((p) => (
               <div
                 key={p.title}
@@ -321,15 +287,14 @@ export function ControlOwnershipSection() {
                 <div
                   style={{
                     fontSize: 16,
-                    fontWeight: 700,
-                    letterSpacing: "-0.01em",
+                    fontWeight: 500,
                   }}
                 >
                   {p.title}
                 </div>
                 <div
                   style={{
-                    fontSize: 13.5,
+                    fontSize: 14,
                     lineHeight: 1.55,
                     color: MUTED,
                     textWrap: "pretty",

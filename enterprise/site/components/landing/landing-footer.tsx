@@ -3,7 +3,7 @@ import { SectionContainer } from "./section-container";
 
 export function LandingFooter() {
   return (
-    <footer className="py-9 pb-11 border-t border-border">
+    <footer className="border-t border-border bg-ink py-10">
       <SectionContainer>
         <div className="flex items-center justify-between max-md:flex-col max-md:gap-3 max-md:items-start">
           <div className="flex items-center gap-2.5">

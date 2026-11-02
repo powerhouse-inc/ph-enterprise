@@ -39,24 +39,22 @@ export function IntegrationSection() {
     <section
       ref={rootRef}
       id="integrations"
-      // First after the hero, so it is the sheet that rises over it.
-      className="relative z-10 rounded-t-[40px] bg-paper-soft py-20 text-copy"
+      className="bg-paper-soft py-20 text-copy"
     >
       <SectionContainer>
         <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:gap-16">
           {/* Narrative */}
           <div className="fade-up">
-            <h2 className="font-heading text-[clamp(34px,3.4vw,44px)] leading-[1.12] font-[680] tracking-[-0.02em] text-copy">
-              Connect everything.
-              <br />
-              Expose nothing.
+            <h2 className="font-heading text-[clamp(28px,3vw,40px)] leading-[1.1] font-medium tracking-[-0.02em] text-copy">
+              {/* A statement, not a slogan: the page keeps one paired-aphorism
+                  headline, in How it works (DESLOP). */}
+              Powerhouse connects to the systems your team already uses.
             </h2>
 
             <div className="mt-5 space-y-4 text-[17px] leading-[1.6] text-pretty text-copy-muted">
               <p>
-                Powerhouse runs alongside your existing systems. Switchboard
-                connects your ERP, HRIS, documents, email, and finance tools to
-                a structured data layer where AI can operate securely.
+                Switchboard links your ERP, HRIS, documents, email and finance
+                tools to one structured data layer.
               </p>
               <p>
                 Every integration defines its own scope: what data enters, how
@@ -68,7 +66,7 @@ export function IntegrationSection() {
             {/* The catalogue, led by its size, then shown rather than claimed. */}
             <div className="mt-8 border-t border-border-light pt-6">
               <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="font-heading text-[clamp(44px,4.4vw,60px)] leading-none font-[680] tracking-[-0.02em] text-copy">
+                <span className="font-heading text-[clamp(44px,4.4vw,60px)] leading-none font-medium tracking-[-0.02em] text-copy tabular-nums">
                   {PIECE_COUNT}
                 </span>
                 <span className="text-[17px] leading-[1.5] text-copy">
@@ -83,7 +81,7 @@ export function IntegrationSection() {
                   <li
                     key={file}
                     title={name}
-                    className="flex aspect-square items-center justify-center rounded-[10px] border border-border-light bg-white"
+                    className="flex aspect-square items-center justify-center rounded-md border border-border-light bg-white"
                   >
                     <Image
                       src={`/logos/activepieces/${file}.svg`}
@@ -97,12 +95,12 @@ export function IntegrationSection() {
               </ul>
               <p className="mt-4 text-[15px] leading-[1.6] text-copy-muted">
                 Chat, payments, project tracking, storage, analytics and the
-                model providers. Each connector is a workflow step you can read
-                and re-run.
+                model providers, from the open-source Activepieces catalogue.
+                Each connector is a workflow step you can read and re-run.
               </p>
               <Link
                 href="/integrations"
-                className="mt-3 inline-flex items-center gap-1.5 text-[15px] font-semibold text-[#7A3AFF] hover:underline"
+                className="mt-3 inline-flex items-center gap-1.5 text-[15px] font-medium text-copy underline-offset-4 hover:underline"
               >
                 Browse the integrations
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -110,9 +108,11 @@ export function IntegrationSection() {
             </div>
           </div>
 
-          {/* First integration */}
-          <div className="fade-up rounded-[16px] border border-border-light bg-white p-8 shadow-[0_2px_12px_rgba(17,22,20,0.1)]">
-            <p className="text-[12px] font-semibold tracking-[0.06em] text-copy-muted uppercase">
+          {/* First integration. Border only: a hairline with a diffuse
+              shadow is a named tell. Centred on the narrative beside it, so
+              neither column leaves an empty corner. */}
+          <div className="fade-up rounded-xl border border-border-light bg-white p-8 lg:self-center">
+            <p className="text-[14px] font-medium text-copy-muted">
               First integration
             </p>
 
@@ -126,7 +126,7 @@ export function IntegrationSection() {
                   className="h-[42px] w-auto"
                 />
               ) : (
-                <span className="font-heading text-[21px] leading-[1.25] font-semibold tracking-[-0.015em] text-copy">
+                <span className="font-heading text-[21px] leading-[1.25] font-medium tracking-[-0.015em] text-copy">
                   {integration.name}
                 </span>
               )}
@@ -140,9 +140,9 @@ export function IntegrationSection() {
               {integration.scope.map((row) => (
                 <div
                   key={row.label}
-                  className="grid grid-cols-[96px_minmax(0,1fr)] items-baseline gap-4 py-3.5"
+                  className="grid grid-cols-[96px_minmax(0,1fr)] items-baseline gap-4 py-3"
                 >
-                  <dt className="text-[12.5px] font-semibold text-copy-muted">
+                  <dt className="text-[13px] font-medium text-copy-muted">
                     {row.label}
                   </dt>
                   <dd className="text-[14px] leading-[1.5] text-copy">
@@ -157,14 +157,14 @@ export function IntegrationSection() {
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
               <Link
                 href={`/integrations/${integration.slug}`}
-                className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-[#7A3AFF] hover:underline"
+                className="inline-flex items-center gap-1.5 text-[15px] font-medium text-copy underline-offset-4 hover:underline"
               >
                 Open the record
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
               <Link
                 href="/integrations"
-                className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-copy hover:underline"
+                className="inline-flex items-center gap-1.5 text-[15px] font-medium text-copy underline-offset-4 hover:underline"
               >
                 View all integrations
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />

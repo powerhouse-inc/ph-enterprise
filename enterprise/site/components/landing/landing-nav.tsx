@@ -28,7 +28,7 @@ export function LandingNav() {
   return (
     <header
       ref={headerRef}
-      className="fixed top-0 left-0 right-0 z-200 h-[58px] flex items-center border-b border-transparent transition-all duration-400 [&.scrolled]:bg-[rgba(10,13,16,0.88)] [&.scrolled]:backdrop-blur-[20px] [&.scrolled]:border-border"
+      className="fixed top-0 left-0 right-0 z-200 h-14 flex items-center border-b border-transparent transition-[background-color,border-color,backdrop-filter] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] [&.scrolled]:bg-[rgba(10,13,16,0.88)] [&.scrolled]:backdrop-blur-[20px] [&.scrolled]:border-border"
     >
       <SectionContainer className="flex items-center gap-4 sm:justify-between">
         <Link href="/" className="flex items-center gap-2.5" aria-label="Powerhouse Enterprise">
