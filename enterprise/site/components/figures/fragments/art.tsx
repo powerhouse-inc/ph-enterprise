@@ -1,38 +1,27 @@
 import * as React from "react";
 import { Dots, Line, Solid } from "@/components/iso/react/draw";
-import type { Point3 } from "@/components/iso/iso-kit";
-import { buildLabels } from "../labels";
 import {
-  ANCHORS,
   BOOK_ART,
   CABINET_ART,
-  COPIES,
   DESK_ART,
   LAPTOP_ART,
   MONITOR_ART,
   TABLE_ART,
   TABLET_ART,
+  TAGS,
   TRAY_ART,
   type Recess,
+  type TagSpec,
 } from "./geometry";
-import { FragmentsLive } from "./live";
-import { LABELS } from "./model";
+import { DESC, TITLE } from "./model";
 import { HEIGHT, WIDTH } from "./view";
 
 /*
- * Static parts in painter's order (back to front), handed to the live
- * component as keyed element props.
- *   data-part="…"   a group whose solids take the accent while that part is lit
- *   data-key="…"    a line that is the piece itself (receipt, amounts, …):
- *                   in the accent while its part is lit
- *   data-chip / data-copy / fr-check / fr-missing
- *                   switched or moved by the live component
+ * The problem figure as one still frame, drawn on the diagram-design
+ * axonometric-plan rules: shaded boxes in 2:1 dimetric, no shadows, one
+ * focal object (the outside AI tool, in the accent), and a name tag on each
+ * object, painted last. Server-rendered; no script.
  */
-
-/** A line that is part of the claim, lit with its part. */
-const Key = ({ d, part, free = true, className }: { d: string; part: string; free?: boolean; className?: string }) => (
-  <path className={className ? `iso-line ${className}` : "iso-line"} data-tone="hi" data-free={free ? "" : undefined} data-key={part} d={d} />
-);
 
 /** A screen set into a face: inner walls, glass, the content in the face's plane, its rim. */
 function Screen({ id, recess, children }: { id: string; recess: Recess; children: React.ReactNode }) {
@@ -74,22 +63,23 @@ function drawer(art: typeof CABINET_ART.low) {
 
 function tier(art: typeof TRAY_ART.lower, part: "back" | "front") {
   return part === "back" ? (
-    <g data-part="inbox">
+    <>
       <Solid paths={art.floor} tone="mid" crease="faint" />
       <Solid paths={art.back} tone="mid" crease="none" />
       <Solid paths={art.left} tone="mid" crease="none" />
-    </g>
+    </>
   ) : (
-    <g data-part="inbox">
+    <>
       <Solid paths={art.right} tone="mid" crease="none" />
       <Solid paths={art.front} tone="mid" crease="none" />
-    </g>
+    </>
   );
 }
 
+/* ------------------------------------------- solids, back to front */
+
 const DESK = (
-  <g key="desk">
-    <path className="iso-halo" d={DESK_ART.halo} />
+  <g>
     {DESK_ART.feet.map(([flange, foot], index) => (
       <g key={index}>
         <Solid paths={flange!} tone="mid" crease="faint" />
@@ -99,21 +89,15 @@ const DESK = (
     <Solid paths={DESK_ART.slab} tone="mid" crease="faint" />
     <Line d={DESK_ART.band} tone="faint" />
     <Solid paths={DESK_ART.mat} tone="mid" crease="none" />
-    <Line d={DESK_ART.stitch} tone="faint" />
-    <Line d={DESK_ART.grommet} tone="lo" />
-    <path className="fr-hole" d={DESK_ART.hole} />
   </g>
 );
 
 const CABINET_BACK = (
-  <g key="cabinet-back">
-    <path className="iso-halo" d={CABINET_ART.halo} />
-    <g data-part="tracker">
-      <Solid paths={CABINET_ART.plinth} tone="mid" crease="faint" />
-      <Solid paths={CABINET_ART.body} tone="mid" crease="faint" />
-      <Solid paths={CABINET_ART.cap} tone="mid" crease="faint" />
-      {drawer(CABINET_ART.low)}
-    </g>
+  <g>
+    <Solid paths={CABINET_ART.plinth} tone="mid" crease="faint" />
+    <Solid paths={CABINET_ART.body} tone="mid" crease="faint" />
+    <Solid paths={CABINET_ART.cap} tone="mid" crease="faint" />
+    {drawer(CABINET_ART.low)}
     <Line d={CABINET_ART.seam} tone="faint" />
     <Line d={CABINET_ART.lock} tone="lo" />
     <Line d={CABINET_ART.lockSlot} tone="mid" />
@@ -124,31 +108,29 @@ const CABINET_BACK = (
   </g>
 );
 
+/* The status card, standing in the open drawer: marked paid. */
 const CARD = (
-  <g key="card">
+  <g>
     <Solid paths={CABINET_ART.card} tone="hi" crease="none" />
     <Solid paths={CABINET_ART.cardTab} tone="hi" crease="none" />
     <Line d={CABINET_ART.cardRules} tone="lo" free />
-    <Key d={CABINET_ART.ring} part="tracker" free={false} />
-    <Key d={CABINET_ART.check} part="tracker" className="fr-check" />
+    <Line d={CABINET_ART.ring} tone="hi" />
+    <Line d={CABINET_ART.check} tone="hi" free />
   </g>
 );
 
 const CABINET_FRONT = (
-  <g key="cabinet-front">
+  <g>
     <Solid paths={CABINET_ART.drawerRight} tone="mid" crease="none" />
-    <g data-part="tracker">{drawer(CABINET_ART.high)}</g>
+    {drawer(CABINET_ART.high)}
   </g>
 );
 
 const MONITOR = (
-  <g key="monitor">
+  <g>
     <Solid paths={MONITOR_ART.base} tone="mid" crease="faint" />
-    <path className="iso-line fr-cable" data-tone="mid" d={DESK_ART.cable} />
     <Solid paths={MONITOR_ART.neck} tone="mid" crease="faint" />
-    <g data-part="sheet">
-      <Solid paths={MONITOR_ART.housing} tone="mid" crease="faint" />
-    </g>
+    <Solid paths={MONITOR_ART.housing} tone="mid" crease="faint" />
     <Screen id="fr-screen-sheet" recess={MONITOR_ART.recess}>
       <image
         href="/logos/activepieces/google-sheets.svg"
@@ -164,17 +146,13 @@ const MONITOR = (
       <Line d={MONITOR_ART.heads} tone="lo" free />
       <Line d={MONITOR_ART.numbers} tone="lo" free />
       <Line d={MONITOR_ART.cells} tone="lo" free />
-      <Key d={MONITOR_ART.amounts} part="sheet" />
-      <Key d={MONITOR_ART.amountsBox} part="sheet" free={false} className="fr-key-box" />
+      <Line d={MONITOR_ART.amounts} tone="hi" free />
     </Screen>
-    <Line d={MONITOR_ART.ledRing} tone="lo" />
-    <Dots points={[MONITOR_ART.led]} size={0.6} tone="mid" />
   </g>
 );
 
 const TRAY = (
-  <g key="tray">
-    <path className="iso-halo" d={TRAY_ART.halo} />
+  <g>
     {tier(TRAY_ART.lower, "back")}
     {TRAY_ART.envelopes.map((paths, index) => (
       <Solid key={index} paths={paths} tone="mid" crease="none" />
@@ -187,9 +165,9 @@ const TRAY = (
     <Solid paths={TRAY_ART.envelope} tone="mid" crease="none" />
     <Line d={TRAY_ART.flap} tone="lo" />
     <Solid paths={TRAY_ART.receipt} tone="hi" crease="none" />
-    <Key d={TRAY_ART.receiptRules} part="inbox" />
+    <Line d={TRAY_ART.receiptRules} tone="hi" free />
     <Line d={TRAY_ART.receiptTotal} tone="lo" />
-    <Key d={TRAY_ART.receiptSum} part="inbox" />
+    <Line d={TRAY_ART.receiptSum} tone="hi" free />
     {tier(TRAY_ART.upper, "front")}
     <Line d={TRAY_ART.badge} tone="lo" />
     <g transform={TRAY_ART.logo}>
@@ -199,12 +177,10 @@ const TRAY = (
 );
 
 const TABLET = (
-  <g key="tablet">
+  <g>
     <Solid paths={TABLET_ART.dock} tone="mid" crease="faint" />
     <Line d={TABLET_ART.slot} tone="lo" />
-    <g data-part="chat">
-      <Solid paths={TABLET_ART.body} tone="mid" crease="faint" />
-    </g>
+    <Solid paths={TABLET_ART.body} tone="mid" crease="faint" />
     <Screen id="fr-screen-chat" recess={TABLET_ART.recess}>
       <image
         href="/logos/activepieces/slack.svg"
@@ -218,60 +194,48 @@ const TABLET = (
       <Line d={TABLET_ART.head} tone="faint" />
       <Line d={TABLET_ART.avatars} tone="lo" />
       <Line d={TABLET_ART.messages} tone="lo" free />
-      <Key d={TABLET_ART.approval} part="chat" free={false} />
-      <Key d={TABLET_ART.approvalCheck} part="chat" />
+      <Line d={TABLET_ART.approval} tone="hi" />
+      <Line d={TABLET_ART.approvalCheck} tone="hi" free />
       <Line d={TABLET_ART.approvalRule} tone="lo" free />
       <Line d={TABLET_ART.input} tone="faint" />
     </Screen>
-    <Dots points={[TABLET_ART.camera]} size={0.45} tone="mid" />
   </g>
 );
 
+/* The change log: ruled columns, and a dashed empty row where the change to paid should be. */
 const BOOK = (
-  <g key="book">
-    <g data-part="log">
-      <Solid paths={BOOK_ART.cover} tone="mid" crease="faint" />
-      <Solid paths={BOOK_ART.left} tone="mid" crease="faint" />
-      <Solid paths={BOOK_ART.right} tone="mid" crease="faint" />
-    </g>
+  <g>
+    <Solid paths={BOOK_ART.cover} tone="mid" crease="faint" />
+    <Solid paths={BOOK_ART.left} tone="mid" crease="faint" />
+    <Solid paths={BOOK_ART.right} tone="mid" crease="faint" />
     <Line d={BOOK_ART.title} tone="lo" free />
     <Line d={BOOK_ART.heads} tone="lo" free />
     <Line d={BOOK_ART.headRule} tone="lo" />
     <Line d={BOOK_ART.rows} tone="faint" />
     <Line d={BOOK_ART.columns} tone="faint" />
-    <path className="iso-line fr-missing" data-tone="hi" d={BOOK_ART.missing} />
-    <Solid paths={BOOK_ART.ribbon} tone="mid" crease="none" />
-    <Solid paths={BOOK_ART.ribbonTail} tone="mid" crease="none" />
-    <Solid paths={BOOK_ART.pen} tone="mid" crease="faint" />
-    <Solid paths={BOOK_ART.penClip} tone="mid" crease="none" />
-    <Solid paths={BOOK_ART.penTip} tone="mid" crease="none" />
+    <Line d={BOOK_ART.missing} tone="hi" dashed />
   </g>
 );
 
+/* The focal object: the outside AI tool, on a table of its own, holding two of the four pieces. */
 const LAPTOP = (
-  <g key="laptop">
-    <path className="iso-halo" d={TABLE_ART.halo} />
+  <g>
     <Solid paths={TABLE_ART.foot} tone="mid" crease="faint" />
     <Solid paths={TABLE_ART.column} tone="mid" crease="none" />
     <Solid paths={TABLE_ART.top} tone="mid" crease="faint" />
-    <g data-part="kiosk">
-      <Solid paths={LAPTOP_ART.base} tone="mid" crease="faint" />
-    </g>
+    <Solid paths={LAPTOP_ART.base} tone="mid" crease="faint" lit />
     <Line d={LAPTOP_ART.keys} tone="lo" />
     <Line d={LAPTOP_ART.trackpad} tone="lo" />
-    <g data-part="kiosk">
-      <Solid paths={LAPTOP_ART.lid} tone="mid" crease="faint" />
-    </g>
+    <Solid paths={LAPTOP_ART.lid} tone="mid" crease="faint" lit />
     <Screen id="fr-screen-ai" recess={LAPTOP_ART.recess}>
       <path className="fr-spark" d={LAPTOP_ART.spark} />
       <Line d={LAPTOP_ART.title} tone="lo" free />
       <Line d={LAPTOP_ART.head} tone="faint" />
       {LAPTOP_ART.chips.map((chip, index) =>
         index < 2 ? (
-          <g key={index} data-chip={index} data-filled="">
-            <path className="iso-line fr-chip-empty" data-tone="lo" data-dashed="" d={chip.frame} />
-            <path className="iso-line fr-chip-frame" data-tone="lo" d={chip.frame} />
-            <Key d={chip.fill} part="kiosk" className="fr-chip-fill" />
+          <g key={index}>
+            <Line d={chip.frame} tone="lo" />
+            <path className="iso-line fr-accent" data-free="" d={chip.fill} />
           </g>
         ) : (
           <Line key={index} d={chip.frame} tone="lo" dashed />
@@ -281,38 +245,53 @@ const LAPTOP = (
       <Line d={LAPTOP_ART.answerRules} tone="lo" free />
       <Line d={LAPTOP_ART.input} tone="faint" />
     </Screen>
-    <Dots points={[LAPTOP_ART.camera]} size={0.45} tone="mid" />
   </g>
 );
 
-const COPY_LAYERS = COPIES.map((copy, index) => (
-  <g key={`copy-${index}`} data-copy={index} opacity={0}>
-    <g data-part={`copy${index}`}>
-      <Solid paths={copy.art.body} tone="hi" crease="none" />
-    </g>
-    <Key d={copy.art.rules} part={`copy${index}`} />
-  </g>
-));
+/* --------------------------------------------------------- the tags */
 
-/** How far each copy travels, source to chip. */
-const FLIGHTS = COPIES.map(({ from, to }) => [to[0] - from[0], to[1] - from[1], to[2] - from[2]] as Point3);
+const TAG = { h: 32, name: 13, sub: 11, pad: 8 } as const;
+const ceil4 = (value: number) => Math.ceil(value / 4) * 4;
+/* The diagram-design width budget: 0.60 em a character in sans, 0.62 em in mono. */
+const tagWidth = ({ name, sub }: TagSpec) => ceil4(Math.max(name.length * TAG.name * 0.6, sub.length * TAG.sub * 0.62) + TAG.pad * 2);
+const tenth = (value: number) => Math.round(value * 10) / 10;
 
-const { spots: LABEL_SPOTS, leaders: LEADERS } = buildLabels(LABELS, ANCHORS, WIDTH, HEIGHT);
-
-export function FragmentsArt({ label, intro }: { label: string; intro?: React.ReactNode }) {
+function Tag({ tag }: { tag: TagSpec }) {
+  const width = tagWidth(tag);
+  const [cx, cy] = tag.at;
+  const top = tenth(cy - TAG.h / 2);
   return (
-    <FragmentsLive
-      label={label}
-      intro={intro}
-      labels={LABEL_SPOTS}
-      flights={FLIGHTS}
-      layers={{
-        back: [DESK, CABINET_BACK],
-        card: CARD,
-        front: [CABINET_FRONT, MONITOR, TRAY, TABLET, BOOK, LAPTOP],
-        copies: COPY_LAYERS,
-        last: [LEADERS],
-      }}
-    />
+    <g className="fr-tag" data-role="tag" data-name={tag.name} data-focal={tag.focal ? "" : undefined}>
+      <rect className="fr-tag-box" x={tenth(cx - width / 2)} y={top} width={width} height={TAG.h} rx={4} />
+      <text className="fr-tag-name" x={tenth(cx)} y={tenth(top + 14)}>
+        {tag.name}
+      </text>
+      <text className="fr-tag-sub" x={tenth(cx)} y={tenth(top + 27)}>
+        {tag.sub}
+      </text>
+    </g>
+  );
+}
+
+export function FragmentsDrawing() {
+  return (
+    <svg className="iso-svg" viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-labelledby="fragments-title fragments-desc">
+      <title id="fragments-title">{TITLE}</title>
+      <desc id="fragments-desc">{DESC}</desc>
+      {DESK}
+      {CABINET_BACK}
+      {CARD}
+      {CABINET_FRONT}
+      {MONITOR}
+      {TRAY}
+      {TABLET}
+      {BOOK}
+      {LAPTOP}
+      <g>
+        {TAGS.map((tag) => (
+          <Tag key={tag.name} tag={tag} />
+        ))}
+      </g>
+    </svg>
   );
 }

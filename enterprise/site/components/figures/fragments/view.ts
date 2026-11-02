@@ -7,9 +7,10 @@ import { boxCorners, fitProjection, iso, type Plan, type Point3 } from "@/compon
  * viewer (left and down), z up. Screens face +y.
  */
 
-export const WIDTH = 760;
-export const HEIGHT = 470;
-export const AZIMUTH = 56;
+export const WIDTH = 720;
+export const HEIGHT = 504;
+/* The diagram-design axonometric projection: 2:1 dimetric, ground axes at 26.565°. */
+export const AZIMUTH = 45;
 
 export const DESK: Plan = { x: -160, y: -74, w: 252, d: 140, r: 10 };
 export const DESK_H = 10;
@@ -45,12 +46,12 @@ export const P = fitProjection(
     ...boxCorners(DESK, FLOOR, 0),
     ...boxCorners({ x: MONITOR.x0, y: MONITOR.y, w: MONITOR.x1 - MONITOR.x0, d: MONITOR.d, r: 0 }, 0, MONITOR.z1),
     ...boxCorners(CABINET, 0, CABINET_TOP + 18),
-    ...boxCorners({ x: TABLE.cx - TABLE.r, y: TABLE.cy - TABLE.r, w: TABLE.r * 2, d: TABLE.r * 2, r: 0 }, FLOOR, 0),
+    ...[0, 1, 2, 3, 4, 5, 6, 7].map((k): Point3 => [TABLE.cx + TABLE.r * Math.cos((k * Math.PI) / 4), TABLE.cy + TABLE.r * Math.sin((k * Math.PI) / 4), FLOOR]),
     ...boxCorners(LAPTOP, 0, LID.z1),
   ],
   WIDTH,
   HEIGHT,
-  { pad: 28, azimuth: AZIMUTH },
+  { pad: 24, headroom: 24, azimuth: AZIMUTH },
 );
 
 export const at = (point: Point3) => iso(point, P);

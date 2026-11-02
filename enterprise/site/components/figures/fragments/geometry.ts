@@ -2,13 +2,11 @@ import {
   cameraOf,
   corners,
   cylinder,
-  haloOf,
   insetPlan,
   lineOnTop,
   onTop,
   pathOf,
   planOutline,
-  ring,
   roundedPlan,
   segment,
   sideMatrix,
@@ -41,12 +39,11 @@ import {
 } from "./view";
 
 /*
- * Every static path of the problem figure, computed once on the server.
- * Screens are recesses (inner walls shaded by facing, glass behind) with
- * their content drawn flat in the face plane: local (x, -z). The two pasted
- * copies are built at their sources and moved by live.tsx; switched parts
- * (the status mark, the AI tool's context chips, the missing log entry) are
- * drawn in both states and toggled.
+ * Every path of the problem figure, computed once on the server. Screens are
+ * recesses (inner walls shaded by facing, glass behind) with their content
+ * drawn flat in the face plane: local (x, -z). One still frame: the status
+ * card is marked paid, the AI tool holds two of the four pieces, and the log
+ * book has an empty row where that change should be.
  */
 
 const solid = (plan: Plan, z: number, h: number, steps = 3, bevel = 0) => slabOf(plan, z, h, P, steps, bevel);
@@ -141,30 +138,12 @@ export type Recess = ReturnType<typeof recessOf>;
 
 /* ------------------------------------------------------------------ desk */
 
-const GROMMET = { x: 66, y: -52 };
 const MAT_TOP = 1;
 export const DESK_ART = {
-  halo: haloOf(DESK, FLOOR, DESK_H, P),
   feet: corners(DESK, 24).map(([x, y]) => [round(x, y, 8, FLOOR, 1.8, 32), round(x, y, 6.2, FLOOR + 1.8, FOOT_H - 1.8, 32)]),
   slab: solid(DESK, -DESK_H, DESK_H, 8, 1.6),
   band: sideSeam(DESK, -3.5, P, 8),
-  grommet: ring(GROMMET.x, GROMMET.y, 5.4, 0, P, 32),
-  hole: ring(GROMMET.x, GROMMET.y, 3.6, 0, P, 28),
-  // The monitor's cable, from its stand to the grommet.
-  // The monitor's cable: from the foot of its stand's right face to the
-  // grommet's rim, where it drops through the desk.
-  cable: poly(
-    [
-      [18.2, -63, 0.3],
-      [30, -62.5, 0.7],
-      [46, -59, 0.7],
-      [57, -54.8, 0.6],
-      [62.6, -53.1, 0],
-    ],
-    false,
-  ),
   mat: solid(MAT, 0, MAT_TOP, 4, 0.3),
-  stitch: planOutline(insetPlan(MAT, 2.5), MAT_TOP, P, 4),
 };
 
 /* ---------------------------------------- legacy tracker: a filing cabinet */
@@ -196,7 +175,6 @@ const CARD_Z1 = 80;
 const CARD_FACE = CARD.y + CARD.d;
 const MARK: Point3 = [CARD.x + CARD.w - 8, CARD_FACE, CARD_Z1 - 8];
 export const CABINET_ART = {
-  halo: haloOf(CABINET, 0, 4, P),
   plinth: solid(insetPlan(CABINET, 2), 0, 4, 3),
   body: solid(CABINET, 4, CABINET_TOP - 4, 3, 0.8),
   cap: solid(insetPlan(CABINET, -1.4), CABINET_TOP, 3.5, 3, 0.6),
@@ -248,8 +226,6 @@ export const MONITOR_ART = {
   neck: solid({ x: -6, y: -70, w: 8, d: 8, r: 2 }, 3, 60, 3, 0.4),
   housing: solid({ x: M.x0, y: M.y, w: M.x1 - M.x0, d: M.d, r: 2.5 }, M.z0, M.z1 - M.z0, 3, 0.8),
   recess: recessOf(SCREEN, M_FACE, 1.2),
-  led: at([M.x1 - 8, M_FACE, M.z0 + 4.5]),
-  ledRing: sideRing([M.x1 - 8, M_FACE, M.z0 + 4.5], 1.3, "y", P, 14),
   // Content, in the screen's plane.
   logo: { x: SCREEN.x0 + 2, y: -(SCREEN.z1 - 1.2), size: 5.6 },
   title: flatRules([[SCREEN.x0 + 10, SCREEN.x0 + 34, SCREEN.z1 - 4]]),
@@ -278,7 +254,6 @@ export const MONITOR_ART = {
   amounts: flatRules([1, 2, 3, 4, 5].map((row, i) => figure(AMOUNT_COL, row, [7, 9, 6, 8, 10][i]!))),
   amountsBox: flatRect(colX(AMOUNT_COL), colX(AMOUNT_COL + 1), SCREEN.z0, rowZ(1), 0.4, 2),
 };
-const AMOUNTS_AT: Point3 = [colX(AMOUNT_COL) + CW / 2, M_FACE + 1.2, (SCREEN.z0 + rowZ(1)) / 2];
 
 /* ------------------------------------- inbox: a two-tier letter tray */
 
@@ -311,7 +286,6 @@ const POSTS = [
   [TX1 - 3.4, TY1 - 3.4],
 ] as const;
 export const TRAY_ART = {
-  halo: haloOf(TRAY, 0, 4, P),
   lower: tier(0),
   envelopes: [0, 1, 2].map((k) => solid(envelope(k, 2), 2 + k * 0.8, 0.8, 2)),
   posts: POSTS.map(([x, y]) => round(x, y, 1.3, 2, UPPER - 2, 14)),
@@ -333,7 +307,6 @@ export const TRAY_ART = {
   badge: rectX(TX1, TY1 - 6, TY1 - 18, UPPER + 3.5, UPPER + 11.5),
   logo: sideMatrix([TX1, TY1 - 6], UPPER + 11.5, P, "right"),
 };
-const RECEIPT_AT: Point3 = [RECEIPT.x + RECEIPT.w / 2, RECEIPT.y + RECEIPT.d / 2, RECEIPT_TOP + 7];
 
 /* ---------------------------------------- chat: a tablet in a dock */
 
@@ -348,7 +321,6 @@ export const TABLET_ART = {
   slot: planOutline({ x: T.x0 - 1, y: T.y - 0.6, w: T.x1 - T.x0 + 2, d: T.d + 1.2, r: 0.6 }, 5, P, 2),
   body: solid({ x: T.x0, y: T.y, w: T.x1 - T.x0, d: T.d, r: 2.2 }, T.z0, T.z1 - T.z0, 3, 0.5),
   recess: recessOf(T_SCREEN, T_FACE, 0.8),
-  camera: at([(T.x0 + T.x1) / 2, T_FACE, T.z1 - 1.5]),
   // Content, in the screen's plane.
   logo: { x: T_SCREEN.x0 + 1.6, y: -(T_SCREEN.z1 - 1.4), size: 4.6 },
   channel: flatRules([[T_SCREEN.x0 + 8, T_SCREEN.x0 + 22, T_SCREEN.z1 - 3.7]]),
@@ -385,8 +357,6 @@ const HEAD_Y = RIGHT.y + 7;
 const ROW = 6;
 const ROW_YS = Array.from({ length: Math.floor((RIGHT.y + RIGHT.d - HEAD_Y) / ROW) }, (_, i) => HEAD_Y + (i + 1) * ROW);
 const COL_XS = [0.25, 0.5, 0.75].map((f) => RIGHT.x + RIGHT.w * f);
-const RIBBON = { x: RIGHT.x + 7, w: 2.4 };
-const PEN: Plan = { x: BOOK.x1 + 3, y: BOOK.y0 + 4, w: 3.4, d: 34, r: 1.6 };
 export const BOOK_ART = {
   cover: solid({ x: BOOK.x0, y: BOOK.y0, w: BOOK.x1 - BOOK.x0, d: BOOK.y1 - BOOK.y0, r: 1.6 }, MAT_TOP, 1.2, 3, 0.3),
   left: solid(LEFT, COVER_TOP, PAGE_TOP - COVER_TOP, 2),
@@ -399,12 +369,6 @@ export const BOOK_ART = {
   columns: join(COL_XS.map((x) => lineOnTop([x, HEAD_Y], [x, RIGHT.y + RIGHT.d], PAGE_TOP, P))),
   // The entry that should have been written when the status changed.
   missing: planOutline({ x: RIGHT.x + 1, y: HEAD_Y + 0.8, w: RIGHT.w - 2, d: ROW - 1.6, r: 0.6 }, PAGE_TOP, P, 2),
-  // A ribbon marker across the right page and over its front edge.
-  ribbon: solid({ x: RIBBON.x, y: HEAD_Y + ROW * 2, w: RIBBON.w, d: RIGHT.y + RIGHT.d - HEAD_Y - ROW * 2, r: 0.2 }, PAGE_TOP, 0.3, 2),
-  ribbonTail: solid({ x: RIBBON.x, y: RIGHT.y + RIGHT.d, w: RIBBON.w, d: 0.4, r: 0.1 }, COVER_TOP, PAGE_TOP + 0.3 - COVER_TOP, 2),
-  pen: solid(PEN, MAT_TOP, 3.4, 3, 0.3),
-  penClip: solid({ x: PEN.x + 0.9, y: PEN.y + 2, w: 1.6, d: 10, r: 0.5 }, MAT_TOP + 3.4, 0.8, 2),
-  penTip: round(PEN.x + PEN.w / 2, PEN.y + PEN.d + 1.4, 1.2, MAT_TOP, 2.4, 14),
 };
 
 /* ------------------------- the outside AI tool: a laptop on a side table */
@@ -420,7 +384,6 @@ const KEYS_Y0 = LAPTOP.y + 5;
 const SPARK = { x: L_SCREEN.x0 + 3.4, z: L_SCREEN.z1 - 2.8, r: 1.7 };
 const keyOutline = (x: number, y: number, w: number) => planOutline({ x, y, w, d: KEY.d, r: 0.6 }, 3, P, 2);
 export const TABLE_ART = {
-  halo: haloOf({ x: TABLE.cx - 22, y: TABLE.cy - 22, w: 44, d: 44, r: 22 }, FLOOR, 2, P),
   foot: round(TABLE.cx, TABLE.cy, 22, FLOOR, 2, 48, 0.4),
   column: round(TABLE.cx, TABLE.cy, 4.5, FLOOR + 2, -3 - FLOOR - 2, 24),
   top: round(TABLE.cx, TABLE.cy, TABLE.r, -3, 3, 72, 0.6),
@@ -437,7 +400,6 @@ export const LAPTOP_ART = {
   trackpad: planOutline({ x: LAPTOP.x + LAPTOP.w / 2 - 11, y: KEYS_Y0 + 4 * KEY.pitchY + 2, w: 22, d: 9, r: 1.2 }, 3, P, 3),
   lid: solid({ x: LAPTOP.x, y: LID.y, w: LAPTOP.w, d: LID.d, r: 1.5 }, 2, LID.z1 - 2, 3, 0.5),
   recess: recessOf(L_SCREEN, L_FACE, 0.6),
-  camera: at([LAPTOP.x + LAPTOP.w / 2, L_FACE, LID.z1 - 1.5]),
   // Content, in the screen's plane: a four-pointed spark (the usual mark
   // for an AI assistant), a title, the context it holds, an answer, a field.
   spark: flat(
@@ -484,31 +446,36 @@ export const LAPTOP_ART = {
   ]),
   input: flatRect(L_SCREEN.x0 + 2, L_SCREEN.x1 - 2, L_SCREEN.z0 + 2.5, L_SCREEN.z0 + 6.5, 2),
 };
-const chipAt = (i: number): Point3 => [chipX(i) + CHIP.w / 2, L_FACE + 1.2, (CHIP.z0 + CHIP.z1) / 2];
 
-/* ------------------------------------------------- the two pasted copies */
+/* ---------------------------------------------------- the name tags */
 
-/** A paper copy standing upright, facing +y, centred on `point`. live.tsx moves it to its chip. */
-function copyAt([x, y, z]: Point3) {
-  const plan: Plan = { x: x - 5, y: y - 0.4, w: 10, d: 0.8, r: 0.3 };
-  return {
-    body: solid(plan, z - 6.5, 13, 2),
-    rules: rulesY(x - 3, [6, 4, 5], y + 0.4, z + 3.5, 2.8),
-  };
+/*
+ * One tag per object (diagram-design, axonometric plan): a name and a
+ * technical sublabel on an opaque backing, horizontal, painted after every
+ * solid, and placed on or just above what it names: no leaders, no numbers.
+ * `at` is the tag's centre on screen; only the AI tool's tag is focal.
+ */
+export interface TagSpec {
+  name: string;
+  sub: string;
+  at: Flat;
+  focal?: boolean;
 }
-export const COPIES = [
-  { from: RECEIPT_AT, to: chipAt(0), art: copyAt(RECEIPT_AT) },
-  { from: AMOUNTS_AT, to: chipAt(1), art: copyAt(AMOUNTS_AT) },
-] as const;
 
-/* -------------------------------------------- where the labels attach */
+const nudge = ([x, y]: Flat, dx: number, dy: number): Flat => [x + dx, y + dy];
 
-export const ANCHORS = {
-  receipt: at([RECEIPT.x + RECEIPT.w / 2, RECEIPT.y + RECEIPT.d - 6, RECEIPT_TOP]),
-  amounts: at([colX(AMOUNT_COL) + CW / 2, M_FACE, M.z1]),
-  approval: at([APPROVAL.x0 + 4, T_FACE, APPROVAL.z0]),
-  status: at([CARD.x + 6, CARD_FACE, CARD_Z1 + 3.4]),
-  sees: at([chipX(3) + CHIP.w / 2, L_FACE, CHIP.z1]),
-  outside: at([TABLE.cx - TABLE.r * 0.55, TABLE.cy + TABLE.r * 0.8, 0]),
-  log: at([RIGHT.x + RIGHT.w * 0.62, RIGHT.y + RIGHT.d * 0.7, PAGE_TOP]),
-};
+export const TAGS: readonly TagSpec[] = [
+  // Above the cabinet, clear of the card standing in its drawer.
+  { name: "Status", sub: "legacy tracker", at: nudge(at([CAB_CX, CABINET.y + CABINET.d / 2, CABINET_TOP + 3.5]), 0, -34) },
+  // Above the monitor's far end, clear of the sheet.
+  { name: "Amounts", sub: "spreadsheet", at: nudge(at([M.x1 - 8, M.y, M.z1]), 16, -50) },
+  // Behind the tray's upper tier, clear of the receipt.
+  { name: "Receipt", sub: "Gmail inbox", at: nudge(at([TRAY.x, TRAY.y, UPPER + 8]), -32, -5) },
+  // On the open desk right of the tablet.
+  { name: "Approval", sub: "Slack thread", at: nudge(at([T.x1 + 30, T.y + 12, 0]), 23, -92) },
+  // On the desk in front of the log book.
+  { name: "Change log", sub: "no entries", at: at([(BOOK.x0 + BOOK.x1) / 2, BOOK.y1 + 14, 0]) },
+  // Above the laptop's lid.
+  { name: "AI tool", sub: "sees 2 of 4 pieces", at: nudge(at([LAPTOP.x + LAPTOP.w / 2, LID.y, LID.z1]), 8, -36), focal: true },
+];
+
