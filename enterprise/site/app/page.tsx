@@ -2,7 +2,7 @@ import { LandingLenis } from "@/components/landing/landing-lenis";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { LandingHero } from "@/components/landing/landing-hero";
 import { SiloedDataSection } from "@/components/landing/siloed-data-section";
-import { WorkflowFigure } from "@/components/figures/workflow/figure";
+import { BoundaryDiagram } from "@/components/figures/boundary/diagram";
 import { HowPowerhouseWorks } from "@/components/landing/how-powerhouse-works";
 import { AppAnatomySection } from "@/components/landing/app-anatomy-section";
 import { ControlOwnershipSection } from "@/components/landing/control-ownership-section";
@@ -22,7 +22,7 @@ export default function Home() {
       {/* Connections first: the systems you already run, and the catalogue. */}
       <IntegrationSection />
       <SiloedDataSection />
-      <HowPowerhouseWorks figure={<WorkflowFigure />} />
+      <HowPowerhouseWorks figure={<BoundaryDiagram />} />
       <ControlOwnershipSection />
       <WhySection />
       {/* Building your own application comes after the case for it. */}

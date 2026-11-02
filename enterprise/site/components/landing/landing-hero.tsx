@@ -22,7 +22,8 @@ export function LandingHero() {
             </h1>
             <p className="mt-6 max-w-[36rem] text-[18px] leading-[1.6] text-pretty text-t2">
               Powerhouse connects the systems you already run and turns sensitive, document-heavy workflows into
-              applications your team and AI can share. Permissions, approvals and attributable history come built in.
+              applications your team and AI agents share. Agents take on more of the work while people keep the
+              decisions, and every change is signed.
             </p>
             <div className="mt-8 flex items-center gap-3 max-sm:flex-col">
               <BookCallButton className="h-11 px-5 text-[14px] max-sm:w-full" event="book-demo-hero" />

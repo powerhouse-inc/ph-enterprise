@@ -45,7 +45,7 @@ export function IntegrationSection() {
         <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:gap-16">
           {/* Narrative */}
           <div className="fade-up">
-            <h2 className="font-heading text-[clamp(32px,3.6vw,48px)] leading-[1.1] font-medium tracking-[-0.02em] text-copy">
+            <h2 className="font-heading text-[clamp(28px,3vw,40px)] leading-[1.1] font-medium tracking-[-0.02em] text-copy">
               {/* A statement, not a slogan: the page keeps one paired-aphorism
                   headline, in How it works (DESLOP). */}
               Powerhouse connects to the systems your team already uses.

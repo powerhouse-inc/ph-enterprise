@@ -94,13 +94,9 @@ export function AppAnatomySection() {
       <SectionContainer>
         <SectionHeading
           className="fade-up mb-14"
-          title={
-            <>
-              A form is only
-              <br className="max-sm:hidden" /> the interface.
-            </>
-          }
-          lead="This invoice application is powered by a typed document model. Approval states, identities, calculations, history, and exports are part of the application, not conventions held in a spreadsheet or someone's head."
+          eyebrow="Example application"
+          title="The parts of an invoice application built on Powerhouse."
+          lead="This example invoice application runs on a typed document model. Approval states, identities, calculations, history, and exports are part of the application, not conventions held in a spreadsheet or someone's head."
         />
 
         <div
@@ -170,8 +166,8 @@ export function AppAnatomySection() {
             </div>
 
             <figcaption className="mt-4 text-[14px] leading-[1.6] text-copy-muted">
-              Powerhouse invoice application. Select a marker to inspect what
-              each part of the record does.
+              An example invoice application built on Powerhouse. Select a
+              marker to inspect what each part of the record does.
             </figcaption>
           </figure>
 

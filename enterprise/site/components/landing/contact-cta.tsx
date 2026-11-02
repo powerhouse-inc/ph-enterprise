@@ -7,7 +7,7 @@ export function ContactCta() {
     <div id="get-started" className="border-t border-border-light bg-paper py-28 text-copy md:py-36">
       <SectionContainer>
         <div className="mx-auto max-w-[820px] text-center">
-          <h2 className="font-heading mb-6 text-[clamp(32px,3.6vw,48px)] leading-[1.1] font-medium tracking-[-0.02em] text-copy">
+          <h2 className="font-heading mb-6 text-[clamp(28px,3vw,40px)] leading-[1.1] font-medium tracking-[-0.02em] text-copy">
             Start with a workflow assessment.
           </h2>
           <p className="mx-auto mb-8 max-w-[600px] text-[18px] leading-[1.6] text-copy-muted">

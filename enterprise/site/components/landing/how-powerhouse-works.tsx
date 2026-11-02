@@ -19,12 +19,7 @@ export function HowPowerhouseWorks({ figure }: { figure: ReactNode }) {
         <SectionHeading
           className="fade-up"
           eyebrow="How Powerhouse works"
-          title={
-            <>
-              Structure the workflow.
-              <br className="max-sm:hidden" /> Control the boundary.
-            </>
-          }
+          title="Your systems connect to a typed workflow that runs inside your boundary."
           lead="Powerhouse turns your private processes into AI-ready software that you own. Explore solutions in a Powerhouse sandbox, then choose local, self-hosted, or remote deployment according to your needs."
         />
 

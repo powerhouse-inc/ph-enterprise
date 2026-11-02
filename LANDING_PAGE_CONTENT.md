@@ -47,7 +47,7 @@ software you own.
 
 Supporting copy:
 
-Powerhouse gives sensitive, document-heavy workflows shared structure, permissions, and history, creating operational software that teams and AI can use safely.
+Powerhouse connects the systems you already run and turns sensitive, document-heavy workflows into applications your team and AI agents share. Agents take on more of the work while people keep the decisions, and every change is signed.
 
 Primary CTA:
 
@@ -125,7 +125,9 @@ Lead copy:
 
 Connecting and structuring the data is the start. An AI agent also needs a fixed path: the business rules it must follow, the steps it may take, and a record of every change it makes.
 
-Supporting points (the figure's legend: claim #4821 spread over four tools):
+Figure (built in code; an isometric drawing on the diagram-design axonometric-plan rules): claim #4821 on one desk, the receipt in a Gmail inbox tray, the amounts in a spreadsheet, the approval in a Slack thread, the status card (paid) in a legacy filing cabinet; an outside AI tool on its own table, the only object in the accent, sees 2 of the 4 pieces; the change log has an empty row. Each object carries a name tag. On phones the tags give way to a caption.
+
+Supporting points (listed beside the figure):
 
 AI improvises from fragments
 
@@ -147,12 +149,13 @@ How Powerhouse works.
 
 Headline:
 
-Map the workflow.  
-Keep the boundary.
+Your systems connect to a typed workflow that runs inside your boundary.
 
 Lead copy:
 
 Powerhouse turns your private processes into AI-ready software that you own. Explore solutions in a Powerhouse sandbox, then choose local, self-hosted, or remote deployment according to your needs.
+
+Figure (built in code; an architecture diagram on the diagram-design "secure paved road" pattern, on one supplier invoice): your systems send an invoice PDF into your boundary (local or self-hosted), where it becomes invoice INV-2041, a typed invoice record and the diagram's one accent. Inside, a local model reads every field and adds the line items and VAT, an approver signs the approval with a private key, and every operation goes to the operation history, shown as a log of change, author and signature (connector, local model, frontier model, approver). Outside, top right and dashed, a frontier model is consulted for the supplier reply: it receives the invoice status only and returns a draft; the line items stop at the boundary. Each node carries the number of the step it answers. Desktop draws it left to right, phones top to bottom.
 
 Process steps:
 
@@ -170,11 +173,11 @@ Use AI to extract, compare, draft, flag, and route work inside the approved work
 
 4. Keep human approval
 
-Operators approve, reject, or revise important actions with the right context in front of them.
+Operators approve, reject, or revise important actions with the right context in front of them. Here, an approver signs off the invoice with a private key.
 
 5. Retain attributable history
 
-Every source, rule, model output, and human decision remains inspectable as the workflow evolves.
+Every source, rule, model output, and human decision remains inspectable as the workflow evolves. Each entry is signed by the person, model, or connector that made it.
 
 Control note:
 
@@ -234,8 +237,7 @@ Why ownership matters.
 
 Headline:
 
-You own the boundary,  
-the schema, and the history.
+Powerhouse runs beside your current systems, one workflow at a time.
 
 Body copy:
 

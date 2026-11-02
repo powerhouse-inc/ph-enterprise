@@ -37,12 +37,7 @@ export function WhySection() {
       <SectionContainer>
         <SectionHeading
           className="fade-up"
-          title={
-            <>
-              Adopt it on your terms,
-              <br className="max-sm:hidden" /> next to what you already run.
-            </>
-          }
+          title="Powerhouse runs beside your current systems, one workflow at a time."
           lead="Deployment, tooling and model choices stay with your team."
         />
 
